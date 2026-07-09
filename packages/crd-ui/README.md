@@ -11,9 +11,6 @@ npm i crd-ui
 - **`crd-ui/react`** — React component (`<Card />`).
 - `crd-ui/vue`, `crd-ui/svelte` — planned (see [roadmap](#roadmap)).
 
-Inspired by [react-credit-cards](https://github.com/amarofashion/react-credit-cards),
-rebuilt as a framework-agnostic core.
-
 ## Features
 
 - 💳 Realistic card preview: formatted/masked number, name, expiry, CVC.
