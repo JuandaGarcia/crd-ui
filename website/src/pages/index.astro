@@ -3,6 +3,7 @@ import { Code } from 'astro:components';
 import 'crd-ui/styles.css';
 import '../styles/site.css';
 import FrameworkSelect from '../components/FrameworkSelect.astro';
+import TOC from '../components/TOC.astro';
 import BrandGrid from '../components/BrandGrid.astro';
 import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
@@ -41,6 +42,8 @@ const themes = { light: 'github-light', dark: 'github-dark' };
       <span class="for">for</span>
       <FrameworkSelect />
     </div>
+
+    <TOC />
 
     <main>
       <div class="hero container">

@@ -1,0 +1,67 @@
+---
+// Left-gutter table of contents with scrollspy, after NumberFlow's TOC:
+// section tops are cached on resize; on scroll, the last heading above the
+// scroll position (accounting for scroll-padding-top) becomes active.
+const items = [
+  { id: 'playground', title: 'Try it' },
+  { id: 'usage', title: 'Usage' },
+  { id: 'brands', title: 'Brands' },
+  { id: 'theming', title: 'Theming' },
+  { id: 'localization', title: 'Localization' },
+  { id: 'api', title: 'API' },
+];
+---
+
+<nav class="toc" id="toc" aria-label="On this page">
+  <ol>
+    {items.map((item) => (
+      <li><a href={`#${item.id}`}>{item.title}</a></li>
+    ))}
+  </ol>
+</nav>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('#toc a')];
+  const ids = links.map((a) => a.getAttribute('href')!.slice(1));
+  let tops: number[] = [];
+  let scrollPt = 0;
+
+  function measure() {
+    tops = ids.map((id) => {
+      const el = document.getElementById(id);
+      return el ? el.getBoundingClientRect().top + window.scrollY : 0;
+    });
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue('scroll-padding-top')
+      .match(/[\d.]+/)?.[0];
+    scrollPt = raw ? parseFloat(raw) : 0;
+  }
+
+  function update() {
+    const top = window.scrollY;
+    let active = 0;
+    for (let i = ids.length - 1; i >= 0; i--) {
+      if (top >= tops[i]! - scrollPt - 1) {
+        active = i;
+        break;
+      }
+    }
+    links.forEach((a, i) => {
+      if (i === active) a.setAttribute('data-active', '');
+      else a.removeAttribute('data-active');
+    });
+  }
+
+  window.addEventListener('resize', () => {
+    measure();
+    update();
+  });
+  window.addEventListener('scroll', update, { passive: true });
+  // Re-measure once islands/fonts have settled layout.
+  window.addEventListener('load', () => {
+    measure();
+    update();
+  });
+  measure();
+  update();
+</script>
