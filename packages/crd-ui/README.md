@@ -21,27 +21,6 @@ npm i crd-ui
 - 🌍 Localizable labels and placeholders.
 - 📦 Zero runtime dependencies (React is an optional peer, only for `crd-ui/react`).
 
-## Vanilla usage
-
-```js
-import { createCard } from 'crd-ui';
-import 'crd-ui/styles.css';
-
-const card = createCard(document.querySelector('#preview'), {
-  number: '',
-  name: '',
-  expiry: '',
-  cvc: '',
-});
-
-numberInput.addEventListener('input', (e) => card.update({ number: e.target.value }));
-cvcInput.addEventListener('focus', () => card.update({ focused: 'cvc' })); // flips
-cvcInput.addEventListener('blur', () => card.update({ focused: null }));
-
-card.brand;      // 'visa' | 'mastercard' | … | null
-card.destroy();  // remove from the DOM
-```
-
 ## React usage
 
 ```tsx
@@ -66,6 +45,27 @@ function PaymentForm() {
     </>
   );
 }
+```
+
+## Vanilla usage
+
+```js
+import { createCard } from 'crd-ui';
+import 'crd-ui/styles.css';
+
+const card = createCard(document.querySelector('#preview'), {
+  number: '',
+  name: '',
+  expiry: '',
+  cvc: '',
+});
+
+numberInput.addEventListener('input', (e) => card.update({ number: e.target.value }));
+cvcInput.addEventListener('focus', () => card.update({ focused: 'cvc' })); // flips
+cvcInput.addEventListener('blur', () => card.update({ focused: null }));
+
+card.brand;      // 'visa' | 'mastercard' | … | null
+card.destroy();  // remove from the DOM
 ```
 
 ## Theming
