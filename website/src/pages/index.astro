@@ -8,7 +8,7 @@ import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
 import { localization, logos, theming, usage } from '../lib/snippets';
 
-const themes = { light: 'github-light', dark: 'github-dark' };
+const codeTheme = 'min-dark';
 ---
 
 <!doctype html>
@@ -17,6 +17,13 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <title>crd-ui — credit/debit card visualization</title>
     <meta
       name="description"
@@ -66,10 +73,10 @@ const themes = { light: 'github-light', dark: 'github-dark' };
             One package for every framework. The core is vanilla; adapters are subpath imports.
           </p>
           <div class="fw-block" data-block="react">
-            <Code code={usage.react} lang="tsx" themes={themes} />
+            <Code code={usage.react} lang="tsx" theme={codeTheme} />
           </div>
           <div class="fw-block" data-block="vanilla">
-            <Code code={usage.vanilla} lang="js" themes={themes} />
+            <Code code={usage.vanilla} lang="js" theme={codeTheme} />
           </div>
         </div>
       </section>
@@ -89,16 +96,16 @@ const themes = { light: 'github-light', dark: 'github-dark' };
         <div class="wrap">
           <h2>Theming</h2>
           <p>Override CSS custom properties on <code>.crd</code> or any ancestor.</p>
-          <Code code={theming} lang="css" themes={themes} />
+          <Code code={theming} lang="css" theme={codeTheme} />
           <p class="section-note" style="margin-top:1rem">
             The built-in brand marks are deliberately generic so the package ships no trademarked
             assets — pass your own SVGs if you're licensed to use the official ones:
           </p>
           <div class="fw-block" data-block="react">
-            <Code code={logos.react} lang="tsx" themes={themes} />
+            <Code code={logos.react} lang="tsx" theme={codeTheme} />
           </div>
           <div class="fw-block" data-block="vanilla">
-            <Code code={logos.vanilla} lang="js" themes={themes} />
+            <Code code={logos.vanilla} lang="js" theme={codeTheme} />
           </div>
         </div>
       </section>
@@ -108,10 +115,10 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <h2>Localization</h2>
           <p>Every label and placeholder on the card is configurable.</p>
           <div class="fw-block" data-block="react">
-            <Code code={localization.react} lang="tsx" themes={themes} />
+            <Code code={localization.react} lang="tsx" theme={codeTheme} />
           </div>
           <div class="fw-block" data-block="vanilla">
-            <Code code={localization.vanilla} lang="js" themes={themes} />
+            <Code code={localization.vanilla} lang="js" theme={codeTheme} />
           </div>
         </div>
       </section>
