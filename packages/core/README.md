@@ -12,4 +12,4 @@ card.update({ focused: 'cvc' });                // flips to the back
 ```
 
 Framework wrappers: [`@kardz/react`](https://www.npmjs.com/package/@kardz/react) — Vue and Svelte planned.
-See the repository README for full docs (theming, localization, custom logos).
+Full docs: https://github.com/JuandaGarcia/kardz

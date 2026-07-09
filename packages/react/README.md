@@ -9,4 +9,4 @@ import 'kardz/styles.css';
 <Card number={number} name={name} expiry={expiry} cvc={cvc} focused={focused} />;
 ```
 
-See the repository README for full docs (theming, localization, custom logos).
+Full docs: https://github.com/JuandaGarcia/kardz

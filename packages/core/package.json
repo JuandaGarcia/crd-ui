@@ -23,6 +23,13 @@
     "test:watch": "vitest"
   },
   "keywords": ["credit-card", "debit-card", "card", "ui", "component", "vanilla"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuandaGarcia/kardz.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/JuandaGarcia/kardz#readme",
+  "bugs": "https://github.com/JuandaGarcia/kardz/issues",
   "devDependencies": {
     "jsdom": "^26.0.0",
     "tsup": "^8.4.0",
