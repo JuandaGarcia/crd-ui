@@ -1,0 +1,194 @@
+/* crd-ui — card visualization styles.
+   Customize via the custom properties below; brand themes via .crd--brand-*. */
+
+.crd {
+  --crd-width: 290px;
+  --crd-radius: 14px;
+  --crd-font: 'Avenir Next', 'Segoe UI', ui-sans-serif, sans-serif;
+  --crd-color: #fff;
+  --crd-bg: linear-gradient(135deg, #43464b, #1e2126);
+  --crd-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --crd-flip-duration: 0.5s;
+
+  width: var(--crd-width);
+  aspect-ratio: 1.586; /* ISO/IEC 7810 ID-1 */
+  perspective: 1000px;
+  font-family: var(--crd-font);
+  color: var(--crd-color);
+}
+
+/* Brand themes */
+.crd--brand-visa      { --crd-bg: linear-gradient(135deg, #0f509e, #1399cd); }
+.crd--brand-mastercard{ --crd-bg: linear-gradient(135deg, #354057, #191c22); }
+.crd--brand-amex      { --crd-bg: linear-gradient(135deg, #106d90, #4ba6c3); }
+.crd--brand-discover  { --crd-bg: linear-gradient(135deg, #d05e28, #f2a33c); }
+.crd--brand-dinersclub{ --crd-bg: linear-gradient(135deg, #33526f, #6f9ab8); }
+.crd--brand-jcb       { --crd-bg: linear-gradient(135deg, #1d6b48, #37a26a); }
+.crd--brand-unionpay  { --crd-bg: linear-gradient(135deg, #274b70, #b23a48); }
+.crd--brand-maestro   { --crd-bg: linear-gradient(135deg, #45327a, #7a5fb8); }
+.crd--brand-elo       { --crd-bg: linear-gradient(135deg, #2d2d2d, #565656); }
+.crd--brand-hipercard { --crd-bg: linear-gradient(135deg, #8a1a2b, #c34a5a); }
+
+.crd__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--crd-flip-duration) cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+
+.crd--flipped .crd__inner {
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crd__inner {
+    transition: none;
+  }
+}
+
+.crd__front,
+.crd__back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--crd-radius);
+  background: var(--crd-bg);
+  box-shadow: var(--crd-shadow);
+  backface-visibility: hidden;
+  overflow: hidden;
+  padding: 6.5%;
+  box-sizing: border-box;
+}
+
+.crd__back {
+  transform: rotateY(180deg);
+  padding: 0;
+}
+
+/* ---- Front ---- */
+
+.crd__chip {
+  width: 15%;
+  color: #d4b26a;
+}
+
+.crd__chip svg,
+.crd__logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.crd__logo {
+  position: absolute;
+  top: 6.5%;
+  right: 6.5%;
+  width: 26%;
+  color: var(--crd-color);
+}
+
+.crd__number {
+  margin-top: 9%;
+  font-size: calc(var(--crd-width) / 17.5);
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.crd__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 4%;
+  margin-top: 8%;
+}
+
+.crd__name {
+  font-size: calc(var(--crd-width) / 24);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crd__name--placeholder {
+  opacity: 0.55;
+}
+
+.crd__expiry {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.crd__expiry-label {
+  display: block;
+  font-size: calc(var(--crd-width) / 41);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.65;
+}
+
+.crd__expiry-value {
+  font-size: calc(var(--crd-width) / 24);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Focus highlight ---- */
+
+.crd__number,
+.crd__name,
+.crd__expiry {
+  border-radius: 6px;
+  padding: 2px 6px;
+  margin-left: -6px;
+  transition: box-shadow 0.2s ease;
+}
+
+.crd--focus-number .crd__number,
+.crd--focus-name .crd__name,
+.crd--focus-expiry .crd__expiry {
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.65);
+}
+
+/* ---- Back ---- */
+
+.crd__stripe {
+  margin-top: 8%;
+  height: 18%;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.crd__signature {
+  margin: 6% 6.5% 0;
+  height: 16%;
+  border-radius: 5px;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.85),
+    rgba(255, 255, 255, 0.85) 3px,
+    rgba(220, 220, 220, 0.85) 3px,
+    rgba(220, 220, 220, 0.85) 6px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 3%;
+  box-sizing: border-box;
+}
+
+.crd__cvc {
+  color: #333;
+  font-size: calc(var(--crd-width) / 26);
+  font-style: italic;
+  letter-spacing: 0.15em;
+  font-variant-numeric: tabular-nums;
+}
+
+.crd__logo--back {
+  top: auto;
+  bottom: 6.5%;
+  width: 20%;
+  opacity: 0.85;
+}

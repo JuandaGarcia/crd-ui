@@ -5,7 +5,7 @@ import {
   type CardOptions,
   type FocusedField,
   createCard,
-} from '@kardz/core';
+} from './index';
 
 export type { Brand, FocusedField };
 
@@ -24,7 +24,7 @@ export interface CardProps {
 }
 
 /**
- * Controlled card preview. Wraps the vanilla `kardz` renderer: the core owns
+ * Controlled card preview. Wraps the vanilla `crd-ui` renderer: the core owns
  * the markup; this component only forwards props on each render.
  */
 export function Card({

@@ -1,9 +1,10 @@
 {
-  "name": "@kardz/react",
-  "version": "0.1.1",
-  "description": "React component for kardz \u2014 credit/debit card visualization.",
+  "name": "crd-ui",
+  "version": "0.1.0",
+  "description": "Framework-agnostic credit/debit card visualization. Zero-dependency vanilla core with a React subpath (Vue and Svelte planned).",
   "license": "MIT",
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -12,11 +13,15 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
+    },
+    "./styles.css": "./styles/crd-ui.css"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist", "styles"],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
@@ -26,21 +31,24 @@
     "credit-card",
     "debit-card",
     "card",
-    "react",
-    "component"
+    "ui",
+    "component",
+    "vanilla",
+    "react"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JuandaGarcia/kardz.git",
-    "directory": "packages/react"
+    "url": "git+https://github.com/JuandaGarcia/crd-ui.git"
   },
-  "homepage": "https://github.com/JuandaGarcia/kardz#readme",
-  "bugs": "https://github.com/JuandaGarcia/kardz/issues",
-  "dependencies": {
-    "@kardz/core": "workspace:*"
-  },
+  "homepage": "https://github.com/JuandaGarcia/crd-ui#readme",
+  "bugs": "https://github.com/JuandaGarcia/crd-ui/issues",
   "peerDependencies": {
     "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.0",

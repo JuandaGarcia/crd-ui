@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Card, type FocusedField } from '@kardz/react';
-import { formatCardNumber, formatExpiry, normalizeDigits, detectBrand } from '@kardz/core';
+import { Card, type FocusedField } from 'crd-ui/react';
+import { formatCardNumber, formatExpiry, normalizeDigits, detectBrand } from 'crd-ui';
 
 export function App() {
   const [number, setNumber] = useState('');
@@ -15,7 +15,7 @@ export function App() {
 
   return (
     <main className="demo">
-      <h1>kardz</h1>
+      <h1>crd-ui</h1>
       <p className="demo__tagline">
         Framework-agnostic credit/debit card visualization — vanilla core, thin wrappers.
       </p>

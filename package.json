@@ -1,5 +1,5 @@
 {
-  "name": "kardz-monorepo",
+  "name": "crd-ui-monorepo",
   "private": true,
   "scripts": {
     "build": "pnpm -r --filter './packages/*' build",

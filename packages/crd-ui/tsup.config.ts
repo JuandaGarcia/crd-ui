@@ -1,10 +1,10 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/index.tsx'],
+  entry: ['src/index.ts', 'src/react.tsx'],
   format: ['esm', 'cjs'],
   dts: true,
   sourcemap: true,
   clean: true,
-  external: ['react', '@kardz/core'],
+  external: ['react'],
 });

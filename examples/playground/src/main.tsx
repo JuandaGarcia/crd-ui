@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import '@kardz/core/styles.css';
+import 'crd-ui/styles.css';
 import './app.css';
 import { App } from './App';
 

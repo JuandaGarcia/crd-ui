@@ -8,10 +8,9 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@kardz/react": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@kardz/core": "workspace:*"
+    "crd-ui": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

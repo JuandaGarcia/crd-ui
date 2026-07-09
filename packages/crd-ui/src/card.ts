@@ -30,30 +30,30 @@ export interface CardInstance {
   update(data: Partial<CardData>): void;
   /** Brand detected from the current number, or null. */
   readonly brand: Brand | null;
-  /** The root `.kardz` element, in case you need direct access. */
+  /** The root `.crd` element, in case you need direct access. */
   readonly element: HTMLElement;
   /** Remove the card from the DOM. The instance must not be used afterwards. */
   destroy(): void;
 }
 
 const TEMPLATE = `
-<div class="kardz__inner">
-  <div class="kardz__front">
-    <div class="kardz__chip">${CHIP_SVG}</div>
-    <div class="kardz__logo"></div>
-    <div class="kardz__number"></div>
-    <div class="kardz__footer">
-      <div class="kardz__name"></div>
-      <div class="kardz__expiry">
-        <span class="kardz__expiry-label"></span>
-        <span class="kardz__expiry-value"></span>
+<div class="crd__inner">
+  <div class="crd__front">
+    <div class="crd__chip">${CHIP_SVG}</div>
+    <div class="crd__logo"></div>
+    <div class="crd__number"></div>
+    <div class="crd__footer">
+      <div class="crd__name"></div>
+      <div class="crd__expiry">
+        <span class="crd__expiry-label"></span>
+        <span class="crd__expiry-value"></span>
       </div>
     </div>
   </div>
-  <div class="kardz__back">
-    <div class="kardz__stripe"></div>
-    <div class="kardz__signature"><span class="kardz__cvc"></span></div>
-    <div class="kardz__logo kardz__logo--back"></div>
+  <div class="crd__back">
+    <div class="crd__stripe"></div>
+    <div class="crd__signature"><span class="crd__cvc"></span></div>
+    <div class="crd__logo crd__logo--back"></div>
   </div>
 </div>`;
 
@@ -76,13 +76,13 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
 
   const query = (selector: string): HTMLElement => root.querySelector<HTMLElement>(selector)!;
   const refs = {
-    number: query('.kardz__number'),
-    name: query('.kardz__name'),
-    expiryLabel: query('.kardz__expiry-label'),
-    expiryValue: query('.kardz__expiry-value'),
-    cvc: query('.kardz__cvc'),
-    logoFront: query('.kardz__logo'),
-    logoBack: query('.kardz__logo--back'),
+    number: query('.crd__number'),
+    name: query('.crd__name'),
+    expiryLabel: query('.crd__expiry-label'),
+    expiryValue: query('.crd__expiry-value'),
+    cvc: query('.crd__cvc'),
+    logoFront: query('.crd__logo'),
+    logoBack: query('.crd__logo--back'),
   };
   refs.expiryLabel.textContent = validThru;
 
@@ -93,10 +93,10 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     brand = detectBrand(state.number);
 
     root.className = [
-      'kardz',
-      brand ? `kardz--brand-${brand}` : 'kardz--unknown',
-      state.focused === 'cvc' ? 'kardz--flipped' : '',
-      state.focused ? `kardz--focus-${state.focused}` : '',
+      'crd',
+      brand ? `crd--brand-${brand}` : 'crd--unknown',
+      state.focused === 'cvc' ? 'crd--flipped' : '',
+      state.focused ? `crd--focus-${state.focused}` : '',
     ]
       .filter(Boolean)
       .join(' ');
@@ -105,7 +105,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
 
     const name = state.name.trim();
     refs.name.textContent = name || namePlaceholder;
-    refs.name.classList.toggle('kardz__name--placeholder', !name);
+    refs.name.classList.toggle('crd__name--placeholder', !name);
 
     refs.expiryValue.textContent = formatExpiry(state.expiry);
     refs.cvc.textContent = formatCvc(state.cvc, brand);
