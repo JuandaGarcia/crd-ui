@@ -5,7 +5,7 @@ import {
   type CardOptions,
   type FocusedField,
   createCard,
-} from 'kardz';
+} from '@kardz/core';
 
 export type { Brand, FocusedField };
 

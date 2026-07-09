@@ -1,7 +1,7 @@
 {
   "name": "@kardz/react",
-  "version": "0.1.0",
-  "description": "React component for kardz — credit/debit card visualization.",
+  "version": "0.1.1",
+  "description": "React component for kardz \u2014 credit/debit card visualization.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -14,13 +14,21 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "keywords": ["credit-card", "debit-card", "card", "react", "component"],
+  "keywords": [
+    "credit-card",
+    "debit-card",
+    "card",
+    "react",
+    "component"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JuandaGarcia/kardz.git",
@@ -29,7 +37,7 @@
   "homepage": "https://github.com/JuandaGarcia/kardz#readme",
   "bugs": "https://github.com/JuandaGarcia/kardz/issues",
   "dependencies": {
-    "kardz": "workspace:*"
+    "@kardz/core": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18"

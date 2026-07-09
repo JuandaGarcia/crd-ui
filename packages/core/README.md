@@ -1,10 +1,10 @@
-# kardz
+# @kardz/core
 
 Framework-agnostic credit/debit card visualization. Zero dependencies.
 
 ```js
-import { createCard } from 'kardz';
-import 'kardz/styles.css';
+import { createCard } from '@kardz/core';
+import '@kardz/core/styles.css';
 
 const card = createCard(container, { number: '', name: '', expiry: '', cvc: '' });
 card.update({ number: '4111 1111 1111 1111' }); // brand-aware format + theme

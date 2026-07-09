@@ -1,10 +1,12 @@
 {
-  "name": "kardz",
+  "name": "@kardz/core",
   "version": "0.1.0",
   "description": "Framework-agnostic credit/debit card visualization. Zero dependencies.",
   "license": "MIT",
   "type": "module",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,13 +18,23 @@
     },
     "./styles.css": "./styles/kardz.css"
   },
-  "files": ["dist", "styles"],
+  "files": [
+    "dist",
+    "styles"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "keywords": ["credit-card", "debit-card", "card", "ui", "component", "vanilla"],
+  "keywords": [
+    "credit-card",
+    "debit-card",
+    "card",
+    "ui",
+    "component",
+    "vanilla"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JuandaGarcia/kardz.git",

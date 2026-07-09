@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       // Test against the core sources so tests don't require a prior build.
-      kardz: fileURLToPath(new URL('../core/src/index.ts', import.meta.url)),
+      '@kardz/core': fileURLToPath(new URL('../core/src/index.ts', import.meta.url)),
     },
   },
 });

@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   sourcemap: true,
   clean: true,
-  external: ['react', 'kardz'],
+  external: ['react', '@kardz/core'],
 });

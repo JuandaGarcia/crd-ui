@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card, type FocusedField } from '@kardz/react';
-import { formatCardNumber, formatExpiry, normalizeDigits, detectBrand } from 'kardz';
+import { formatCardNumber, formatExpiry, normalizeDigits, detectBrand } from '@kardz/core';
 
 export function App() {
   const [number, setNumber] = useState('');

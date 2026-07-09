@@ -3,7 +3,7 @@
 Framework-agnostic credit/debit card visualization for your payment forms.
 A zero-dependency vanilla core with thin, idiomatic wrappers per framework.
 
-- **`kardz`** — the core: brand detection, formatting and the card renderer (vanilla TS + CSS).
+- **`@kardz/core`** — the core: brand detection, formatting and the card renderer (vanilla TS + CSS).
 - **`@kardz/react`** — React wrapper (`<Card />`).
 - `@kardz/vue`, `@kardz/svelte` — planned (see [roadmap](#roadmap)).
 
@@ -23,12 +23,12 @@ rebuilt as a framework-agnostic core.
 ## Vanilla usage
 
 ```bash
-pnpm add kardz
+pnpm add @kardz/core
 ```
 
 ```js
-import { createCard } from 'kardz';
-import 'kardz/styles.css';
+import { createCard } from '@kardz/core';
+import '@kardz/core/styles.css';
 
 const card = createCard(document.querySelector('#preview'), {
   number: '',
@@ -48,13 +48,13 @@ card.destroy();  // remove from the DOM
 ## React usage
 
 ```bash
-pnpm add kardz @kardz/react
+pnpm add @kardz/core @kardz/react
 ```
 
 ```tsx
 import { useState } from 'react';
 import { Card } from '@kardz/react';
-import 'kardz/styles.css';
+import '@kardz/core/styles.css';
 
 function PaymentForm() {
   const [number, setNumber] = useState('');

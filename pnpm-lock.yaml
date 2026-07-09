@@ -17,12 +17,12 @@ importers:
 
   examples/playground:
     dependencies:
+      '@kardz/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@kardz/react':
         specifier: workspace:*
         version: link:../../packages/react
-      kardz:
-        specifier: workspace:*
-        version: link:../../packages/core
       react:
         specifier: ^19.0.0
         version: 19.2.7
@@ -63,7 +63,7 @@ importers:
 
   packages/react:
     dependencies:
-      kardz:
+      '@kardz/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
