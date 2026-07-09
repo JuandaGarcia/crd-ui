@@ -1,0 +1,32 @@
+{
+  "name": "kardz",
+  "version": "0.1.0",
+  "description": "Framework-agnostic credit/debit card visualization. Zero dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": ["*.css"],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./styles/kardz.css"
+  },
+  "files": ["dist", "styles"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": ["credit-card", "debit-card", "card", "ui", "component", "vanilla"],
+  "devDependencies": {
+    "jsdom": "^26.0.0",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}

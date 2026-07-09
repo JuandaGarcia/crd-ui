@@ -1,0 +1,17 @@
+{
+  "name": "kardz-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r --filter './packages/*' build",
+    "test": "pnpm -r --filter './packages/*' test",
+    "dev": "pnpm --filter playground dev",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.0",
+    "typescript": "^5.8.0"
+  },
+  "packageManager": "pnpm@10.12.1"
+}

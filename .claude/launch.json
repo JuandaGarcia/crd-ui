@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "playground",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "playground", "dev"],
+      "port": 5173,
+      "autoPort": true
+    }
+  ]
+}
