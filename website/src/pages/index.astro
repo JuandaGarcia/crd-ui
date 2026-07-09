@@ -1,0 +1,194 @@
+---
+import { Code } from 'astro:components';
+import 'crd-ui/styles.css';
+import '../styles/site.css';
+import Header from '../components/Header.astro';
+import BrandGrid from '../components/BrandGrid.astro';
+import { HeroCard } from '../components/HeroCard';
+import { Playground } from '../components/Playground';
+import { localization, logos, theming, usage } from '../lib/snippets';
+
+const themes = { light: 'github-light', dark: 'github-dark' };
+---
+
+<!doctype html>
+<html lang="en" data-fw="react">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>crd-ui — credit/debit card visualization</title>
+    <meta
+      name="description"
+      content="Framework-agnostic credit/debit card visualization for payment forms. Zero dependencies, themeable, with React support and Vue/Svelte on the way."
+    />
+    <script is:inline>
+      try {
+        var fw = localStorage.getItem('crd-ui-fw');
+        if (fw === 'vanilla' || fw === 'react') document.documentElement.dataset.fw = fw;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <Header />
+
+    <main>
+      <div class="hero wrap">
+        <div class="hero-card"><HeroCard client:load /></div>
+        <h1>crd-ui</h1>
+        <p class="tagline">
+          Credit &amp; debit card visualization for your payment forms. Dependency-free.
+          Framework-agnostic. Themeable.
+        </p>
+        <div class="install">
+          <span id="install-cmd">npm i crd-ui</span>
+          <button id="copy-install" aria-label="Copy install command" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="9" y="9" width="12" height="12" rx="2"></rect>
+              <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <section id="playground">
+        <div class="wrap">
+          <h2>Try it</h2>
+          <p>Type below — brand detection, formatting and the CVC flip are all built in.</p>
+          <Playground client:visible />
+        </div>
+      </section>
+
+      <section id="usage">
+        <div class="wrap">
+          <h2>Usage</h2>
+          <p>
+            One package for every framework. The core is vanilla; adapters are subpath imports.
+          </p>
+          <div class="fw-block" data-block="react">
+            <Code code={usage.react} lang="tsx" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="vanilla">
+            <Code code={usage.vanilla} lang="js" themes={themes} />
+          </div>
+        </div>
+      </section>
+
+      <section id="brands">
+        <div class="wrap">
+          <h2>Brands</h2>
+          <p>
+            Live detection for 10 brands, each with its own theme. This grid is rendered by the
+            vanilla <code>createCard</code> API.
+          </p>
+        </div>
+        <div class="wrap"><BrandGrid /></div>
+      </section>
+
+      <section id="theming">
+        <div class="wrap">
+          <h2>Theming</h2>
+          <p>Override CSS custom properties on <code>.crd</code> or any ancestor.</p>
+          <Code code={theming} lang="css" themes={themes} />
+          <p class="section-note" style="margin-top:1rem">
+            The built-in brand marks are deliberately generic so the package ships no trademarked
+            assets — pass your own SVGs if you're licensed to use the official ones:
+          </p>
+          <div class="fw-block" data-block="react">
+            <Code code={logos.react} lang="tsx" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="vanilla">
+            <Code code={logos.vanilla} lang="js" themes={themes} />
+          </div>
+        </div>
+      </section>
+
+      <section id="localization">
+        <div class="wrap">
+          <h2>Localization</h2>
+          <p>Every label and placeholder on the card is configurable.</p>
+          <div class="fw-block" data-block="react">
+            <Code code={localization.react} lang="tsx" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="vanilla">
+            <Code code={localization.vanilla} lang="js" themes={themes} />
+          </div>
+        </div>
+      </section>
+
+      <section id="api">
+        <div class="wrap">
+          <h2>API</h2>
+          <p>
+            Props of <code>&lt;Card /&gt;</code> — the vanilla <code>createCard(container,
+            options)</code> accepts the same fields and returns
+            <code>{'{ update, brand, element, destroy }'}</code>.
+          </p>
+          <div class="api-scroll">
+            <table class="api-table">
+              <thead>
+                <tr><th>Prop</th><th>Type</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>number</code></td><td><code>string</code></td>
+                  <td>Card number, formatted and masked per brand as you type.</td>
+                </tr>
+                <tr>
+                  <td><code>name</code></td><td><code>string</code></td>
+                  <td>Cardholder name; shows a placeholder while empty.</td>
+                </tr>
+                <tr>
+                  <td><code>expiry</code></td><td><code>string</code></td>
+                  <td>Expiry date, normalized to <code>MM/YY</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>cvc</code></td><td><code>string</code></td>
+                  <td>Security code, shown on the back.</td>
+                </tr>
+                <tr>
+                  <td><code>focused</code></td>
+                  <td><code>'number' | 'name' | 'expiry' | 'cvc' | null</code></td>
+                  <td>Highlights the section; <code>'cvc'</code> flips the card.</td>
+                </tr>
+                <tr>
+                  <td><code>placeholders</code></td><td><code>{'{ name?: string }'}</code></td>
+                  <td>Placeholder text for the empty name.</td>
+                </tr>
+                <tr>
+                  <td><code>locale</code></td><td><code>{'{ validThru?: string }'}</code></td>
+                  <td>Label next to the expiry date.</td>
+                </tr>
+                <tr>
+                  <td><code>logos</code></td><td><code>Partial&lt;Record&lt;Brand, string&gt;&gt;</code></td>
+                  <td>Custom inline-SVG brand marks.</td>
+                </tr>
+                <tr>
+                  <td><code>onBrandChange</code></td><td><code>(brand: Brand | null) =&gt; void</code></td>
+                  <td>React only: fires when the detected brand changes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>MIT License</span>
+        <a href="https://www.npmjs.com/package/crd-ui" target="_blank" rel="noopener">npm</a>
+        <a href="https://github.com/JuandaGarcia/crd-ui" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </footer>
+
+    <script>
+      const btn = document.getElementById('copy-install')!;
+      btn.addEventListener('click', async () => {
+        await navigator.clipboard.writeText('npm i crd-ui');
+        btn.style.color = 'var(--accent)';
+        setTimeout(() => (btn.style.color = ''), 1200);
+      });
+    </script>
+  </body>
+</html>

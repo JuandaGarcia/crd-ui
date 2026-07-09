@@ -4,11 +4,16 @@ import type { Brand } from './brands';
 // the package free of trademarked assets (same approach as react-credit-cards).
 // Consumers can replace them via the `logos` option of createCard.
 
-const wordmark = (text: string, options: { italic?: boolean } = {}): string =>
-  `<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">` +
-  `<text x="118" y="28" text-anchor="end" font-family="'Avenir Next', 'Segoe UI', sans-serif" ` +
-  `font-size="22" font-weight="700" letter-spacing="1" ` +
-  `${options.italic ? 'font-style="italic" ' : ''}fill="currentColor">${text}</text></svg>`;
+const wordmark = (text: string, options: { italic?: boolean } = {}): string => {
+  // Long names get a smaller size so they never overflow the 120-unit viewBox.
+  const size = text.length >= 7 ? 15 : 22;
+  return (
+    `<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">` +
+    `<text x="118" y="28" text-anchor="end" font-family="'Avenir Next', 'Segoe UI', sans-serif" ` +
+    `font-size="${size}" font-weight="700" letter-spacing="1" ` +
+    `${options.italic ? 'font-style="italic" ' : ''}fill="currentColor">${text}</text></svg>`
+  );
+};
 
 const circles =
   `<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">` +
