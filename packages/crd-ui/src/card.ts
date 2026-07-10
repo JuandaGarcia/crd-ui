@@ -89,13 +89,37 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
   let brand: Brand | null = null;
   let renderedLogoBrand: Brand | null | undefined;
 
+  // Flip choreography: crd--flipping is added for the duration of one flip
+  // (either direction) so the CSS can play the lift/sheen/shadow animation,
+  // and removed when it ends. Cards created already flipped don't animate.
+  let flipped = (options.focused ?? null) === 'cvc';
+  let flipping = false;
+  root.addEventListener('animationend', (event) => {
+    if (event.animationName === 'crd-lift' && event.target === root) {
+      flipping = false;
+      root.classList.remove('crd--flipping');
+    }
+  });
+
   function render(): void {
     brand = detectBrand(state.number);
+
+    const nowFlipped = state.focused === 'cvc';
+    if (nowFlipped !== flipped) {
+      flipped = nowFlipped;
+      if (flipping) {
+        // Restart the animation when the flip reverses mid-air.
+        root.classList.remove('crd--flipping');
+        void root.offsetWidth;
+      }
+      flipping = true;
+    }
 
     root.className = [
       'crd',
       brand ? `crd--brand-${brand}` : 'crd--unknown',
-      state.focused === 'cvc' ? 'crd--flipped' : '',
+      flipped ? 'crd--flipped' : '',
+      flipping ? 'crd--flipping' : '',
       state.focused ? `crd--focus-${state.focused}` : '',
     ]
       .filter(Boolean)
