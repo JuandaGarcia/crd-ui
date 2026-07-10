@@ -22,46 +22,33 @@ const items = [
 
 <script>
   const links = [...document.querySelectorAll<HTMLAnchorElement>('#toc a')];
-  const ids = links.map((a) => a.getAttribute('href')!.slice(1));
-  let tops: number[] = [];
+  const sections = links.map((a) => document.getElementById(a.getAttribute('href')!.slice(1)));
   let scrollPt = 0;
 
-  function measure() {
-    tops = ids.map((id) => {
-      const el = document.getElementById(id);
-      return el ? el.getBoundingClientRect().top + window.scrollY : 0;
-    });
+  function measureScrollPt() {
     const raw = getComputedStyle(document.documentElement)
       .getPropertyValue('scroll-padding-top')
       .match(/[\d.]+/)?.[0];
     scrollPt = raw ? parseFloat(raw) : 0;
   }
 
+  // Positions are read live on every scroll (island hydration shifts section
+  // offsets), and the threshold is a reading line ~20% down the viewport so
+  // anchor landings that end up a few px off still activate their section.
   function update() {
-    const top = window.scrollY;
+    const threshold = scrollPt + window.innerHeight * 0.2;
     let active = 0;
-    for (let i = ids.length - 1; i >= 0; i--) {
-      if (top >= tops[i]! - scrollPt - 1) {
-        active = i;
-        break;
-      }
-    }
+    sections.forEach((el, i) => {
+      if (el && el.getBoundingClientRect().top <= threshold) active = i;
+    });
     links.forEach((a, i) => {
       if (i === active) a.setAttribute('data-active', '');
       else a.removeAttribute('data-active');
     });
   }
 
-  window.addEventListener('resize', () => {
-    measure();
-    update();
-  });
+  window.addEventListener('resize', measureScrollPt);
   window.addEventListener('scroll', update, { passive: true });
-  // Re-measure once islands/fonts have settled layout.
-  window.addEventListener('load', () => {
-    measure();
-    update();
-  });
-  measure();
+  measureScrollPt();
   update();
 </script>

@@ -400,14 +400,15 @@ main section {
 }
 
 @media (prefers-color-scheme: dark) {
-  .astro-code,
-  .astro-code span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-  }
-
   .astro-code {
     background-color: var(--zinc-900) !important;
+  }
+
+  /* Tokens carry color only — a background here paints a lighter box behind
+     every span, which reads as accidental text selection. */
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: transparent !important;
   }
 }
 
