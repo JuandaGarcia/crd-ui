@@ -336,13 +336,15 @@
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          // Removing the class resets strokes and opacities, so the
-          // signature redraws on every re-entry.
-          if (entry.isIntersecting) root.classList.add('in-view');
-          else root.classList.remove('in-view');
+          // Hysteresis: play at >=60% visible, reset only once fully
+          // off-screen. (Checking isIntersecting alone gets stuck: crossing
+          // the 0.6 threshold downward still reports isIntersecting=true,
+          // and no further callback fires on gradual scrolls.)
+          if (entry.intersectionRatio >= 0.6) root.classList.add('in-view');
+          else if (!entry.isIntersecting) root.classList.remove('in-view');
         }
       },
-      { threshold: 0.6 },
+      { threshold: [0, 0.6] },
     );
     observer.observe(root);
   }
