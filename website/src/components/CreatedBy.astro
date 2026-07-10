@@ -135,7 +135,6 @@
   gap: 0.5rem;
   transition: 1s all;
   opacity: 0;
-  animation: show 1s linear forwards 3s;
   text-align: initial;
   text-decoration: none;
   color: inherit;
@@ -147,6 +146,10 @@
   transition: 0.5s;
   pointer-events: none;
   user-select: none;
+}
+
+.created-by.in-view .created-by__user {
+  animation: show 1s linear forwards 3s;
 }
 
 .created-by__user:hover .created-by__img {
@@ -197,11 +200,14 @@
 .signature {
   width: 7rem;
   height: auto;
-  animation: hide 0.5s linear forwards 2.5s;
   color: var(--text);
 }
 
-.signature path {
+.created-by.in-view .signature {
+  animation: hide 0.5s linear forwards 2.5s;
+}
+
+.created-by.in-view .signature path {
   animation-name: sign;
   animation-duration: 0.2s;
   animation-timing-function: ease;
@@ -323,3 +329,21 @@
   }
 }
 </style>
+
+<script>
+  const root = document.querySelector('.created-by');
+  if (root) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          // Removing the class resets strokes and opacities, so the
+          // signature redraws on every re-entry.
+          if (entry.isIntersecting) root.classList.add('in-view');
+          else root.classList.remove('in-view');
+        }
+      },
+      { threshold: 0.6 },
+    );
+    observer.observe(root);
+  }
+</script>
