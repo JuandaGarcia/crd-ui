@@ -491,8 +491,17 @@ main section {
 
 .api-table {
   width: 100%;
+  min-width: 36rem;
   border-collapse: collapse;
   font-size: 0.875rem;
+}
+
+.api-table th:nth-child(1) {
+  width: 19%;
+}
+
+.api-table th:nth-child(2) {
+  width: 37%;
 }
 
 .api-table th,
@@ -512,7 +521,9 @@ main section {
   font-weight: 600;
 }
 
-.api-table code {
+/* Long union/object types wrap at spaces so Description keeps its room;
+   prop names in the first column stay on one line. */
+.api-table td:first-child code {
   white-space: nowrap;
 }
 
