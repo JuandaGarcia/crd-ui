@@ -4,6 +4,7 @@ import 'crd-ui/styles.css';
 import '../styles/site.css';
 import FrameworkSelect from '../components/FrameworkSelect.astro';
 import TOC from '../components/TOC.astro';
+import CreatedBy from '../components/CreatedBy.astro';
 import BrandGrid from '../components/BrandGrid.astro';
 import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
@@ -176,9 +177,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
         </section>
 
         <footer class="site-footer">
-          MIT License · Site design adapted from
-          <a href="https://number-flow.barvian.me" target="_blank" rel="noopener">NumberFlow</a>
-          by Maxwell Barvian
+          <CreatedBy />
         </footer>
       </div>
     </main>
