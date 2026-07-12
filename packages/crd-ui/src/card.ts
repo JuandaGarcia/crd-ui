@@ -49,6 +49,7 @@ const TEMPLATE = `
         <span class="crd__expiry-value"></span>
       </div>
     </div>
+    <div class="crd__ring"></div>
   </div>
   <div class="crd__back">
     <div class="crd__stripe"></div>
@@ -78,13 +79,56 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
   const refs = {
     number: query('.crd__number'),
     name: query('.crd__name'),
+    expiry: query('.crd__expiry'),
     expiryLabel: query('.crd__expiry-label'),
     expiryValue: query('.crd__expiry-value'),
     cvc: query('.crd__cvc'),
     logoFront: query('.crd__logo'),
     logoBack: query('.crd__logo--back'),
+    ring: query('.crd__ring'),
   };
   refs.expiryLabel.textContent = validThru;
+
+  // The focus ring is one element that travels between sections: on focus
+  // changes it slides/resizes to the target (spring transition in CSS); when
+  // it (re)appears it snaps into place first so it never slides in from a
+  // stale position. Geometry is re-synced on every render so the ring tracks
+  // content growth (e.g. the number widening while typing).
+  let ringHideTimer: ReturnType<typeof setTimeout> | undefined;
+
+  function updateRing(): void {
+    const targets = { number: refs.number, name: refs.name, expiry: refs.expiry } as const;
+    const target =
+      state.focused && state.focused !== 'cvc' ? targets[state.focused] : undefined;
+    const width = target?.offsetWidth ?? 0;
+    if (!target || !width) {
+      // Grace period before hiding: moving between inputs fires blur before
+      // focus, which passes through a focused=null render — deferring the
+      // hide lets the ring travel to the next section instead of fading out
+      // and reappearing.
+      if (!ringHideTimer && refs.ring.classList.contains('crd__ring--on')) {
+        ringHideTimer = setTimeout(() => {
+          ringHideTimer = undefined;
+          refs.ring.classList.remove('crd__ring--on');
+        }, 90);
+      }
+      return;
+    }
+    if (ringHideTimer) {
+      clearTimeout(ringHideTimer);
+      ringHideTimer = undefined;
+    }
+    const wasOn = refs.ring.classList.contains('crd__ring--on');
+    if (!wasOn) refs.ring.classList.add('crd__ring--instant');
+    refs.ring.style.transform = `translate(${target.offsetLeft}px, ${target.offsetTop}px)`;
+    refs.ring.style.width = `${width}px`;
+    refs.ring.style.height = `${target.offsetHeight}px`;
+    refs.ring.classList.add('crd__ring--on');
+    if (!wasOn) {
+      void refs.ring.offsetWidth;
+      refs.ring.classList.remove('crd__ring--instant');
+    }
+  }
 
   let brand: Brand | null = null;
   let renderedLogoBrand: Brand | null | undefined;
@@ -143,6 +187,8 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
 
     const brandLabel = brand ? getBrandSpec(brand).displayName : 'Payment';
     root.setAttribute('aria-label', `${brandLabel} card preview`);
+
+    updateRing();
   }
 
   render();
@@ -159,6 +205,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
       return root;
     },
     destroy() {
+      if (ringHideTimer) clearTimeout(ringHideTimer);
       root.remove();
     },
   };

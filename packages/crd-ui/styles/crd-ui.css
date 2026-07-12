@@ -215,7 +215,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ---- Focus highlight ---- */
+/* ---- Focus ring ----
+   A single ring element travels between the focused sections, sliding and
+   resizing with a spring — the core keeps its transform/size in sync. */
 
 .crd__number,
 .crd__name,
@@ -223,13 +225,39 @@
   border-radius: 6px;
   padding: 2px 6px;
   margin-left: -6px;
-  transition: box-shadow 0.2s ease;
 }
 
-.crd--focus-number .crd__number,
-.crd--focus-name .crd__name,
-.crd--focus-expiry .crd__expiry {
-  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.65);
+.crd__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.4s cubic-bezier(0.3, 1.35, 0.45, 1),
+    width 0.4s cubic-bezier(0.3, 1.35, 0.45, 1),
+    height 0.4s cubic-bezier(0.3, 1.35, 0.45, 1),
+    opacity 0.18s ease;
+}
+
+.crd__ring--on {
+  opacity: 1;
+}
+
+/* Applied for one frame when the ring (re)appears, so it materializes on the
+   new section instead of sliding in from a stale position. */
+.crd__ring--instant {
+  transition: opacity 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crd__ring {
+    transition: opacity 0.18s ease;
+  }
 }
 
 /* ---- Back ---- */

@@ -16,6 +16,8 @@ npm i crd-ui
 - 💳 Realistic card preview: formatted/masked number, name, expiry, CVC.
 - 🔄 Choreographed 3D flip when the CVC is focused: the card lifts off with a wrist-flick
   tilt, spring-settles past 180°, and a light sheen sweeps the face (`prefers-reduced-motion` aware).
+- 🎯 Magic focus ring: one highlight travels between sections, sliding and morphing to fit
+  each one with a spring settle.
 - 🏷 Live brand detection while typing: Visa, Mastercard, Amex, Discover, Diners Club,
   JCB, UnionPay, Maestro, Elo, Hipercard.
 - 🎨 Themeable via CSS custom properties; per-brand gradients out of the box.
