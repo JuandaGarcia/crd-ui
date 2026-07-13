@@ -10,6 +10,7 @@
     target="_blank"
     rel="noopener noreferrer"
     class="created-by__user"
+    aria-label="Created by @juandagarcia — GitHub"
   >
     <img
       src="https://github.com/JuandaGarcia.png?size=100"
@@ -18,7 +19,9 @@
       height="50"
       class="created-by__img"
     />
-    <div class="created-by__content">
+    <!-- aria-hidden: the handle scrambles visually while animating; screen
+         readers get the stable label on the link instead. -->
+    <div class="created-by__content" aria-hidden="true">
       <p class="created-by__text">Created by</p>
       <p class="created-by__name">@juandagarcia</p>
     </div>
@@ -333,6 +336,48 @@
 <script>
   const root = document.querySelector('.created-by');
   if (root) {
+    const nameEl = root.querySelector<HTMLElement>('.created-by__name')!;
+    const originalName = nameEl.textContent ?? '';
+    const SCRAMBLE_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789@#%&$*+=';
+    let scrambleDelay: ReturnType<typeof setTimeout> | undefined;
+    let scrambleTick: ReturnType<typeof setInterval> | undefined;
+
+    function stopScramble() {
+      if (scrambleDelay) clearTimeout(scrambleDelay);
+      if (scrambleTick) clearInterval(scrambleTick);
+      scrambleDelay = scrambleTick = undefined;
+      nameEl.textContent = originalName;
+    }
+
+    // Decode effect: every character cycles through random glyphs and settles
+    // to the real one, staggered from the center of the string outward.
+    function scramble() {
+      const letters = originalName.split('');
+      const center = (letters.length - 1) / 2;
+      const settleAt = letters.map((_, i) => 300 + Math.abs(i - center) * 110);
+      // Lock the box so random glyph widths don't wobble the layout.
+      nameEl.style.width = `${nameEl.offsetWidth}px`;
+      nameEl.style.overflow = 'hidden';
+      nameEl.style.whiteSpace = 'nowrap';
+      const start = performance.now();
+      scrambleTick = setInterval(() => {
+        const t = performance.now() - start;
+        let settled = true;
+        nameEl.textContent = letters
+          .map((ch, i) => {
+            if (t >= settleAt[i]!) return ch;
+            settled = false;
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]!;
+          })
+          .join('');
+        if (settled && scrambleTick) {
+          clearInterval(scrambleTick);
+          scrambleTick = undefined;
+        }
+      }, 40);
+    }
+
+    let inView = false;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -340,8 +385,23 @@
           // off-screen. (Checking isIntersecting alone gets stuck: crossing
           // the 0.6 threshold downward still reports isIntersecting=true,
           // and no further callback fires on gradual scrolls.)
-          if (entry.intersectionRatio >= 0.6) root.classList.add('in-view');
-          else if (!entry.isIntersecting) root.classList.remove('in-view');
+          if (entry.intersectionRatio >= 0.6) {
+            root.classList.add('in-view');
+            if (!inView) {
+              inView = true;
+              if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                // The profile card fades in at 3s (after the signature);
+                // the handle decodes as it appears.
+                scrambleDelay = setTimeout(scramble, 3000);
+              }
+            }
+          } else if (!entry.isIntersecting) {
+            root.classList.remove('in-view');
+            if (inView) {
+              inView = false;
+              stopScramble();
+            }
+          }
         }
       },
       { threshold: [0, 0.6] },
