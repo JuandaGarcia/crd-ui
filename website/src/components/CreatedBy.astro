@@ -338,7 +338,9 @@
   if (root) {
     const nameEl = root.querySelector<HTMLElement>('.created-by__name')!;
     const originalName = nameEl.textContent ?? '';
-    const SCRAMBLE_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789@#%&$*+=';
+    // Charset calibrated against Motion's scrambleText output: ASCII symbols
+    // plus block/geometric glyphs — no letters or digits.
+    const SCRAMBLE_CHARS = '!#$%&()*+,-./:;<=>?@[]^_`{|}~\u2020\u2021\u203b\u2580\u2584\u2588\u2591\u2592\u2593\u25a0\u25a1\u25aa\u25ab\u25c6\u25c7\u25c8\u25ca\u25cb';
     let scrambleDelay: ReturnType<typeof setTimeout> | undefined;
     let scrambleTick: ReturnType<typeof setInterval> | undefined;
 
@@ -354,7 +356,8 @@
     function scramble() {
       const letters = originalName.split('');
       const center = (letters.length - 1) / 2;
-      const settleAt = letters.map((_, i) => 300 + Math.abs(i - center) * 110);
+      // Measured timing: center settles at 300ms, +100ms per step outward.
+      const settleAt = letters.map((_, i) => 300 + Math.abs(i - center) * 100);
       // Lock the box so random glyph widths don't wobble the layout.
       nameEl.style.width = `${nameEl.offsetWidth}px`;
       nameEl.style.overflow = 'hidden';
@@ -374,7 +377,7 @@
           clearInterval(scrambleTick);
           scrambleTick = undefined;
         }
-      }, 40);
+      }, 50);
     }
 
     let inView = false;
