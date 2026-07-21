@@ -17,8 +17,8 @@ const wordmark = (text: string, options: { italic?: boolean } = {}): string => {
 
 const circles =
   `<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">` +
-  `<circle cx="88" cy="20" r="15" fill="currentColor" opacity="0.85"/>` +
-  `<circle cx="106" cy="20" r="15" fill="currentColor" opacity="0.5"/></svg>`;
+  `<circle cx="85" cy="20" r="15" fill="currentColor" opacity="0.85"/>` +
+  `<circle cx="103" cy="20" r="15" fill="currentColor" opacity="0.5"/></svg>`;
 
 export const LOGOS: Record<Brand, string> = {
   visa: wordmark('VISA', { italic: true }),

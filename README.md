@@ -9,7 +9,8 @@ npm i crd-ui
 
 - **`crd-ui`** — the vanilla core: brand detection, formatting and the card renderer.
 - **`crd-ui/react`** — React component (`<Card />`).
-- `crd-ui/vue`, `crd-ui/svelte` — planned (see [roadmap](#roadmap)).
+- **`crd-ui/vue`** — Vue 3 component (`<Card />`).
+- **`crd-ui/svelte`** — Svelte 5 component (`<Card />`).
 
 ## Features
 
@@ -24,7 +25,7 @@ npm i crd-ui
   detected brand.
 - 🎨 Themeable via CSS custom properties; per-brand gradients out of the box.
 - 🌍 Localizable labels and placeholders.
-- 📦 Zero runtime dependencies (React is an optional peer, only for `crd-ui/react`).
+- 📦 Zero runtime dependencies (React/Vue/Svelte are optional peers, only for their subpaths).
 
 ## React usage
 
@@ -71,6 +72,49 @@ cvcInput.addEventListener('blur', () => card.update({ focused: null }));
 
 card.brand;      // 'visa' | 'mastercard' | … | null
 card.destroy();  // remove from the DOM
+```
+
+## Vue usage
+
+```vue
+<script setup>
+import { ref } from 'vue';
+import { Card } from 'crd-ui/vue';
+import 'crd-ui/styles.css';
+
+const number = ref('');
+const focused = ref(null);
+</script>
+
+<template>
+  <Card :number="number" :focused="focused" @brand-change="(b) => console.log(b)" />
+  <input
+    v-model="number"
+    @focus="focused = 'number'"
+    @blur="focused = null"
+  />
+  <!-- name / expiry / cvc inputs alike -->
+</template>
+```
+
+## Svelte usage
+
+```svelte
+<script>
+  import Card from 'crd-ui/svelte';
+  import 'crd-ui/styles.css';
+
+  let number = $state('');
+  let focused = $state(null);
+</script>
+
+<Card {number} {focused} />
+<input
+  bind:value={number}
+  onfocus={() => (focused = 'number')}
+  onblur={() => (focused = null)}
+/>
+<!-- name / expiry / cvc inputs alike -->
 ```
 
 ## Variants
@@ -140,8 +184,6 @@ pnpm dev     # playground
 
 ## Roadmap
 
-- [ ] `crd-ui/vue`
-- [ ] `crd-ui/svelte`
 - [ ] Prebuilt official-logo add-on pack (opt-in)
 - [ ] Bank/issuer custom themes gallery
 
