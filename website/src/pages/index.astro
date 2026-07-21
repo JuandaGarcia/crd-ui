@@ -8,7 +8,8 @@ import CreatedBy from '../components/CreatedBy.astro';
 import BrandGrid from '../components/BrandGrid.astro';
 import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
-import { localization, logos, theming, usage } from '../lib/snippets';
+import { localization, logos, theming, themingImage, usage } from '../lib/snippets';
+import ImageCards from '../components/ImageCards.astro';
 import { API_ROWS } from '../lib/api';
 import CopyPage from '../components/CopyPage.astro';
 import { SideRays } from '../components/SideRays';
@@ -128,6 +129,12 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <h2>Theming</h2>
           <p>Override CSS custom properties on <code>.crd</code> or any ancestor.</p>
           <Code code={theming} lang="css" themes={themes} />
+          <p>
+            <code>--crd-bg</code> is a full CSS background, so images work as well as
+            gradients — bring your own artwork:
+          </p>
+          <Code code={themingImage} lang="css" themes={themes} />
+          <ImageCards />
           <p>
             The built-in brand marks are deliberately generic so the package ships no trademarked
             assets — pass your own SVGs if you're licensed to use the official ones:

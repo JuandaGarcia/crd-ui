@@ -3,7 +3,7 @@
 // Served at /llms-full.txt and /index.md; the short index lives at /llms.txt.
 
 import { API_ROWS } from './api';
-import { localization, logos, theming, usage } from './snippets';
+import { localization, logos, theming, themingImage, usage } from './snippets';
 
 const SITE = 'https://crd-ui.juanda.co';
 
@@ -103,6 +103,13 @@ Override CSS custom properties on \`.crd\` or any ancestor:
 
 \`\`\`css
 ${theming}
+\`\`\`
+
+\`--crd-bg\` is a full CSS background value, so images work as well as gradients
+(use \`variant: 'gradient'\` so no variant artwork overrides it):
+
+\`\`\`css
+${themingImage}
 \`\`\`
 
 The built-in brand marks are deliberately generic so the package ships no trademarked

@@ -1,0 +1,29 @@
+---
+// Image-background showcase: --crd-bg is applied as the faces' full CSS
+// `background`, so it takes url() stacks as happily as gradients. Rendered
+// with the vanilla API; variant 'gradient' (classic) so no variant artwork
+// overrides the custom background.
+---
+
+<div class="brand-grid" id="image-grid"></div>
+
+<script>
+  import { createCard } from 'crd-ui';
+
+  const SAMPLES: [string, string, string, string][] = [
+    ['/backgrounds/bg-aurora.png', '4111 1111 1111 1111', 'Aurora', '12/29'],
+    ['/backgrounds/bg-holo.png', '5555 5555 5555 4444', 'Chromatic', '06/30'],
+    ['/backgrounds/bg-circles.png', '3782 822463 10005', 'Ripples', '09/28'],
+    ['/backgrounds/bg-picnic.png', '6011 1111 1111 1117', 'Field Day', '03/29'],
+  ];
+
+  const grid = document.getElementById('image-grid')!;
+  for (const [bg, number, name, expiry] of SAMPLES) {
+    const cell = document.createElement('div');
+    grid.appendChild(cell);
+    const card = createCard(cell, { number, name, expiry, variant: 'gradient' });
+    // Inline on the card element so it beats the brand-theme classes
+    // (which also set --crd-bg, at element level).
+    card.element.style.setProperty('--crd-bg', `url('${bg}') center / cover no-repeat`);
+  }
+</script>

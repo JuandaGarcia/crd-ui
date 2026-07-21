@@ -85,6 +85,11 @@ export const theming = `.crd {
   --crd-bg: linear-gradient(135deg, #1a1f71, #4b6cb7);
 }`;
 
+export const themingImage = `/* --crd-bg is a full CSS background: images work too */
+.crd {
+  --crd-bg: url('/textures/holo.png') center / cover no-repeat;
+}`;
+
 export const logos = {
   react: `<Card logos={{ visa: '<svg …>…</svg>' }} />`,
   vanilla: `createCard(el, { logos: { visa: '<svg …>…</svg>' } });`,
