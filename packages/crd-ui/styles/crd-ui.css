@@ -546,6 +546,16 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* The back has no traveling ring, so CVC focus highlights the signature
+   strip itself — same stroke as the front ring. */
+.crd__signature {
+  transition: box-shadow 0.18s ease;
+}
+
+.crd--focus-cvc .crd__signature {
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+}
+
 .crd__logo--back {
   top: auto;
   bottom: 6.5%;

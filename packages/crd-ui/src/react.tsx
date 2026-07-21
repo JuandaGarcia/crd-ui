@@ -20,6 +20,18 @@ export interface CardProps {
   variant?: CardVariant;
   /** Pointer-tracked 3D hover tilt with a light glare. Default: false. */
   tilt?: boolean;
+  /**
+   * Force the displayed brand instead of deriving it from `number` — for
+   * providers that report the brand without exposing the number (e.g. Stripe
+   * Elements). `null` shows the unknown state; omit for automatic detection.
+   */
+  brand?: Brand | null;
+  /**
+   * Show only the last digits ('•••• •••• •••• 4242') when the full number is
+   * unknown — saved cards or post-tokenization summaries. Ignored while
+   * `number` has digits.
+   */
+  last4?: string;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];
@@ -40,6 +52,8 @@ export function Card({
   focused = null,
   variant = 'sunset',
   tilt = false,
+  brand,
+  last4 = '',
   placeholders,
   locale,
   logos,
@@ -70,12 +84,12 @@ export function Card({
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
-    card.update({ number, name, expiry, cvc, focused, variant, tilt });
+    card.update({ number, name, expiry, cvc, focused, variant, tilt, brand, last4 });
     if (card.brand !== brandRef.current) {
       brandRef.current = card.brand;
       onBrandChangeRef.current?.(card.brand);
     }
-  }, [number, name, expiry, cvc, focused, variant, tilt]);
+  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4]);
 
   return <div ref={containerRef} className={className} />;
 }

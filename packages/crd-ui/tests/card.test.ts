@@ -63,6 +63,34 @@ describe('createCard', () => {
     expect(card.element.className).not.toContain('crd--v-');
   });
 
+  it('brand override forces the visual brand without a number', () => {
+    const card = createCard(container, { brand: 'visa' });
+    expect(card.brand).toBe('visa');
+    expect(card.element.classList.contains('crd--brand-visa')).toBe(true);
+    expect(card.element.querySelector('.crd__logo')?.innerHTML).toContain('VISA');
+  });
+
+  it('brand override beats detection and undefined restores it', () => {
+    const card = createCard(container, { number: '4111 1111', brand: 'mastercard' });
+    expect(card.brand).toBe('mastercard');
+    expect(card.element.classList.contains('crd--brand-mastercard')).toBe(true);
+    card.update({ brand: null });
+    expect(card.brand).toBeNull();
+    expect(card.element.classList.contains('crd--unknown')).toBe(true);
+    card.update({ brand: undefined });
+    expect(card.brand).toBe('visa');
+  });
+
+  it('last4 renders a masked number with the tail visible', () => {
+    const card = createCard(container, { brand: 'visa', last4: '4242' });
+    expect(card.element.querySelector('.crd__number')?.textContent).toBe('•••• •••• •••• 4242');
+    card.update({ brand: 'amex' });
+    expect(card.element.querySelector('.crd__number')?.textContent).toBe('•••• •••••• •4242');
+    // A typed number takes precedence over last4.
+    card.update({ brand: undefined, number: '4111' });
+    expect(card.element.querySelector('.crd__number')?.textContent).toBe('4111 •••• •••• ••••');
+  });
+
   it('tilt is off by default and toggles via update()', () => {
     const card = createCard(container);
     expect(card.element.classList.contains('crd--tilt')).toBe(false);

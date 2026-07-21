@@ -46,6 +46,19 @@ export function maskCardNumber(raw: string, brand?: Brand | null, maskChar = MAS
   return groupDigits(padded, spec?.gaps ?? DEFAULT_GAPS);
 }
 
+/**
+ * A fully masked number with only the last digits visible
+ * ('•••• •••• •••• 4242') — for saved cards or post-tokenization summaries
+ * where only the last4 is known (e.g. Stripe's PaymentMethod.card.last4).
+ */
+export function maskLast4(last4: string, brand?: Brand | null, maskChar = MASK_CHAR): string {
+  const spec = brand ? getBrandSpec(brand) : undefined;
+  const targetLength = spec ? spec.maskLength : DEFAULT_LENGTH;
+  const digits = normalizeDigits(last4, 4);
+  const masked = maskChar.repeat(Math.max(targetLength - digits.length, 0)) + digits;
+  return groupDigits(masked, spec?.gaps ?? DEFAULT_GAPS);
+}
+
 /** Normalize an expiry to 'MM/YY'. Accepts '1224', '12/24', '12/2024', '1/24'… */
 export function formatExpiry(raw: string, maskChar = MASK_CHAR): string {
   const digits = normalizeDigits(raw, 6);

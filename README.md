@@ -27,6 +27,9 @@ npm i crd-ui
   detected brand.
 - 🎨 Themeable via CSS custom properties; per-brand gradients out of the box.
 - 🌍 Localizable labels and placeholders.
+- 💜 Plays well with Stripe: the `brand` override + `focused` mirror Stripe Elements'
+  metadata without ever touching the number — see
+  [`examples/stripe`](./examples/stripe).
 - 📦 Zero runtime dependencies (React/Vue/Svelte are optional peers, only for their subpaths).
 
 ## React usage

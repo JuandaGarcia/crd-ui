@@ -35,6 +35,18 @@ export const Card = defineComponent({
     variant: { type: String as PropType<CardVariant>, default: 'sunset' },
     /** Pointer-tracked 3D hover tilt with a light glare. Default: false. */
     tilt: { type: Boolean, default: false },
+    /**
+     * Force the displayed brand (e.g. from Stripe Elements' metadata) instead
+     * of deriving it from `number`. `null` shows the unknown state; leave
+     * unset for automatic detection.
+     */
+    brand: { type: String as PropType<Brand | null>, default: undefined },
+    /**
+     * Show only the last digits ('•••• •••• •••• 4242') when the full number
+     * is unknown — saved cards or post-tokenization summaries. Ignored while
+     * `number` has digits.
+     */
+    last4: { type: String, default: '' },
     placeholders: { type: Object as PropType<CardOptions['placeholders']>, default: undefined },
     locale: { type: Object as PropType<CardOptions['locale']>, default: undefined },
     logos: { type: Object as PropType<CardOptions['logos']>, default: undefined },
@@ -57,6 +69,8 @@ export const Card = defineComponent({
         focused: props.focused,
         variant: props.variant,
         tilt: props.tilt,
+        brand: props.brand,
+        last4: props.last4,
       });
       if (card.brand !== brand) {
         brand = card.brand;
@@ -85,6 +99,8 @@ export const Card = defineComponent({
         props.focused,
         props.variant,
         props.tilt,
+        props.brand,
+        props.last4,
       ],
       sync,
     );

@@ -1,5 +1,5 @@
 import { type Brand, detectBrand, getBrandSpec } from './brands';
-import { formatCvc, formatExpiry, maskCardNumber } from './format';
+import { formatCvc, formatExpiry, maskCardNumber, maskCvc, maskLast4 } from './format';
 import { CHIP_SVG, LOGOS } from './logos';
 
 export type FocusedField = 'number' | 'name' | 'expiry' | 'cvc';
@@ -19,6 +19,19 @@ export interface CardData {
   variant?: CardVariant;
   /** Pointer-tracked 3D hover tilt with a light glare. Default: false. */
   tilt?: boolean;
+  /**
+   * Force the displayed brand instead of deriving it from `number` — for
+   * integrations where the number never reaches you but the provider reports
+   * the brand (e.g. Stripe Elements). `null` shows the unknown state;
+   * `undefined` (default) keeps automatic detection.
+   */
+  brand?: Brand | null;
+  /**
+   * Show only the last digits ('•••• •••• •••• 4242') when the full number is
+   * unknown — saved cards or post-tokenization summaries (e.g. Stripe's
+   * PaymentMethod.card.last4). Ignored while `number` has digits.
+   */
+  last4?: string;
 }
 
 export interface CardOptions extends Partial<CardData> {
@@ -77,6 +90,8 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     focused: options.focused ?? null,
     variant: options.variant ?? 'sunset',
     tilt: options.tilt ?? false,
+    brand: options.brand,
+    last4: options.last4 ?? '',
   };
   const namePlaceholder = options.placeholders?.name ?? 'FULL NAME';
   const validThru = options.locale?.validThru ?? 'valid thru';
@@ -189,7 +204,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
   });
 
   function render(): void {
-    brand = detectBrand(state.number);
+    brand = state.brand !== undefined ? state.brand : detectBrand(state.number);
 
     const nowFlipped = state.focused === 'cvc';
     if (nowFlipped !== flipped) {
@@ -217,14 +232,19 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
       .filter(Boolean)
       .join(' ');
 
-    refs.number.textContent = maskCardNumber(state.number, brand);
+    refs.number.textContent =
+      !state.number && state.last4
+        ? maskLast4(state.last4, brand)
+        : maskCardNumber(state.number, brand);
 
     const name = state.name.trim();
     refs.name.textContent = name || namePlaceholder;
     refs.name.classList.toggle('crd__name--placeholder', !name);
 
     refs.expiryValue.textContent = formatExpiry(state.expiry);
-    refs.cvc.textContent = formatCvc(state.cvc, brand);
+    // Masked placeholder while empty ('•••'), consistent with the number and
+    // expiry — also what PCI integrations show, where the CVC never arrives.
+    refs.cvc.textContent = state.cvc ? formatCvc(state.cvc, brand) : maskCvc('', brand);
 
     if (brand !== renderedLogoBrand) {
       const logo = brand ? logos[brand] : '';

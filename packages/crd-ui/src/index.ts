@@ -8,5 +8,6 @@ export {
   formatExpiry,
   maskCardNumber,
   maskCvc,
+  maskLast4,
   normalizeDigits,
 } from './format';
