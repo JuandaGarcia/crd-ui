@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, type FocusedField } from 'crd-ui/react';
+import { Card, type CardVariant, type FocusedField } from 'crd-ui/react';
 import { detectBrand, formatCardNumber, formatExpiry, normalizeDigits } from 'crd-ui';
 
 export function Playground() {
@@ -8,13 +8,29 @@ export function Playground() {
   const [expiry, setExpiry] = useState('');
   const [cvc, setCvc] = useState('');
   const [focused, setFocused] = useState<FocusedField | null>(null);
+  const [variant, setVariant] = useState<CardVariant>('sunset');
+
+  const VARIANTS: CardVariant[] = ['sunset', 'ember', 'holo', 'porcelain', 'graphite', 'gradient'];
 
   const focus = (field: FocusedField) => () => setFocused(field);
   const blur = () => setFocused(null);
 
   return (
     <div className="demo-panel">
-      <Card number={number} name={name} expiry={expiry} cvc={cvc} focused={focused} />
+      <div className="variant-row" role="group" aria-label="Card variant">
+        {VARIANTS.map((v) => (
+          <button
+            key={v}
+            type="button"
+            className="variant-chip"
+            aria-pressed={variant === v}
+            onClick={() => setVariant(v)}
+          >
+            {v === 'gradient' ? 'classic' : v}
+          </button>
+        ))}
+      </div>
+      <Card number={number} name={name} expiry={expiry} cvc={cvc} focused={focused} variant={variant} />
       <form className="demo-form" onSubmit={(e) => e.preventDefault()}>
         <label>
           Card number

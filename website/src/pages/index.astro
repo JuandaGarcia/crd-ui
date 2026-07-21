@@ -38,6 +38,12 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     </script>
   </head>
   <body>
+    <div class="hero-beams" aria-hidden="true">
+      <div class="beam beam-1"></div>
+      <div class="beam beam-2"></div>
+      <div class="beam beam-3"></div>
+    </div>
+
     <div class="container masthead">
       <h1>crd-ui</h1>
       <span class="for">for</span>
@@ -48,6 +54,14 @@ const themes = { light: 'github-light', dark: 'github-dark' };
 
     <main>
       <div class="hero container">
+        <a class="announce" href="#playground">
+          <span class="announce__text">Introducing card variants</span>
+          <span class="announce__divider"></span>
+          <span class="announce__arrows">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
         <div class="hero-card"><HeroCard client:load /></div>
         <p class="tagline">
           A credit &amp; debit card component. Dependency-free. Themeable. Localizable.
@@ -151,6 +165,11 @@ const themes = { light: 'github-light', dark: 'github-dark' };
                   <td>Security code, shown on the back.</td>
                 </tr>
                 <tr>
+                  <td><code>variant</code></td>
+                  <td><code>'sunset' | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient'</code></td>
+                  <td>Card finish; <code>'sunset'</code> (default) tints its bloom to the brand.</td>
+                </tr>
+                <tr>
                   <td><code>focused</code></td>
                   <td><code>'number' | 'name' | 'expiry' | 'cvc' | null</code></td>
                   <td>Highlights the section; <code>'cvc'</code> flips the card.</td>
@@ -205,9 +224,8 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           GitHub
         </a>
         <a class="dock-item" href="https://www.npmjs.com/package/crd-ui" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <rect x="3" y="3" width="18" height="18" rx="1"></rect>
-            <path d="M7 17V7h10v10h-3V10h-3v7"></path>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"></path>
           </svg>
           npm
         </a>
