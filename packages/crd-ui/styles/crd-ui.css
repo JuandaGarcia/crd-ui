@@ -59,6 +59,11 @@
   color: #f2f2ef;
 }
 
+/* The back logo sits on the light lower body, not the dark crown. */
+.crd--v-ember .crd__logo--back {
+  color: #17181c;
+}
+
 .crd--v-ember .crd__name,
 .crd--v-ember .crd__expiry {
   text-shadow: none;
@@ -127,6 +132,11 @@
 
 .crd--v-sunset .crd__name,
 .crd--v-sunset .crd__expiry {
+  color: #f4f4f2;
+}
+
+/* The back logo sits on the dark base band. */
+.crd--v-sunset .crd__logo--back {
   color: #f4f4f2;
 }
 
