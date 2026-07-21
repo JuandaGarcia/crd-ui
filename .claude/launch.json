@@ -9,6 +9,13 @@
       "autoPort": true
     },
     {
+      "name": "stripe-example",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "stripe-example", "dev"],
+      "port": 5174,
+      "autoPort": true
+    },
+    {
       "name": "website",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "website", "dev"],

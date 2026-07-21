@@ -1,0 +1,140 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #f2f3f7;
+  font-family: 'Avenir Next', 'Segoe UI', ui-sans-serif, sans-serif;
+  color: #1e2126;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #16181d;
+    color: #e8eaef;
+  }
+}
+
+.demo {
+  width: min(420px, 92vw);
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.demo h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.demo__tagline {
+  margin: 0.25rem 0 1.75rem;
+  opacity: 0.65;
+  font-size: 0.9rem;
+}
+
+.demo__card {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.75rem;
+}
+
+.demo__form {
+  display: grid;
+  gap: 0.9rem;
+  text-align: left;
+}
+
+.demo__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.demo__form label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.demo__form input,
+.stripe-field {
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(120, 130, 150, 0.4);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  color: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  .demo__form input,
+  .stripe-field {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.demo__form input:focus,
+.stripe-field:focus-within {
+  outline: 2px solid #4f7cf7;
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.demo__form button {
+  margin-top: 0.35rem;
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  background: #1e2126;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .demo__form button {
+    background: #e8eaef;
+    color: #16181d;
+  }
+}
+
+.demo__form button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.demo__status {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  overflow-wrap: anywhere;
+}
+
+.demo__notice {
+  text-align: left;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.demo__notice pre {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(120, 130, 150, 0.15);
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+.demo__notice a {
+  color: inherit;
+}
