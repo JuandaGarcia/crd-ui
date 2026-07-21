@@ -15,6 +15,7 @@
     cvc = '',
     focused = null,
     variant = 'sunset',
+    tilt = false,
     placeholders = undefined,
     locale = undefined,
     logos = undefined,
@@ -38,7 +39,7 @@
 
   $effect(() => {
     if (!card) return;
-    card.update({ number, name, expiry, cvc, focused, variant });
+    card.update({ number, name, expiry, cvc, focused, variant, tilt });
     if (card.brand !== brand) {
       brand = card.brand;
       onBrandChange?.(brand);

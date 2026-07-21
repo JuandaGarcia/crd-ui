@@ -19,6 +19,8 @@ npm i crd-ui
   tilt, spring-settles past 180°, and a light sheen sweeps the face (`prefers-reduced-motion` aware).
 - 🎯 Magic focus ring: one highlight travels between sections, sliding and morphing to fit
   each one with a spring settle.
+- 🪩 Optional 3D hover tilt (`tilt`): the card follows the pointer with a cursor-tracked
+  glare (`prefers-reduced-motion` aware).
 - 🏷 Live brand detection while typing: Visa, Mastercard, Amex, Discover, Diners Club,
   JCB, UnionPay, Maestro, Elo, Hipercard.
 - ✨ Six built-in finishes via `variant` — the default `sunset` tints its color bloom to the

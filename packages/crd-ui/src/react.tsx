@@ -18,6 +18,8 @@ export interface CardProps {
   focused?: FocusedField | null;
   /** Visual finish of the card. Default: 'sunset' (brand-tinted blooms). */
   variant?: CardVariant;
+  /** Pointer-tracked 3D hover tilt with a light glare. Default: false. */
+  tilt?: boolean;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];
@@ -37,6 +39,7 @@ export function Card({
   cvc = '',
   focused = null,
   variant = 'sunset',
+  tilt = false,
   placeholders,
   locale,
   logos,
@@ -67,12 +70,12 @@ export function Card({
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
-    card.update({ number, name, expiry, cvc, focused, variant });
+    card.update({ number, name, expiry, cvc, focused, variant, tilt });
     if (card.brand !== brandRef.current) {
       brandRef.current = card.brand;
       onBrandChangeRef.current?.(card.brand);
     }
-  }, [number, name, expiry, cvc, focused, variant]);
+  }, [number, name, expiry, cvc, focused, variant, tilt]);
 
   return <div ref={containerRef} className={className} />;
 }

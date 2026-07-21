@@ -11,6 +11,8 @@ export interface CardProps {
   focused?: FocusedField | null;
   /** Visual finish of the card. Default: 'sunset' (brand-tinted blooms). */
   variant?: CardVariant;
+  /** Pointer-tracked 3D hover tilt with a light glare. Default: false. */
+  tilt?: boolean;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];

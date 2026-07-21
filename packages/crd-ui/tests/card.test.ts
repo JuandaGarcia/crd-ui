@@ -63,6 +63,16 @@ describe('createCard', () => {
     expect(card.element.className).not.toContain('crd--v-');
   });
 
+  it('tilt is off by default and toggles via update()', () => {
+    const card = createCard(container);
+    expect(card.element.classList.contains('crd--tilt')).toBe(false);
+    expect(card.element.querySelector('.crd__glare')).not.toBeNull();
+    card.update({ tilt: true });
+    expect(card.element.classList.contains('crd--tilt')).toBe(true);
+    card.update({ tilt: false });
+    expect(card.element.classList.contains('crd--tilt')).toBe(false);
+  });
+
   it('destroy() removes the card from the DOM', () => {
     const card = createCard(container);
     expect(container.querySelector('.crd')).not.toBeNull();

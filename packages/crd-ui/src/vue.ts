@@ -33,6 +33,8 @@ export const Card = defineComponent({
     focused: { type: String as PropType<FocusedField | null>, default: null },
     /** Visual finish of the card. Default: 'sunset' (brand-tinted blooms). */
     variant: { type: String as PropType<CardVariant>, default: 'sunset' },
+    /** Pointer-tracked 3D hover tilt with a light glare. Default: false. */
+    tilt: { type: Boolean, default: false },
     placeholders: { type: Object as PropType<CardOptions['placeholders']>, default: undefined },
     locale: { type: Object as PropType<CardOptions['locale']>, default: undefined },
     logos: { type: Object as PropType<CardOptions['logos']>, default: undefined },
@@ -54,6 +56,7 @@ export const Card = defineComponent({
         cvc: props.cvc,
         focused: props.focused,
         variant: props.variant,
+        tilt: props.tilt,
       });
       if (card.brand !== brand) {
         brand = card.brand;
@@ -74,7 +77,15 @@ export const Card = defineComponent({
     });
 
     watch(
-      () => [props.number, props.name, props.expiry, props.cvc, props.focused, props.variant],
+      () => [
+        props.number,
+        props.name,
+        props.expiry,
+        props.cvc,
+        props.focused,
+        props.variant,
+        props.tilt,
+      ],
       sync,
     );
 

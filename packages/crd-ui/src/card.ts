@@ -17,6 +17,8 @@ export interface CardData {
   cvc: string;
   focused?: FocusedField | null;
   variant?: CardVariant;
+  /** Pointer-tracked 3D hover tilt with a light glare. Default: false. */
+  tilt?: boolean;
 }
 
 export interface CardOptions extends Partial<CardData> {
@@ -63,7 +65,8 @@ const TEMPLATE = `
     <div class="crd__signature"><span class="crd__cvc"></span></div>
     <div class="crd__logo crd__logo--back"></div>
   </div>
-</div>`;
+</div>
+<div class="crd__glare"></div>`;
 
 export function createCard(container: HTMLElement, options: CardOptions = {}): CardInstance {
   const state: CardData = {
@@ -73,6 +76,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     cvc: options.cvc ?? '',
     focused: options.focused ?? null,
     variant: options.variant ?? 'sunset',
+    tilt: options.tilt ?? false,
   };
   const namePlaceholder = options.placeholders?.name ?? 'FULL NAME';
   const validThru = options.locale?.validThru ?? 'valid thru';
@@ -138,6 +142,37 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     }
   }
 
+  // Hover tilt (adapted from Transitions.dev's card tilt): pointer position
+  // over the card drives rotateX/rotateY and the glare spotlight through CSS
+  // custom properties. The handlers stay attached and simply no-op while the
+  // option is off, so tilt can be toggled at any time via update().
+  const TILT_MAX = 12;
+  let tiltHover = false;
+
+  function onTiltMove(event: PointerEvent): void {
+    if (!state.tilt) return;
+    const rect = root.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const px = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+    const py = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
+    tiltHover = true;
+    root.classList.add('crd--tilt-hover');
+    root.style.setProperty('--crd-tilt-ry', `${((px - 0.5) * TILT_MAX).toFixed(2)}deg`);
+    root.style.setProperty('--crd-tilt-rx', `${((0.5 - py) * TILT_MAX).toFixed(2)}deg`);
+    root.style.setProperty('--crd-tilt-gx', `${(px * 100).toFixed(1)}%`);
+    root.style.setProperty('--crd-tilt-gy', `${(py * 100).toFixed(1)}%`);
+  }
+
+  function onTiltLeave(): void {
+    tiltHover = false;
+    root.classList.remove('crd--tilt-hover');
+    root.style.setProperty('--crd-tilt-rx', '0deg');
+    root.style.setProperty('--crd-tilt-ry', '0deg');
+  }
+
+  root.addEventListener('pointermove', onTiltMove);
+  root.addEventListener('pointerleave', onTiltLeave);
+
   let brand: Brand | null = null;
   let renderedLogoBrand: Brand | null | undefined;
 
@@ -167,10 +202,14 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
       flipping = true;
     }
 
+    if (!state.tilt && tiltHover) onTiltLeave();
+
     root.className = [
       'crd',
       brand ? `crd--brand-${brand}` : 'crd--unknown',
       state.variant && state.variant !== 'gradient' ? `crd--v-${state.variant}` : '',
+      state.tilt ? 'crd--tilt' : '',
+      tiltHover ? 'crd--tilt-hover' : '',
       flipped ? 'crd--flipped' : '',
       flipping ? 'crd--flipping' : '',
       state.focused ? `crd--focus-${state.focused}` : '',

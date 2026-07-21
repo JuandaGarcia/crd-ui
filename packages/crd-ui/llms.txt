@@ -42,6 +42,7 @@ Svelte: `import Card from 'crd-ui/svelte'` — same props, `onBrandChange` callb
 - number, name, expiry, cvc: string — the values to display (masked/formatted automatically).
 - focused: 'number' | 'name' | 'expiry' | 'cvc' | null — highlights a section; 'cvc' flips to the back.
 - variant: 'sunset' (default, brand-tinted bloom) | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient' (classic per-brand gradient).
+- tilt: boolean (default false) — pointer-tracked 3D hover tilt with a light glare; toggleable via update()/prop.
 - placeholders: { name?: string } · locale: { validThru?: string } · logos: Partial<Record<Brand, string>> — creation-time only; recreate (e.g. React `key`) to change.
 - onBrandChange(brand | null) — React/Svelte callback; Vue event `brand-change`.
 - Vanilla instance: { update(data), brand, element, destroy() }.

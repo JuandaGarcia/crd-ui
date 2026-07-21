@@ -314,6 +314,71 @@
   }
 }
 
+/* ---- Hover tilt (opt-in via the `tilt` option) ----
+   Adapted from Transitions.dev's card tilt: the pointer position (written by
+   the core into --crd-tilt-* custom properties) rotates the card in 3D and
+   drives a cursor-tracked glare. A faster transition while hovering makes the
+   tilt follow the cursor; on leave it eases slowly back to flat. */
+
+.crd--tilt {
+  position: relative;
+  touch-action: none;
+  transform: perspective(1000px) rotateX(var(--crd-tilt-rx, 0deg))
+    rotateY(var(--crd-tilt-ry, 0deg));
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.crd--tilt.crd--tilt-hover {
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Cursor-tracked glare: layered soft circles that add like light (screen
+   blend) at the pointer position. Only shown while tilt is on and hovered. */
+.crd__glare {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--crd-radius);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 3;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(
+      circle 95px at var(--crd-tilt-gx, 50%) var(--crd-tilt-gy, 50%),
+      rgba(255, 255, 255, 0.48),
+      rgba(255, 255, 255, 0.06) 52%,
+      rgba(255, 255, 255, 0) 84%
+    ),
+    radial-gradient(
+      circle 200px at var(--crd-tilt-gx, 50%) var(--crd-tilt-gy, 50%),
+      rgba(255, 255, 255, 0.22),
+      rgba(255, 255, 255, 0.04) 58%,
+      rgba(255, 255, 255, 0) 78%
+    ),
+    radial-gradient(
+      circle 360px at var(--crd-tilt-gx, 50%) var(--crd-tilt-gy, 50%),
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0) 88%
+    );
+  transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crd--tilt.crd--tilt-hover .crd__glare {
+  opacity: 0.32;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crd--tilt {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .crd__glare {
+    display: none;
+  }
+}
+
 .crd__front,
 .crd__back {
   position: absolute;

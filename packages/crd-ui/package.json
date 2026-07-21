@@ -1,6 +1,6 @@
 {
   "name": "crd-ui",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Framework-agnostic credit/debit card visualization. Zero-dependency vanilla core with React, Vue and Svelte subpaths.",
   "license": "MIT",
   "type": "module",
