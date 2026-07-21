@@ -293,59 +293,6 @@ body {
   }
 }
 
-/* Announcement pill with the sliding double-arrow. */
-.announce {
-  display: flex;
-  width: fit-content;
-  margin: 0 auto 2.25rem;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.25rem 0.25rem 0.25rem 1rem;
-  border-radius: 999px;
-  background: var(--hover-wash);
-  box-shadow: 0 0 0 1px var(--ring);
-  text-decoration: none;
-  color: var(--text);
-  font-size: 0.875rem;
-  transition: background 0.3s ease;
-}
-
-.announce:hover {
-  background: var(--bg);
-}
-
-.announce__divider {
-  display: block;
-  width: 1.5px;
-  height: 1rem;
-  background: var(--border-faint);
-}
-
-/* A 1.5rem round window over two arrows: at rest the second one shows;
-   on hover both slide right so the first takes its place. */
-.announce__arrows {
-  display: flex;
-  width: 1.5rem;
-  height: 1.5rem;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--bg);
-}
-
-.announce__arrows > svg {
-  width: 0.75rem;
-  height: 100%;
-  padding: 0 0.375rem;
-  flex-shrink: 0;
-  box-sizing: content-box;
-  transform: translateX(-1.5rem);
-  transition: transform 0.5s cubic-bezier(0.65, 0.05, 0.36, 1);
-}
-
-.announce:hover .announce__arrows > svg {
-  transform: translateX(0);
-}
-
 /* Blur-in entrance for the hero pieces. */
 @keyframes hero-enter {
   from {
@@ -551,6 +498,53 @@ main section {
   border-radius: 0;
 }
 
+/* Floating copy button injected on every code block. */
+.code-block {
+  position: relative;
+}
+
+.code-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--hover-wash);
+  box-shadow: 0 0 0 1px var(--ring);
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.16s ease-out,
+    color 0.16s ease-out;
+}
+
+.code-block:hover .code-copy,
+.code-copy:focus-visible,
+.code-copy.is-copied {
+  opacity: 1;
+}
+
+.code-copy:hover {
+  color: var(--text);
+}
+
+.code-copy svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+@media (hover: none) {
+  .code-copy {
+    opacity: 1;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .astro-code {
     background-color: var(--zinc-900) !important;
@@ -580,8 +574,105 @@ main section {
 .variant-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 0.375rem;
+}
+
+/* ---- Customize panel under the playground ---- */
+
+.customize {
+  width: 100%;
+  border-top: 1px solid var(--border-faint);
+  padding-top: 1.25rem;
+  display: grid;
+  gap: 0.875rem;
+}
+
+.customize__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.customize__head h3 {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.customize__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: var(--hover-wash);
+  color: var(--text);
+  box-shadow: 0 0 0 1px var(--ring);
+  cursor: pointer;
+  transition: background 0.16s ease-out;
+}
+
+.customize__copy:hover {
+  background: var(--bg);
+}
+
+.customize__copy svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.customize__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.customize__label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* Small pill switch (used for the tilt toggle). */
+.switch {
+  position: relative;
+  width: 2.25rem;
+  height: 1.25rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--hover-wash);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  cursor: pointer;
+  transition: background 0.2s ease-out;
+}
+
+.switch[aria-checked='true'] {
+  background: var(--accent);
+}
+
+.switch__thumb {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease-out;
+}
+
+.switch[aria-checked='true'] .switch__thumb {
+  transform: translateX(1rem);
 }
 
 .variant-chip {

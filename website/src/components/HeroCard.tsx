@@ -54,5 +54,5 @@ export function HeroCard() {
     return () => controller.abort();
   }, []);
 
-  return <Card {...data} />;
+  return <Card {...data} tilt />;
 }

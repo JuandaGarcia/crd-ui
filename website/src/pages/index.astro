@@ -71,14 +71,6 @@ const themes = { light: 'github-light', dark: 'github-dark' };
 
     <main>
       <div class="hero container">
-        <a class="announce" href="#playground">
-          <span class="announce__text">Introducing card variants</span>
-          <span class="announce__divider"></span>
-          <span class="announce__arrows">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </a>
         <div class="hero-card"><HeroCard client:load /></div>
         <p class="tagline">
           A credit &amp; debit card component. Dependency-free. Themeable. Localizable.
@@ -270,6 +262,36 @@ const themes = { light: 'github-light', dark: 'github-dark' };
         label.textContent = 'copied!';
         setTimeout(() => (label.textContent = prev), 1200);
       });
+
+      // Floating copy button on every code block. The pre is wrapped so the
+      // button doesn't scroll away with wide code (overflow-x lives on the pre).
+      const COPY_ICON =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>';
+      const CHECK_ICON =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>';
+
+      for (const pre of document.querySelectorAll<HTMLElement>('pre.astro-code')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode!.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'code-copy';
+        copyBtn.setAttribute('aria-label', 'Copy code');
+        copyBtn.innerHTML = COPY_ICON;
+        copyBtn.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(pre.textContent ?? '');
+          copyBtn.classList.add('is-copied');
+          copyBtn.innerHTML = CHECK_ICON;
+          setTimeout(() => {
+            copyBtn.classList.remove('is-copied');
+            copyBtn.innerHTML = COPY_ICON;
+          }, 1200);
+        });
+        wrap.appendChild(copyBtn);
+      }
     </script>
   </body>
 </html>

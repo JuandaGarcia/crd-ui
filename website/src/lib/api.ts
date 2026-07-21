@@ -34,6 +34,11 @@ export const API_ROWS: ApiRow[] = [
     description: "Card finish; 'sunset' (default) tints its bloom to the brand.",
   },
   {
+    prop: 'tilt',
+    type: 'boolean',
+    description: 'Pointer-tracked 3D hover tilt with a light glare; toggleable any time. Default: false.',
+  },
+  {
     prop: 'focused',
     type: "'number' | 'name' | 'expiry' | 'cvc' | null",
     description: "Highlights the section; 'cvc' flips the card.",
