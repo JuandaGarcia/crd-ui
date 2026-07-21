@@ -25,6 +25,6 @@
   for (const [number, name, expiry] of SAMPLES) {
     const cell = document.createElement('div');
     grid.appendChild(cell);
-    createCard(cell, { number, name, expiry });
+    createCard(cell, { number, name, expiry, tilt: true });
   }
 </script>

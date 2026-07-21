@@ -21,7 +21,7 @@
   for (const [bg, number, name, expiry] of SAMPLES) {
     const cell = document.createElement('div');
     grid.appendChild(cell);
-    const card = createCard(cell, { number, name, expiry, variant: 'gradient' });
+    const card = createCard(cell, { number, name, expiry, variant: 'gradient', tilt: true });
     // Inline on the card element so it beats the brand-theme classes
     // (which also set --crd-bg, at element level).
     card.element.style.setProperty('--crd-bg', `url('${bg}') center / cover no-repeat`);
