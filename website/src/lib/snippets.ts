@@ -38,6 +38,39 @@ cvcInput.addEventListener('blur', () => card.update({ focused: null }));
 
 card.brand;      // 'visa' | 'mastercard' | … | null
 card.destroy();  // remove from the DOM`,
+  vue: `<script setup>
+import { ref } from 'vue';
+import { Card } from 'crd-ui/vue';
+import 'crd-ui/styles.css';
+
+const number = ref('');
+const focused = ref(null);
+</script>
+
+<template>
+  <Card :number="number" :focused="focused" />
+  <input
+    v-model="number"
+    @focus="focused = 'number'"
+    @blur="focused = null"
+  />
+  <!-- name / expiry / cvc inputs alike -->
+</template>`,
+  svelte: `<script>
+  import Card from 'crd-ui/svelte';
+  import 'crd-ui/styles.css';
+
+  let number = $state('');
+  let focused = $state(null);
+</script>
+
+<Card {number} {focused} />
+<input
+  bind:value={number}
+  onfocus={() => (focused = 'number')}
+  onblur={() => (focused = null)}
+/>
+<!-- name / expiry / cvc inputs alike -->`,
 };
 
 export const theming = `.crd {
@@ -55,6 +88,8 @@ export const theming = `.crd {
 export const logos = {
   react: `<Card logos={{ visa: '<svg …>…</svg>' }} />`,
   vanilla: `createCard(el, { logos: { visa: '<svg …>…</svg>' } });`,
+  vue: `<Card :logos="{ visa: '<svg …>…</svg>' }" />`,
+  svelte: `<Card logos={{ visa: '<svg …>…</svg>' }} />`,
 };
 
 export const localization = {
@@ -66,4 +101,12 @@ export const localization = {
   placeholders: { name: 'NOMBRE COMPLETO' },
   locale: { validThru: 'válida hasta' },
 });`,
+  vue: `<Card
+  :placeholders="{ name: 'NOMBRE COMPLETO' }"
+  :locale="{ validThru: 'válida hasta' }"
+/>`,
+  svelte: `<Card
+  placeholders={{ name: 'NOMBRE COMPLETO' }}
+  locale={{ validThru: 'válida hasta' }}
+/>`,
 };

@@ -58,6 +58,14 @@ html[data-fw='vanilla'] {
   --accent: #f0db4f;
 }
 
+html[data-fw='vue'] {
+  --accent: #41b883;
+}
+
+html[data-fw='svelte'] {
+  --accent: #ff3e00;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -220,20 +228,10 @@ body {
 }
 
 html[data-fw='react'] .fw-option[data-fw='react'] .check,
-html[data-fw='vanilla'] .fw-option[data-fw='vanilla'] .check {
+html[data-fw='vanilla'] .fw-option[data-fw='vanilla'] .check,
+html[data-fw='vue'] .fw-option[data-fw='vue'] .check,
+html[data-fw='svelte'] .fw-option[data-fw='svelte'] .check {
   visibility: visible;
-}
-
-.fw-soon {
-  margin-left: auto;
-  font-size: 0.65rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-  border: 1px solid var(--border-faint);
-  border-radius: 999px;
-  padding: 0.05rem 0.45rem;
 }
 
 .fw-icon {
@@ -242,12 +240,23 @@ html[data-fw='vanilla'] .fw-option[data-fw='vanilla'] .check {
   flex-shrink: 0;
 }
 
+/* The official marks have different aspect ratios; filling the box on both
+   axes (viewBox letterboxing centers them) keeps every logo the same optical
+   size and vertically aligned with the label. */
+.fw-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .fw-block {
   display: none;
 }
 
 html[data-fw='react'] .fw-block[data-block='react'],
-html[data-fw='vanilla'] .fw-block[data-block='vanilla'] {
+html[data-fw='vanilla'] .fw-block[data-block='vanilla'],
+html[data-fw='vue'] .fw-block[data-block='vue'],
+html[data-fw='svelte'] .fw-block[data-block='svelte'] {
   display: block;
 }
 

@@ -28,12 +28,13 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     <title>crd-ui — credit/debit card visualization</title>
     <meta
       name="description"
-      content="Framework-agnostic credit/debit card visualization for payment forms. Zero dependencies, themeable, with React support and Vue/Svelte on the way."
+      content="Framework-agnostic credit/debit card visualization for payment forms. Zero dependencies, themeable, with React, Vue and Svelte support."
     />
     <script is:inline>
       try {
         var fw = localStorage.getItem('crd-ui-fw');
-        if (fw === 'vanilla' || fw === 'react') document.documentElement.dataset.fw = fw;
+        if (['react', 'vanilla', 'vue', 'svelte'].indexOf(fw) !== -1)
+          document.documentElement.dataset.fw = fw;
       } catch (e) {}
     </script>
   </head>
@@ -98,6 +99,12 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <div class="fw-block" data-block="vanilla">
             <Code code={usage.vanilla} lang="js" themes={themes} />
           </div>
+          <div class="fw-block" data-block="vue">
+            <Code code={usage.vue} lang="vue" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="svelte">
+            <Code code={usage.svelte} lang="svelte" themes={themes} />
+          </div>
         </section>
 
         <section id="brands">
@@ -123,6 +130,12 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <div class="fw-block" data-block="vanilla">
             <Code code={logos.vanilla} lang="js" themes={themes} />
           </div>
+          <div class="fw-block" data-block="vue">
+            <Code code={logos.vue} lang="vue" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="svelte">
+            <Code code={logos.svelte} lang="svelte" themes={themes} />
+          </div>
         </section>
 
         <section id="localization">
@@ -133,6 +146,12 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           </div>
           <div class="fw-block" data-block="vanilla">
             <Code code={localization.vanilla} lang="js" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="vue">
+            <Code code={localization.vue} lang="vue" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="svelte">
+            <Code code={localization.svelte} lang="svelte" themes={themes} />
           </div>
         </section>
 
@@ -188,7 +207,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
                 </tr>
                 <tr>
                   <td><code>onBrandChange</code></td><td><code>(brand: Brand | null) =&gt; void</code></td>
-                  <td>React only: fires when the detected brand changes.</td>
+                  <td>Fires when the detected brand changes (React/Svelte callback; Vue emits <code>@brand-change</code>).</td>
                 </tr>
               </tbody>
             </table>
