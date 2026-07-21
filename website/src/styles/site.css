@@ -22,7 +22,7 @@
   --muted: var(--zinc-500);
   --border-faint: var(--zinc-150);
   --ring: rgba(0, 0, 0, 0.08);
-  --dock-bg: rgba(244, 244, 245, 0.9);
+  --dock-bg: rgba(244, 244, 245, 0.45);
   --dock-item-active: #ffffff;
   --popover-bg: #ffffff;
   --btn-primary-bg: var(--zinc-900);
@@ -41,7 +41,7 @@
     --muted: var(--zinc-400);
     --border-faint: var(--zinc-800);
     --ring: rgba(255, 255, 255, 0.1);
-    --dock-bg: rgba(9, 9, 11, 0.9);
+    --dock-bg: rgba(24, 24, 27, 0.38);
     --dock-item-active: rgba(255, 255, 255, 0.125);
     --popover-bg: var(--zinc-950);
     --btn-primary-bg: var(--zinc-100);
@@ -260,74 +260,37 @@ html[data-fw='svelte'] .fw-block[data-block='svelte'] {
   display: block;
 }
 
-/* ---- Hero decor (adapted from Tailark's hero-section-1) ---- */
+/* ---- Hero decor ---- */
 
 body {
   position: relative;
 }
 
-/* Diagonal light beams sweeping from the very top of the page (negative
-   z-index keeps them under all in-flow content; html clips them
-   horizontally). */
-.hero-beams {
+/* WebGL light rays sweeping from the top-left corner (SideRays island from
+   React Bits; negative z-index keeps them under all in-flow content). The
+   mask fades them out before the playground so they never sit behind text. */
+.hero-rays {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 90rem;
+  height: 56rem;
   z-index: -1;
-  opacity: 0.65;
   pointer-events: none;
   display: none;
+  mask-image: linear-gradient(to bottom, #000 50%, transparent 92%);
 }
 
 @media (min-width: 64rem) {
-  .hero-beams {
+  .hero-rays {
     display: block;
   }
 }
 
-.beam {
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 999px;
-}
-
-.beam-1 {
-  width: 35rem;
-  height: 80rem;
-  transform: translateY(-21.875rem) rotate(-45deg);
-  background: radial-gradient(
-    68.54% 68.72% at 55.02% 31.46%,
-    hsla(0, 0%, 85%, 0.08) 0,
-    hsla(0, 0%, 55%, 0.02) 50%,
-    hsla(0, 0%, 45%, 0) 80%
-  );
-}
-
-.beam-2 {
-  width: 15rem;
-  height: 80rem;
-  transform: translate(5%, -50%) rotate(-45deg);
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    hsla(0, 0%, 85%, 0.06) 0,
-    hsla(0, 0%, 45%, 0.02) 80%,
-    transparent 100%
-  );
-}
-
-.beam-3 {
-  width: 15rem;
-  height: 80rem;
-  transform: translateY(-21.875rem) rotate(-45deg);
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    hsla(0, 0%, 85%, 0.04) 0,
-    hsla(0, 0%, 45%, 0.02) 80%,
-    transparent 100%
-  );
+@media (prefers-reduced-motion: reduce) {
+  .hero-rays {
+    display: none;
+  }
 }
 
 /* Announcement pill with the sliding double-arrow. */
@@ -524,6 +487,20 @@ main section {
 .prose p {
   color: var(--body);
   margin: 0 0 1.25em;
+}
+
+.ai-list {
+  color: var(--body);
+  margin: 0 0 1.25em;
+  padding-left: 1.25rem;
+}
+
+.ai-list li {
+  margin-bottom: 0.5em;
+}
+
+.ai-list li::marker {
+  color: var(--muted);
 }
 
 .prose a {
@@ -762,25 +739,54 @@ main section {
   font-weight: 450;
 }
 
+/* Proximity effect adapted from React Bits' LineSidebar: a rAF loop in
+   TOC.astro eases a per-item --effect (0..1) from cursor distance and the
+   scrollspy's active state; label color/shift/opacity and the leading marker
+   lines all derive from that one variable. */
+.toc li {
+  position: relative;
+}
+
 .toc a {
-  color: var(--text);
+  display: inline-block;
+  color: color-mix(in srgb, var(--accent) calc(var(--effect, 0) * 100%), var(--text));
   text-decoration: none;
-  opacity: 0.4;
-  transition: opacity 0.16s ease-out;
+  opacity: calc(0.4 + var(--effect, 0) * 0.6);
+  transform: translateX(calc(var(--effect, 0) * 12px));
 }
 
 @media (prefers-color-scheme: dark) {
   .toc a {
-    opacity: 0.5;
+    opacity: calc(0.5 + var(--effect, 0) * 0.5);
   }
 }
 
-.toc a:hover {
-  opacity: 0.7;
+/* Leading marker line per item. */
+.toc li::before {
+  content: '';
+  position: absolute;
+  left: -1.625rem;
+  top: 50%;
+  width: 1rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--accent) calc(var(--effect, 0) * 100%), var(--muted));
+  opacity: calc(0.5 + var(--effect, 0) * 0.5);
+  transform: translateY(-50%) scaleX(calc(0.7 + var(--effect, 0) * 0.5));
+  transform-origin: left center;
 }
 
-.toc a[data-active] {
-  opacity: 1;
+/* Short tick between items, ruler-style. */
+.toc li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: -1.625rem;
+  top: calc(100% + 0.5rem);
+  width: 0.5rem;
+  height: 1px;
+  opacity: 0.35;
+  background: var(--muted);
+  transform: translateY(-50%) scaleX(calc(0.7 + var(--effect, 0) * 0.6));
+  transform-origin: left center;
 }
 
 /* ---- Bottom dock nav ---- */

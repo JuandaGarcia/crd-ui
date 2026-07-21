@@ -9,6 +9,9 @@ import BrandGrid from '../components/BrandGrid.astro';
 import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
 import { localization, logos, theming, usage } from '../lib/snippets';
+import { API_ROWS } from '../lib/api';
+import CopyPage from '../components/CopyPage.astro';
+import { SideRays } from '../components/SideRays';
 
 const themes = { light: 'github-light', dark: 'github-dark' };
 ---
@@ -19,6 +22,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="text/markdown" href="/index.md" title="crd-ui docs as Markdown" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -39,10 +43,22 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     </script>
   </head>
   <body>
-    <div class="hero-beams" aria-hidden="true">
-      <div class="beam beam-1"></div>
-      <div class="beam beam-2"></div>
-      <div class="beam beam-3"></div>
+    <CopyPage />
+    <div class="hero-rays" aria-hidden="true">
+      <SideRays
+        client:load
+        origin="top-left"
+        rayColor1="#eab308"
+        rayColor2="#96c8ff"
+        speed={2.5}
+        intensity={2}
+        spread={2}
+        tilt={0}
+        saturation={1.5}
+        blend={0.75}
+        falloff={1.6}
+        opacity={1}
+      />
     </div>
 
     <div class="container masthead">
@@ -167,51 +183,45 @@ const themes = { light: 'github-light', dark: 'github-dark' };
                 <tr><th>Prop</th><th>Type</th><th>Description</th></tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><code>number</code></td><td><code>string</code></td>
-                  <td>Card number, formatted and masked per brand as you type.</td>
-                </tr>
-                <tr>
-                  <td><code>name</code></td><td><code>string</code></td>
-                  <td>Cardholder name; shows a placeholder while empty.</td>
-                </tr>
-                <tr>
-                  <td><code>expiry</code></td><td><code>string</code></td>
-                  <td>Expiry date, normalized to <code>MM/YY</code>.</td>
-                </tr>
-                <tr>
-                  <td><code>cvc</code></td><td><code>string</code></td>
-                  <td>Security code, shown on the back.</td>
-                </tr>
-                <tr>
-                  <td><code>variant</code></td>
-                  <td><code>'sunset' | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient'</code></td>
-                  <td>Card finish; <code>'sunset'</code> (default) tints its bloom to the brand.</td>
-                </tr>
-                <tr>
-                  <td><code>focused</code></td>
-                  <td><code>'number' | 'name' | 'expiry' | 'cvc' | null</code></td>
-                  <td>Highlights the section; <code>'cvc'</code> flips the card.</td>
-                </tr>
-                <tr>
-                  <td><code>placeholders</code></td><td><code>&#123; name?: string &#125;</code></td>
-                  <td>Placeholder text for the empty name.</td>
-                </tr>
-                <tr>
-                  <td><code>locale</code></td><td><code>&#123; validThru?: string &#125;</code></td>
-                  <td>Label next to the expiry date.</td>
-                </tr>
-                <tr>
-                  <td><code>logos</code></td><td><code>Partial&lt;Record&lt;Brand, string&gt;&gt;</code></td>
-                  <td>Custom inline-SVG brand marks.</td>
-                </tr>
-                <tr>
-                  <td><code>onBrandChange</code></td><td><code>(brand: Brand | null) =&gt; void</code></td>
-                  <td>Fires when the detected brand changes (React/Svelte callback; Vue emits <code>@brand-change</code>).</td>
-                </tr>
+                {API_ROWS.map((row) => (
+                  <tr>
+                    <td><code>{row.prop}</code></td>
+                    <td><code>{row.type}</code></td>
+                    <td>{row.description}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+        </section>
+
+        <section id="ai">
+          <h2>AI &amp; agents</h2>
+          <p>
+            The docs are built for LLMs too. Everything on this page is available as plain
+            markdown, following the <a href="https://llmstxt.org" target="_blank" rel="noopener">llms.txt</a> convention:
+          </p>
+          <ul class="ai-list">
+            <li>
+              <a href="/llms.txt"><code>/llms.txt</code></a> — concise index for assistants.
+            </li>
+            <li>
+              <a href="/llms-full.txt"><code>/llms-full.txt</code></a> — the full documentation
+              in one markdown file (also at <a href="/index.md"><code>/index.md</code></a>).
+            </li>
+            <li>
+              <code>node_modules/crd-ui/llms.txt</code> — a compact version ships inside the
+              npm package, so agents can read it right from your project.
+            </li>
+            <li>
+              <a href="https://github.com/JuandaGarcia/crd-ui/blob/main/AGENTS.md" target="_blank" rel="noopener"><code>AGENTS.md</code></a>
+              — guides coding agents contributing to the repo.
+            </li>
+          </ul>
+          <p>
+            Or use the <strong>Copy Page</strong> button in the top-right corner: copy the whole
+            page as markdown, or open it directly in Claude or ChatGPT.
+          </p>
         </section>
 
         <footer class="site-footer">

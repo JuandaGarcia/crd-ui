@@ -9,6 +9,7 @@ const items = [
   { id: 'theming', title: 'Theming' },
   { id: 'localization', title: 'Localization' },
   { id: 'api', title: 'API' },
+  { id: 'ai', title: 'AI & agents' },
 ];
 ---
 
@@ -45,7 +46,60 @@ const items = [
       if (i === active) a.setAttribute('data-active', '');
       else a.removeAttribute('data-active');
     });
+    startLoop();
   }
+
+  // Proximity effect (adapted from React Bits' LineSidebar): one rAF loop
+  // eases every item's --effect toward its target with frame-rate independent
+  // exponential smoothing, so color, shift and markers move together. The
+  // active section holds --effect at 1.
+  const list = document.querySelector<HTMLElement>('#toc ol')!;
+  const items = links.map((a) => a.parentElement as HTMLElement);
+  const targets = new Array<number>(items.length).fill(0);
+  const current = new Array<number>(items.length).fill(0);
+  const RADIUS = 80;
+  const TAU = 0.1;
+  let raf: number | null = null;
+  let last = 0;
+
+  const smoothstep = (p: number) => p * p * (3 - 2 * p);
+
+  function frame(now: number) {
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    const k = 1 - Math.exp(-dt / TAU);
+    let moving = false;
+    items.forEach((li, i) => {
+      const target = Math.max(targets[i], links[i].hasAttribute('data-active') ? 1 : 0);
+      let next = current[i] + (target - current[i]) * k;
+      if (Math.abs(target - next) < 0.0015) next = target;
+      else moving = true;
+      current[i] = next;
+      li.style.setProperty('--effect', next.toFixed(4));
+    });
+    raf = moving ? requestAnimationFrame(frame) : null;
+  }
+
+  function startLoop() {
+    if (raf != null) return;
+    last = performance.now();
+    raf = requestAnimationFrame(frame);
+  }
+
+  list.addEventListener('pointermove', (e) => {
+    const rect = list.getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    items.forEach((li, i) => {
+      const center = li.offsetTop + li.offsetHeight / 2;
+      targets[i] = smoothstep(Math.max(0, 1 - Math.abs(y - center) / RADIUS));
+    });
+    startLoop();
+  });
+
+  list.addEventListener('pointerleave', () => {
+    targets.fill(0);
+    startLoop();
+  });
 
   window.addEventListener('resize', measureScrollPt);
   window.addEventListener('scroll', update, { passive: true });
