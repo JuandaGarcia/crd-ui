@@ -9,7 +9,8 @@ npm i crd-ui
 
 - **`crd-ui`** — the vanilla core: brand detection, formatting and the card renderer.
 - **`crd-ui/react`** — React component (`<Card />`).
-- `crd-ui/vue`, `crd-ui/svelte` — planned (see [roadmap](#roadmap)).
+- **`crd-ui/vue`** — Vue 3 component (`<Card />`).
+- **`crd-ui/svelte`** — Svelte 5 component (`<Card />`).
 
 ## Features
 
@@ -18,11 +19,18 @@ npm i crd-ui
   tilt, spring-settles past 180°, and a light sheen sweeps the face (`prefers-reduced-motion` aware).
 - 🎯 Magic focus ring: one highlight travels between sections, sliding and morphing to fit
   each one with a spring settle.
+- 🪩 Optional 3D hover tilt (`tilt`): the card follows the pointer with a cursor-tracked
+  glare (`prefers-reduced-motion` aware).
 - 🏷 Live brand detection while typing: Visa, Mastercard, Amex, Discover, Diners Club,
   JCB, UnionPay, Maestro, Elo, Hipercard.
+- ✨ Six built-in finishes via `variant` — the default `sunset` tints its color bloom to the
+  detected brand.
 - 🎨 Themeable via CSS custom properties; per-brand gradients out of the box.
 - 🌍 Localizable labels and placeholders.
-- 📦 Zero runtime dependencies (React is an optional peer, only for `crd-ui/react`).
+- 💜 Plays well with Stripe: the `brand` override + `focused` mirror Stripe Elements'
+  metadata without ever touching the number — see
+  [`examples/stripe`](./examples/stripe).
+- 📦 Zero runtime dependencies (React/Vue/Svelte are optional peers, only for their subpaths).
 
 ## React usage
 
@@ -71,6 +79,71 @@ card.brand;      // 'visa' | 'mastercard' | … | null
 card.destroy();  // remove from the DOM
 ```
 
+## Vue usage
+
+```vue
+<script setup>
+import { ref } from 'vue';
+import { Card } from 'crd-ui/vue';
+import 'crd-ui/styles.css';
+
+const number = ref('');
+const focused = ref(null);
+</script>
+
+<template>
+  <Card :number="number" :focused="focused" @brand-change="(b) => console.log(b)" />
+  <input
+    v-model="number"
+    @focus="focused = 'number'"
+    @blur="focused = null"
+  />
+  <!-- name / expiry / cvc inputs alike -->
+</template>
+```
+
+## Svelte usage
+
+```svelte
+<script>
+  import Card from 'crd-ui/svelte';
+  import 'crd-ui/styles.css';
+
+  let number = $state('');
+  let focused = $state(null);
+</script>
+
+<Card {number} {focused} />
+<input
+  bind:value={number}
+  onfocus={() => (focused = 'number')}
+  onblur={() => (focused = null)}
+/>
+<!-- name / expiry / cvc inputs alike -->
+```
+
+## Variants
+
+Pick the card's finish with the `variant` prop/option:
+`'sunset'` (default) · `'ember'` · `'holo'` · `'porcelain'` · `'graphite'` · `'gradient'`.
+
+`sunset` is a light porcelain face with a color bloom that adapts to the detected brand;
+`gradient` is the classic dark per-brand gradient. The rest are brand-agnostic finishes —
+the brand still shows through its logo and the sunset bloom.
+
+```tsx
+import { Card } from 'crd-ui/react';
+
+<Card variant="holo" number={number} focused={focused} />;
+```
+
+```js
+import { createCard } from 'crd-ui';
+
+const card = createCard(el, { variant: 'holo' });
+card.update({ variant: 'graphite' });
+```
+
 ## Theming
 
 Override the custom properties on `.crd` (or any ancestor):
@@ -105,6 +178,17 @@ createCard(el, {
 });
 ```
 
+## AI & agents
+
+The documentation is available as plain markdown for LLMs and coding agents:
+
+- [`crd-ui.juanda.co/llms.txt`](https://crd-ui.juanda.co/llms.txt) — concise index ([llms.txt convention](https://llmstxt.org)).
+- [`crd-ui.juanda.co/llms-full.txt`](https://crd-ui.juanda.co/llms-full.txt) — full docs in one markdown file.
+- `node_modules/crd-ui/llms.txt` — a compact version ships inside the package.
+- The [website](https://crd-ui.juanda.co) has a **Copy Page** button: copy the docs as
+  markdown, view them raw, or open them in Claude/ChatGPT.
+- [`AGENTS.md`](./AGENTS.md) guides coding agents working on this repo.
+
 ## Development
 
 ```bash
@@ -116,8 +200,6 @@ pnpm dev     # playground
 
 ## Roadmap
 
-- [ ] `crd-ui/vue`
-- [ ] `crd-ui/svelte`
 - [ ] Prebuilt official-logo add-on pack (opt-in)
 - [ ] Bank/issuer custom themes gallery
 
