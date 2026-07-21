@@ -1,6 +1,6 @@
 {
   "name": "crd-ui",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Framework-agnostic credit/debit card visualization. Zero-dependency vanilla core with React, Vue and Svelte subpaths.",
   "license": "MIT",
   "type": "module",
@@ -35,7 +35,8 @@
   },
   "files": [
     "dist",
-    "styles"
+    "styles",
+    "llms.txt"
   ],
   "scripts": {
     "build": "tsup && mkdir -p dist/svelte && cp src/svelte/Card.svelte src/svelte/index.d.ts dist/svelte/",

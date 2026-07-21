@@ -173,6 +173,17 @@ createCard(el, {
 });
 ```
 
+## AI & agents
+
+The documentation is available as plain markdown for LLMs and coding agents:
+
+- [`crd-ui.juanda.co/llms.txt`](https://crd-ui.juanda.co/llms.txt) — concise index ([llms.txt convention](https://llmstxt.org)).
+- [`crd-ui.juanda.co/llms-full.txt`](https://crd-ui.juanda.co/llms-full.txt) — full docs in one markdown file.
+- `node_modules/crd-ui/llms.txt` — a compact version ships inside the package.
+- The [website](https://crd-ui.juanda.co) has a **Copy Page** button: copy the docs as
+  markdown, view them raw, or open them in Claude/ChatGPT.
+- [`AGENTS.md`](./AGENTS.md) guides coding agents working on this repo.
+
 ## Development
 
 ```bash

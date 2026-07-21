@@ -1,0 +1,53 @@
+# crd-ui
+
+> Framework-agnostic credit/debit card visualization for payment forms. Zero-dependency vanilla core with React, Vue and Svelte subpaths in a single npm package. Display-only: wire it to your own inputs; it never handles real card data.
+
+Full docs (markdown): https://crd-ui.juanda.co/llms-full.txt
+Website: https://crd-ui.juanda.co · GitHub: https://github.com/JuandaGarcia/crd-ui · MIT
+
+## Install
+
+npm i crd-ui
+
+Subpaths: `crd-ui` (vanilla core) · `crd-ui/react` · `crd-ui/vue` · `crd-ui/svelte` · `crd-ui/styles.css` (required stylesheet). Framework peers are optional.
+
+## Quick usage
+
+React (always import the stylesheet once):
+
+```tsx
+import { Card } from 'crd-ui/react';
+import 'crd-ui/styles.css';
+
+<Card number={number} name={name} expiry={expiry} cvc={cvc} focused={focused} />;
+```
+
+Vanilla:
+
+```js
+import { createCard } from 'crd-ui';
+import 'crd-ui/styles.css';
+
+const card = createCard(el, { number: '', name: '', expiry: '', cvc: '' });
+card.update({ number: '4111 1111', focused: 'cvc' }); // 'cvc' flips the card
+card.brand;     // 'visa' | 'mastercard' | ... | null
+card.destroy();
+```
+
+Vue: `import { Card } from 'crd-ui/vue'` — same props, emits `@brand-change`.
+Svelte: `import Card from 'crd-ui/svelte'` — same props, `onBrandChange` callback.
+
+## API (props / createCard options)
+
+- number, name, expiry, cvc: string — the values to display (masked/formatted automatically).
+- focused: 'number' | 'name' | 'expiry' | 'cvc' | null — highlights a section; 'cvc' flips to the back.
+- variant: 'sunset' (default, brand-tinted bloom) | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient' (classic per-brand gradient).
+- placeholders: { name?: string } · locale: { validThru?: string } · logos: Partial<Record<Brand, string>> — creation-time only; recreate (e.g. React `key`) to change.
+- onBrandChange(brand | null) — React/Svelte callback; Vue event `brand-change`.
+- Vanilla instance: { update(data), brand, element, destroy() }.
+
+Brands detected: visa, mastercard, amex, discover, dinersclub, jcb, unionpay, maestro, elo, hipercard.
+
+## Theming
+
+Override CSS custom properties on `.crd` or any ancestor: `--crd-width`, `--crd-radius`, `--crd-bg`, `--crd-font`. Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`.
