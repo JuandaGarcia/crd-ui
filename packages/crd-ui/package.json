@@ -1,6 +1,6 @@
 {
   "name": "crd-ui",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Framework-agnostic credit/debit card visualization. Zero-dependency vanilla core with React, Vue and Svelte subpaths.",
   "license": "MIT",
   "type": "module",
@@ -58,7 +58,7 @@
     "type": "git",
     "url": "git+https://github.com/JuandaGarcia/crd-ui.git"
   },
-  "homepage": "https://github.com/JuandaGarcia/crd-ui#readme",
+  "homepage": "https://crd-ui.juanda.co",
   "bugs": "https://github.com/JuandaGarcia/crd-ui/issues",
   "peerDependencies": {
     "react": ">=18",
