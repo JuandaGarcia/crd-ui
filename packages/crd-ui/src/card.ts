@@ -4,12 +4,19 @@ import { CHIP_SVG, LOGOS } from './logos';
 
 export type FocusedField = 'number' | 'name' | 'expiry' | 'cvc';
 
+/**
+ * Visual style of the card. 'gradient' is the classic per-brand gradient;
+ * the rest are brand-agnostic finishes (the brand still shows via its logo).
+ */
+export type CardVariant = 'gradient' | 'ember' | 'holo' | 'porcelain' | 'sunset' | 'graphite';
+
 export interface CardData {
   number: string;
   name: string;
   expiry: string;
   cvc: string;
   focused?: FocusedField | null;
+  variant?: CardVariant;
 }
 
 export interface CardOptions extends Partial<CardData> {
@@ -65,6 +72,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     expiry: options.expiry ?? '',
     cvc: options.cvc ?? '',
     focused: options.focused ?? null,
+    variant: options.variant ?? 'sunset',
   };
   const namePlaceholder = options.placeholders?.name ?? 'FULL NAME';
   const validThru = options.locale?.validThru ?? 'valid thru';
@@ -162,6 +170,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     root.className = [
       'crd',
       brand ? `crd--brand-${brand}` : 'crd--unknown',
+      state.variant && state.variant !== 'gradient' ? `crd--v-${state.variant}` : '',
       flipped ? 'crd--flipped' : '',
       flipping ? 'crd--flipping' : '',
       state.focused ? `crd--focus-${state.focused}` : '',

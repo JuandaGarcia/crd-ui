@@ -3,11 +3,12 @@ import {
   type Brand,
   type CardInstance,
   type CardOptions,
+  type CardVariant,
   type FocusedField,
   createCard,
 } from './index';
 
-export type { Brand, FocusedField };
+export type { Brand, CardVariant, FocusedField };
 
 export interface CardProps {
   number?: string;
@@ -15,6 +16,8 @@ export interface CardProps {
   expiry?: string;
   cvc?: string;
   focused?: FocusedField | null;
+  /** Visual finish of the card. Default: 'sunset' (brand-tinted blooms). */
+  variant?: CardVariant;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];
@@ -33,6 +36,7 @@ export function Card({
   expiry = '',
   cvc = '',
   focused = null,
+  variant = 'sunset',
   placeholders,
   locale,
   logos,
@@ -63,12 +67,12 @@ export function Card({
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
-    card.update({ number, name, expiry, cvc, focused });
+    card.update({ number, name, expiry, cvc, focused, variant });
     if (card.brand !== brandRef.current) {
       brandRef.current = card.brand;
       onBrandChangeRef.current?.(card.brand);
     }
-  }, [number, name, expiry, cvc, focused]);
+  }, [number, name, expiry, cvc, focused, variant]);
 
   return <div ref={containerRef} className={className} />;
 }

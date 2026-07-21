@@ -20,6 +20,8 @@ npm i crd-ui
   each one with a spring settle.
 - 🏷 Live brand detection while typing: Visa, Mastercard, Amex, Discover, Diners Club,
   JCB, UnionPay, Maestro, Elo, Hipercard.
+- ✨ Six built-in finishes via `variant` — the default `sunset` tints its color bloom to the
+  detected brand.
 - 🎨 Themeable via CSS custom properties; per-brand gradients out of the box.
 - 🌍 Localizable labels and placeholders.
 - 📦 Zero runtime dependencies (React is an optional peer, only for `crd-ui/react`).
@@ -69,6 +71,28 @@ cvcInput.addEventListener('blur', () => card.update({ focused: null }));
 
 card.brand;      // 'visa' | 'mastercard' | … | null
 card.destroy();  // remove from the DOM
+```
+
+## Variants
+
+Pick the card's finish with the `variant` prop/option:
+`'sunset'` (default) · `'ember'` · `'holo'` · `'porcelain'` · `'graphite'` · `'gradient'`.
+
+`sunset` is a light porcelain face with a color bloom that adapts to the detected brand;
+`gradient` is the classic dark per-brand gradient. The rest are brand-agnostic finishes —
+the brand still shows through its logo and the sunset bloom.
+
+```tsx
+import { Card } from 'crd-ui/react';
+
+<Card variant="holo" number={number} focused={focused} />;
+```
+
+```js
+import { createCard } from 'crd-ui';
+
+const card = createCard(el, { variant: 'holo' });
+card.update({ variant: 'graphite' });
 ```
 
 ## Theming

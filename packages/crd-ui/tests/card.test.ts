@@ -48,6 +48,21 @@ describe('createCard', () => {
     expect(card.element.querySelector('.crd__expiry-label')?.textContent).toBe('válida hasta');
   });
 
+  it('defaults to the sunset variant', () => {
+    const card = createCard(container);
+    expect(card.element.classList.contains('crd--v-sunset')).toBe(true);
+  });
+
+  it('applies and updates the variant class', () => {
+    const card = createCard(container, { variant: 'holo' });
+    expect(card.element.classList.contains('crd--v-holo')).toBe(true);
+    card.update({ variant: 'graphite' });
+    expect(card.element.classList.contains('crd--v-graphite')).toBe(true);
+    expect(card.element.classList.contains('crd--v-holo')).toBe(false);
+    card.update({ variant: 'gradient' });
+    expect(card.element.className).not.toContain('crd--v-');
+  });
+
   it('destroy() removes the card from the DOM', () => {
     const card = createCard(container);
     expect(container.querySelector('.crd')).not.toBeNull();

@@ -29,6 +29,193 @@
 .crd--brand-elo       { --crd-bg: linear-gradient(135deg, #2d2d2d, #565656); }
 .crd--brand-hipercard { --crd-bg: linear-gradient(135deg, #8a1a2b, #c34a5a); }
 
+/* ---- Variants ----
+   Brand-agnostic finishes selected via the `variant` option; they override
+   the per-brand gradient (the brand still shows through its logo). Layered
+   CSS gradients + an SVG grain layer, no external assets. */
+
+.crd {
+  --crd-noise-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  --crd-noise-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Ember: warm grainy bloom over a dark crown, number on a dark band,
+   light lower body. */
+.crd--v-ember {
+  --crd-color: #17181c;
+  --crd-bg:
+    var(--crd-noise-light),
+    linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(26, 19, 10, 0.85) 16%, rgba(140, 95, 30, 0.32) 32%, transparent 50%),
+    radial-gradient(90% 46% at 50% 24%, rgba(255, 176, 64, 0.6), rgba(255, 150, 40, 0.14) 58%, transparent 74%),
+    linear-gradient(180deg, transparent 37%, #101013 37%, #101013 61%, transparent 61%),
+    linear-gradient(180deg, #d9d6d0 0%, #f0efeb 100%);
+}
+
+.crd--v-ember .crd__number {
+  color: #f5f5f2;
+}
+
+.crd--v-ember .crd__logo {
+  color: #f2f2ef;
+}
+
+.crd--v-ember .crd__name,
+.crd--v-ember .crd__expiry {
+  text-shadow: none;
+}
+
+.crd--v-ember .crd__ring {
+  box-shadow: 0 0 0 1.5px rgba(255, 165, 60, 0.9);
+}
+
+/* Holo: iridescent interference over near-black — two offset ripple fields
+   crossing over soft color blooms. */
+.crd--v-holo {
+  --crd-color: #f4f4f6;
+  --crd-bg:
+    var(--crd-noise-light),
+    repeating-radial-gradient(circle at 18% 30%, rgba(255, 255, 255, 0.1) 0 1.5px, transparent 1.5px 5px),
+    repeating-radial-gradient(circle at 82% 70%, rgba(255, 255, 255, 0.08) 0 1.5px, transparent 1.5px 6px),
+    radial-gradient(75% 90% at 22% 24%, rgba(64, 224, 208, 0.5), transparent 60%),
+    radial-gradient(70% 80% at 78% 30%, rgba(186, 120, 255, 0.45), transparent 60%),
+    radial-gradient(80% 90% at 60% 85%, rgba(255, 230, 120, 0.35), transparent 60%),
+    radial-gradient(70% 80% at 20% 80%, rgba(90, 160, 255, 0.4), transparent 60%),
+    linear-gradient(160deg, #16161c, #101014);
+}
+
+/* Porcelain: near-white with faint pastel washes, dark type. */
+.crd--v-porcelain {
+  --crd-color: #1d1d1f;
+  --crd-bg:
+    var(--crd-noise-dark),
+    radial-gradient(60% 70% at 12% 88%, rgba(255, 205, 120, 0.35), transparent 65%),
+    radial-gradient(55% 65% at 45% 65%, rgba(255, 140, 160, 0.22), transparent 65%),
+    radial-gradient(60% 75% at 88% 45%, rgba(130, 160, 255, 0.28), transparent 65%),
+    linear-gradient(180deg, #fbfafa, #f2f1f3);
+}
+
+.crd--v-porcelain .crd__number,
+.crd--v-porcelain .crd__name,
+.crd--v-porcelain .crd__expiry {
+  text-shadow: none;
+}
+
+.crd--v-porcelain .crd__ring {
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.45);
+}
+
+/* Sunset (default): blooms on cream, name on a dark base band. The bloom
+   palette adapts to the detected brand via the custom properties below. */
+.crd--v-sunset {
+  --crd-color: #17171a;
+  --crd-sunset-a: rgba(255, 170, 40, 0.75);
+  --crd-sunset-b: rgba(70, 190, 255, 0.65);
+  --crd-sunset-c: rgba(255, 120, 190, 0.5);
+  --crd-sunset-ring: rgba(255, 140, 0, 0.9);
+  --crd-bg:
+    var(--crd-noise-light),
+    linear-gradient(180deg, transparent 64%, #131316 64%),
+    radial-gradient(55% 60% at 38% 34%, var(--crd-sunset-a), transparent 68%),
+    radial-gradient(50% 65% at 78% 38%, var(--crd-sunset-b), transparent 66%),
+    radial-gradient(45% 55% at 85% 78%, var(--crd-sunset-c), transparent 65%),
+    linear-gradient(180deg, #f6efe4, #f1eae2);
+}
+
+.crd--v-sunset .crd__number {
+  text-shadow: none;
+}
+
+.crd--v-sunset .crd__name,
+.crd--v-sunset .crd__expiry {
+  color: #f4f4f2;
+}
+
+.crd--v-sunset .crd__ring {
+  box-shadow: 0 0 0 1.5px var(--crd-sunset-ring);
+}
+
+/* Brand-tinted sunset blooms */
+.crd--v-sunset.crd--brand-visa {
+  --crd-sunset-a: rgba(35, 95, 220, 0.6);
+  --crd-sunset-b: rgba(95, 200, 255, 0.55);
+  --crd-sunset-c: rgba(150, 125, 255, 0.4);
+  --crd-sunset-ring: rgba(35, 95, 220, 0.9);
+}
+
+.crd--v-sunset.crd--brand-mastercard {
+  --crd-sunset-a: rgba(255, 95, 40, 0.65);
+  --crd-sunset-b: rgba(255, 185, 40, 0.6);
+  --crd-sunset-c: rgba(230, 60, 60, 0.4);
+  --crd-sunset-ring: rgba(240, 90, 35, 0.9);
+}
+
+.crd--v-sunset.crd--brand-amex {
+  --crd-sunset-a: rgba(35, 140, 195, 0.6);
+  --crd-sunset-b: rgba(110, 220, 230, 0.5);
+  --crd-sunset-c: rgba(60, 115, 220, 0.4);
+  --crd-sunset-ring: rgba(35, 140, 195, 0.9);
+}
+
+.crd--v-sunset.crd--brand-discover {
+  --crd-sunset-a: rgba(255, 135, 30, 0.7);
+  --crd-sunset-b: rgba(255, 205, 85, 0.55);
+  --crd-sunset-c: rgba(250, 105, 60, 0.45);
+  --crd-sunset-ring: rgba(245, 125, 30, 0.9);
+}
+
+.crd--v-sunset.crd--brand-dinersclub {
+  --crd-sunset-a: rgba(70, 110, 165, 0.55);
+  --crd-sunset-b: rgba(140, 185, 225, 0.5);
+  --crd-sunset-c: rgba(100, 140, 255, 0.35);
+  --crd-sunset-ring: rgba(70, 110, 165, 0.9);
+}
+
+.crd--v-sunset.crd--brand-jcb {
+  --crd-sunset-a: rgba(45, 165, 95, 0.6);
+  --crd-sunset-b: rgba(65, 130, 230, 0.5);
+  --crd-sunset-c: rgba(230, 75, 95, 0.4);
+  --crd-sunset-ring: rgba(45, 165, 95, 0.9);
+}
+
+.crd--v-sunset.crd--brand-unionpay {
+  --crd-sunset-a: rgba(220, 65, 75, 0.55);
+  --crd-sunset-b: rgba(45, 155, 165, 0.5);
+  --crd-sunset-c: rgba(55, 95, 175, 0.4);
+  --crd-sunset-ring: rgba(220, 65, 75, 0.9);
+}
+
+.crd--v-sunset.crd--brand-maestro {
+  --crd-sunset-a: rgba(10, 95, 205, 0.55);
+  --crd-sunset-b: rgba(240, 75, 60, 0.5);
+  --crd-sunset-c: rgba(255, 155, 60, 0.4);
+  --crd-sunset-ring: rgba(10, 95, 205, 0.9);
+}
+
+.crd--v-sunset.crd--brand-elo {
+  --crd-sunset-a: rgba(255, 200, 45, 0.6);
+  --crd-sunset-b: rgba(235, 65, 60, 0.5);
+  --crd-sunset-c: rgba(45, 85, 205, 0.4);
+  --crd-sunset-ring: rgba(235, 65, 60, 0.9);
+}
+
+.crd--v-sunset.crd--brand-hipercard {
+  --crd-sunset-a: rgba(200, 45, 65, 0.6);
+  --crd-sunset-b: rgba(255, 115, 95, 0.5);
+  --crd-sunset-c: rgba(255, 65, 105, 0.35);
+  --crd-sunset-ring: rgba(200, 45, 65, 0.9);
+}
+
+/* Graphite: brushed near-black with fine vertical pinstripes and a deep
+   left edge. */
+.crd--v-graphite {
+  --crd-color: #e8e9ec;
+  --crd-bg:
+    var(--crd-noise-light),
+    linear-gradient(90deg, rgba(5, 6, 8, 0.9) 0%, rgba(5, 6, 8, 0.75) 10%, transparent 13%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 7px),
+    linear-gradient(115deg, #262930 0%, #1a1c21 45%, #23262c 70%, #16181c 100%);
+}
+
 .crd__inner {
   position: relative;
   width: 100%;
