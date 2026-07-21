@@ -39,6 +39,18 @@ export const API_ROWS: ApiRow[] = [
     description: 'Pointer-tracked 3D hover tilt with a light glare; toggleable any time. Default: false.',
   },
   {
+    prop: 'brand',
+    type: 'Brand | null',
+    description:
+      "Force the displayed brand when the number never reaches you (e.g. Stripe Elements); omit for automatic detection from number.",
+  },
+  {
+    prop: 'last4',
+    type: 'string',
+    description:
+      "Show only the last digits ('•••• 4242') when the full number is unknown — saved cards or post-tokenization (e.g. Stripe's PaymentMethod.card.last4).",
+  },
+  {
     prop: 'focused',
     type: "'number' | 'name' | 'expiry' | 'cvc' | null",
     description: "Highlights the section; 'cvc' flips the card.",

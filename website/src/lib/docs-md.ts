@@ -3,7 +3,7 @@
 // Served at /llms-full.txt and /index.md; the short index lives at /llms.txt.
 
 import { API_ROWS } from './api';
-import { localization, logos, theming, themingImage, usage } from './snippets';
+import { localization, logos, stripeExample, theming, themingImage, usage } from './snippets';
 
 const SITE = 'https://crd-ui.juanda.co';
 
@@ -134,6 +134,23 @@ ${localization.react}
 \`\`\`js
 ${localization.vanilla}
 \`\`\`
+
+## With Stripe (or any PCI iframe provider)
+
+crd-ui is display-only, so it composes cleanly with providers that never expose
+the card number (Stripe Elements, Adyen, etc.): map the provider's detected
+brand to the \`brand\` override and its focus events to \`focused\`. The digits
+stay masked on the preview.
+
+\`\`\`tsx
+${stripeExample}
+\`\`\`
+
+The digits only become visible after tokenization: Stripe's PaymentMethod
+reports \`card.last4\` and the expiry, so the \`last4\` option can render the
+confirmed card ('•••• •••• •••• 4242') — same pattern for saved cards.
+
+Full runnable example: https://github.com/JuandaGarcia/crd-ui/tree/main/examples/stripe
 
 ## Behavior notes for agents
 

@@ -73,6 +73,36 @@ const focused = ref(null);
 <!-- name / expiry / cvc inputs alike -->`,
 };
 
+export const stripeExample = `import { CardCvcElement, CardNumberElement } from '@stripe/react-stripe-js';
+import { Card, type Brand } from 'crd-ui/react';
+
+// Stripe reports the brand without ever exposing the number (PCI iframes) —
+// exactly what a display-only preview needs. Note: Stripe says 'diners',
+// crd-ui says 'dinersclub'.
+const STRIPE_BRANDS: Record<string, Brand> = {
+  visa: 'visa', mastercard: 'mastercard', amex: 'amex', discover: 'discover',
+  diners: 'dinersclub', jcb: 'jcb', unionpay: 'unionpay',
+};
+
+const [brand, setBrand] = useState<Brand | null>(null);
+const [focused, setFocused] = useState(null);
+
+// Stripe iframe events arrive async (postMessage): a field's blur can land
+// AFTER the next field's focus — only clear if the focus is still ours.
+const blur = (field) => () => setFocused((f) => (f === field ? null : f));
+
+{/* digits stay masked — they only exist inside Stripe's iframes */}
+<Card number="" brand={brand} focused={focused} />
+
+<CardNumberElement
+  onChange={(e) => setBrand(STRIPE_BRANDS[e.brand] ?? null)}
+  onFocus={() => setFocused('number')}
+  onBlur={blur('number')}
+/>
+
+{/* focusing the CVC iframe flips the card */}
+<CardCvcElement onFocus={() => setFocused('cvc')} onBlur={blur('cvc')} />`;
+
 export const theming = `.crd {
   --crd-width: 340px;
   --crd-radius: 18px;

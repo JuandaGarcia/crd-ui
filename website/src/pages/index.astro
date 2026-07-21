@@ -8,7 +8,7 @@ import CreatedBy from '../components/CreatedBy.astro';
 import BrandGrid from '../components/BrandGrid.astro';
 import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
-import { localization, logos, theming, themingImage, usage } from '../lib/snippets';
+import { localization, logos, stripeExample, theming, themingImage, usage } from '../lib/snippets';
 import ImageCards from '../components/ImageCards.astro';
 import { API_ROWS } from '../lib/api';
 import CopyPage from '../components/CopyPage.astro';
@@ -168,6 +168,31 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <div class="fw-block" data-block="svelte">
             <Code code={localization.svelte} lang="svelte" themes={themes} />
           </div>
+        </section>
+
+        <section id="stripe">
+          <h2>Stripe</h2>
+          <p>
+            crd-ui is display-only, which makes it a natural fit for PCI-scoped providers like
+            Stripe Elements: the card number lives in Stripe's iframes and never reaches your
+            code, but Stripe reports the <em>metadata</em> a preview needs — the detected brand
+            and per-field focus. Feed those to the <code>brand</code> and <code>focused</code>
+            props and the preview shows the right logo, flips on CVC focus, and keeps every
+            digit masked.
+          </p>
+          <Code code={stripeExample} lang="tsx" themes={themes} />
+          <p>
+            The digits only become visible <em>after</em> tokenization: Stripe's
+            <code>PaymentMethod</code> reports <code>card.last4</code> and the expiry, so the
+            <code>last4</code> prop can render the confirmed card
+            (<code>•••• •••• •••• 4242</code>) — same pattern for displaying saved cards.
+          </p>
+          <p>
+            Full working example (Vite + React + Stripe test mode) in
+            <a href="https://github.com/JuandaGarcia/crd-ui/tree/main/examples/stripe" target="_blank" rel="noopener"><code>examples/stripe</code></a>.
+            The same events exist in vanilla <code>@stripe/stripe-js</code>, and the pattern
+            applies to any provider that reports brand/focus without exposing the number.
+          </p>
         </section>
 
         <section id="api">
