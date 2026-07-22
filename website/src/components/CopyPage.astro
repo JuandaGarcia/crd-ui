@@ -224,15 +224,22 @@ const SCIRA_URL = `https://scira.ai/?q=${Q}`;
   const btn = document.getElementById('copy-page-btn')!;
   const menu = document.getElementById('copy-page-menu') as HTMLDetailsElement;
   const label = btn.querySelector('.copy-page__label');
+  // Swapping only the svg's inner paths keeps the element's size/stroke attrs.
+  const icon = btn.querySelector('svg')!;
+  const COPY_PATHS = icon.innerHTML;
+  const CHECK_PATHS = '<path d="M20 6 9 17l-5-5"></path>';
+  let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
   btn.addEventListener('click', async () => {
     const md = await fetch('/llms-full.txt').then((r) => r.text());
     await navigator.clipboard.writeText(md);
-    if (label) {
-      const prev = label.textContent;
-      label.textContent = 'Copied!';
-      setTimeout(() => (label.textContent = prev), 1200);
-    }
+    icon.innerHTML = CHECK_PATHS;
+    if (label) label.textContent = 'Copied!';
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => {
+      icon.innerHTML = COPY_PATHS;
+      if (label) label.textContent = 'Copy Page';
+    }, 1200);
   });
 
   document.addEventListener('click', (e) => {

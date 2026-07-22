@@ -341,12 +341,19 @@ const themes = { light: 'github-light', dark: 'github-dark' };
       }
 
       const btn = document.getElementById('copy-install')!;
+      const btnIcon = btn.querySelector('svg')!;
+      const btnIconPaths = btnIcon.innerHTML;
+      let installResetTimer: ReturnType<typeof setTimeout> | undefined;
       btn.addEventListener('click', async () => {
         await navigator.clipboard.writeText('npm i crd-ui');
         const label = btn.querySelector('.cmd')!;
-        const prev = label.textContent;
         label.textContent = 'copied!';
-        setTimeout(() => (label.textContent = prev), 1200);
+        btnIcon.innerHTML = '<path d="M20 6 9 17l-5-5"></path>';
+        clearTimeout(installResetTimer);
+        installResetTimer = setTimeout(() => {
+          label.textContent = 'npm i crd-ui';
+          btnIcon.innerHTML = btnIconPaths;
+        }, 1200);
       });
 
       // Floating copy button on every code block. The pre is wrapped so the
