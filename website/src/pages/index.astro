@@ -336,16 +336,17 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     </nav>
 
     <script>
-      // The SW only belongs in production — in dev it would cache Vite's
-      // unhashed modules and freeze the site; unregister any leftover one.
+      // The service worker was retired: unregister it and drop its caches for
+      // visitors who still carry one from an earlier deploy.
       if ('serviceWorker' in navigator) {
-        if (import.meta.env.PROD) {
-          navigator.serviceWorker.register('/sw.js');
-        } else {
-          navigator.serviceWorker.getRegistrations().then((regs) => {
-            for (const reg of regs) reg.unregister();
-          });
-        }
+        navigator.serviceWorker.getRegistrations().then((regs) => {
+          for (const reg of regs) reg.unregister();
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then((keys) => {
+          for (const key of keys) if (key.startsWith('crd-ui-')) caches.delete(key);
+        });
       }
 
       const btn = document.getElementById('copy-install')!;
