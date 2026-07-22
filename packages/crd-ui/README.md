@@ -22,7 +22,7 @@ npm i crd-ui
 - 🎯 Magic focus ring: one highlight travels between sections, sliding and morphing to fit
   each one with a spring settle.
 - 🪩 Optional 3D hover tilt (`tilt`): the card follows the pointer with a cursor-tracked
-  glare (`prefers-reduced-motion` aware).
+  glare (hover-only — flattened on touch devices and under `prefers-reduced-motion`).
 - 🪪 Two layouts: `'form'` (payment-form preview, default) and `'display'` for presenting a
   card the user owns — dashboards, saved cards, with click-to-reveal.
 - 🏷 Live brand detection while typing: Visa, Mastercard, Amex, Discover, Diners Club,
