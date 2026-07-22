@@ -1,0 +1,22 @@
+{
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "crd-ui.vercel.app" }],
+      "destination": "https://crd-ui.juanda.co/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "crd-ui-website-juandagarcia.vercel.app" }],
+      "destination": "https://crd-ui.juanda.co/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "crd-ui-website-git-main-juandagarcia.vercel.app" }],
+      "destination": "https://crd-ui.juanda.co/:path",
+      "permanent": true
+    }
+  ]
+}

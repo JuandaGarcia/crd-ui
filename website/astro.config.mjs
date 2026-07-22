@@ -1,8 +1,10 @@
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  integrations: [react()],
+  site: 'https://crd-ui.juanda.co',
+  integrations: [react(), sitemap()],
   server: {
     port: process.env.PORT ? Number(process.env.PORT) : 4321,
   },

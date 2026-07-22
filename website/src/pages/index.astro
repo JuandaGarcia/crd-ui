@@ -30,10 +30,55 @@ const themes = { light: 'github-light', dark: 'github-dark' };
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
       rel="stylesheet"
     />
-    <title>crd-ui — credit/debit card visualization</title>
+    <title>crd-ui — Credit Card Component for React, Vue, Svelte & Vanilla JS</title>
     <meta
       name="description"
-      content="Framework-agnostic credit/debit card visualization for payment forms. Zero dependencies, themeable, with React, Vue and Svelte support."
+      content="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies — React, Vue, Svelte and vanilla JS in one package."
+    />
+    <link rel="canonical" href="https://crd-ui.juanda.co/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="crd-ui" />
+    <meta property="og:title" content="crd-ui — Credit Card Component for React, Vue, Svelte & Vanilla JS" />
+    <meta
+      property="og:description"
+      content="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies."
+    />
+    <meta property="og:url" content="https://crd-ui.juanda.co/" />
+    <meta property="og:image" content="https://crd-ui.juanda.co/banner.png" />
+    <meta property="og:image:width" content="3104" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="crd-ui — a credit & debit card component. Dependency-free. Themeable. Localizable." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="crd-ui — Credit Card Component for React, Vue, Svelte & Vanilla JS" />
+    <meta
+      name="twitter:description"
+      content="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies."
+    />
+    <meta name="twitter:image" content="https://crd-ui.juanda.co/banner.png" />
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'crd-ui',
+        description:
+          'Framework-agnostic credit/debit card visualization component for payment forms. Zero-dependency vanilla core with React, Vue and Svelte adapters.',
+        url: 'https://crd-ui.juanda.co/',
+        image: 'https://crd-ui.juanda.co/banner.png',
+        applicationCategory: 'DeveloperApplication',
+        operatingSystem: 'Web',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        license: 'https://opensource.org/license/mit',
+        author: { '@type': 'Person', name: 'Juanda Garcia', url: 'https://github.com/JuandaGarcia' },
+        sameAs: [
+          'https://github.com/JuandaGarcia/crd-ui',
+          'https://www.npmjs.com/package/crd-ui',
+        ],
+      })}
     />
     <script is:inline>
       try {
@@ -74,7 +119,8 @@ const themes = { light: 'github-light', dark: 'github-dark' };
       <div class="hero container">
         <div class="hero-card"><HeroCard client:load /></div>
         <p class="tagline">
-          A credit &amp; debit card component. Dependency-free. Themeable. Localizable.
+          A credit &amp; debit card component for React, Vue, Svelte and vanilla JS.
+          Dependency-free. Themeable. Localizable.
         </p>
         <div class="hero-actions">
           <button class="btn btn-primary" id="copy-install" type="button">

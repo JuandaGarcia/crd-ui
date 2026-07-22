@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "^5.10.0",
     "border-beam": "^1.3.0",
     "crd-ui": "workspace:*",
