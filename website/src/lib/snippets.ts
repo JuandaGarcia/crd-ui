@@ -112,7 +112,8 @@ function SavedCard() {
 
   return (
     <>
-      <Card layout="display" brand="mastercard" last4="5460" variant="graphite" {...details} />
+      {/* copyable makes the revealed number/exp/cvc click-to-copy */}
+      <Card layout="display" copyable brand="mastercard" last4="5460" variant="graphite" {...details} />
       <button onClick={() => setRevealed((r) => !r)}>
         {revealed ? 'Hide' : 'Reveal details'}
       </button>
@@ -124,6 +125,7 @@ import 'crd-ui/styles.css';
 
 const card = createCard(el, {
   layout: 'display',
+  copyable: true, // revealed number/exp/cvc become click-to-copy
   brand: 'mastercard',
   last4: '5460',
   variant: 'graphite',
@@ -146,7 +148,7 @@ const reveal = () => {
 </script>
 
 <template>
-  <Card layout="display" brand="mastercard" last4="5460" variant="graphite" v-bind="details" />
+  <Card layout="display" copyable brand="mastercard" last4="5460" variant="graphite" v-bind="details" />
   <button @click="reveal">Reveal details</button>
 </template>`,
   svelte: `<script>
@@ -160,7 +162,7 @@ const reveal = () => {
   };
 </script>
 
-<Card layout="display" brand="mastercard" last4="5460" variant="graphite" {...details} />
+<Card layout="display" copyable brand="mastercard" last4="5460" variant="graphite" {...details} />
 <button onclick={reveal}>Reveal details</button>`,
 };
 

@@ -17,6 +17,7 @@ export function DisplayDemo() {
         brand="mastercard"
         last4="5460"
         name="ADA LOVELACE"
+        copyable
         tilt
         {...(revealed ? DETAILS : {})}
       />

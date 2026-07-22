@@ -35,6 +35,12 @@ export const API_ROWS: ApiRow[] = [
       "'form' (default) is the payment-form preview; 'display' presents an existing card for dashboards — expiry/CVC on the front, no flip, reveal by passing the real values.",
   },
   {
+    prop: 'copyable',
+    type: 'boolean',
+    description:
+      'Display layout only: make the revealed number, expiry and CVC click-to-copy with a "Copied" bubble. Pairs with onCopy(field, value). Default: false.',
+  },
+  {
     prop: 'variant',
     type: "'sunset' | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient'",
     description: "Card finish; 'sunset' (default) tints its bloom to the brand.",

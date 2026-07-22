@@ -196,6 +196,10 @@ const themes = { light: 'github-light', dark: 'github-dark' };
             <em>reveal</em> by passing the real values (fetched securely on demand) — the
             component only presents, it never stores data.
           </p>
+          <p>
+            With <code>copyable</code>, each revealed field is click-to-copy (try it below after
+            revealing). An optional <code>onCopy(field, value)</code> fires for your own toast.
+          </p>
           <DisplayDemo client:visible />
           <div class="fw-block" data-block="react">
             <Code code={displayExample.react} lang="tsx" themes={themes} />

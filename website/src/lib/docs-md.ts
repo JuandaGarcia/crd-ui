@@ -113,6 +113,9 @@ empty values stay masked, the empty name hides, and focusing the CVC no longer
 flips. Start with \`last4\` and reveal by passing the real values (fetched
 securely on demand) — the component only presents, it never stores data.
 
+Add \`copyable\` to make the revealed number/expiry/CVC click-to-copy (with a
+"Copied" bubble); an optional \`onCopy(field, value)\` fires after each copy.
+
 \`\`\`tsx
 ${displayExample.react}
 \`\`\`
