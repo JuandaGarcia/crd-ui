@@ -87,7 +87,11 @@ const [focused, setFocused] = useState(null);
 const blur = (field) => () => setFocused((f) => (f === field ? null : f));
 
 {/* digits stay masked — they only exist inside Stripe's iframes */}
-<Card number="" brand={brand} focused={focused} />
+<Card
+  number=""
+  brand={brand}
+  focused={focused}
+/>
 
 <CardNumberElement
   onChange={(e) => setBrand(brandFromStripe(e.brand))}
@@ -113,7 +117,14 @@ function SavedCard() {
   return (
     <>
       {/* copyable makes the revealed number/exp/cvc click-to-copy */}
-      <Card layout="display" copyable brand="mastercard" last4="5460" variant="graphite" {...details} />
+      <Card
+        layout="display"
+        copyable
+        brand="mastercard"
+        last4="5460"
+        variant="graphite"
+        {...details}
+      />
       <button onClick={() => setRevealed((r) => !r)}>
         {revealed ? 'Hide' : 'Reveal details'}
       </button>
@@ -148,7 +159,14 @@ const reveal = () => {
 </script>
 
 <template>
-  <Card layout="display" copyable brand="mastercard" last4="5460" variant="graphite" v-bind="details" />
+  <Card
+    layout="display"
+    copyable
+    brand="mastercard"
+    last4="5460"
+    variant="graphite"
+    v-bind="details"
+  />
   <button @click="reveal">Reveal details</button>
 </template>`,
   svelte: `<script>
@@ -162,7 +180,14 @@ const reveal = () => {
   };
 </script>
 
-<Card layout="display" copyable brand="mastercard" last4="5460" variant="graphite" {...details} />
+<Card
+  layout="display"
+  copyable
+  brand="mastercard"
+  last4="5460"
+  variant="graphite"
+  {...details}
+/>
 <button onclick={reveal}>Reveal details</button>`,
 };
 
