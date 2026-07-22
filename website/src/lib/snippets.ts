@@ -178,6 +178,29 @@ export const theming = `.crd {
   --crd-bg: linear-gradient(135deg, #1a1f71, #4b6cb7);
 }`;
 
+export const themingTailwind = `// Every knob is a CSS custom property, so Tailwind arbitrary-property
+// utilities theme the card — on the card or any ancestor (they inherit).
+// v4: var(--color-*)   ·   v3: theme(colors.*)
+<Card
+  className="[--crd-radius:1.25rem] [--crd-color:white]
+    [--crd-bg:var(--color-indigo-600)] [--crd-shadow:0_10px_40px_theme(colors.indigo.500/40%)]"
+/>;`;
+
+export const themingClassNames = `// Style the card's internal sections with a classNames slot map.
+// Your classes are merged with the built-ins (state modifiers stay intact).
+<Card
+  classNames={{
+    root: 'shadow-2xl ring-1 ring-white/10',
+    number: 'tracking-widest',
+    name: 'uppercase',
+    metaExpiry: 'tabular-nums opacity-80',
+  }}
+/>;
+
+// Slots: root · inner · front · back · chip · logo · number · footer ·
+//        name · expiry · expiryLabel · expiryValue · meta · metaExpiry ·
+//        metaCvc · cvc`;
+
 export const themingImage = `/* --crd-bg is a full CSS background: images work too */
 .crd {
   --crd-bg: url('/textures/holo.png') center / cover no-repeat;

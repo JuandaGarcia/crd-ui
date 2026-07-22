@@ -41,6 +41,12 @@ export const API_ROWS: ApiRow[] = [
       'Display layout only: make the revealed number, expiry and CVC click-to-copy with a "Copied" bubble. Pairs with onCopy(field, value). Default: false.',
   },
   {
+    prop: 'classNames',
+    type: 'Partial<Record<CardSlot, string>>',
+    description:
+      'Extra classes per part of the card (utility-first / Tailwind styling of internal sections), merged with the built-in classes. Slots: root, chip, logo, number, name, expiry, meta, metaExpiry, metaCvc, cvc…',
+  },
+  {
     prop: 'variant',
     type: "'sunset' | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient'",
     description: "Card finish; 'sunset' (default) tints its bloom to the brand.",

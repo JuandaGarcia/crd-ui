@@ -15,7 +15,9 @@ import {
   logos,
   stripeExample,
   theming,
+  themingClassNames,
   themingImage,
+  themingTailwind,
   usage,
 } from '../lib/snippets';
 import ImageCards from '../components/ImageCards.astro';
@@ -225,6 +227,19 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           </p>
           <Code code={themingImage} lang="css" themes={themes} />
           <ImageCards />
+          <h3 class="subhead">With Tailwind</h3>
+          <p>
+            Every knob is a CSS variable, so Tailwind arbitrary-property utilities theme the card
+            with zero config — on the card or any ancestor:
+          </p>
+          <Code code={themingTailwind} lang="tsx" themes={themes} />
+          <h3 class="subhead">Style any section</h3>
+          <p>
+            The library owns the card's markup, so to add utility classes to its internal parts
+            pass a <code>classNames</code> slot map — merged with the built-in classes, using
+            stable slot keys so your styles never depend on internal class names:
+          </p>
+          <Code code={themingClassNames} lang="tsx" themes={themes} />
           <p>
             The built-in brand marks are deliberately generic so the package ships no trademarked
             assets — pass your own SVGs if you're licensed to use the official ones:

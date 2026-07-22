@@ -436,6 +436,13 @@ main section {
   margin: 0 0 1.25em;
 }
 
+.subhead {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 2.5rem 0 0.75em;
+}
+
 .ai-list {
   color: var(--body);
   margin: 0 0 1.25em;

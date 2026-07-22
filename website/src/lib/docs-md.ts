@@ -9,7 +9,9 @@ import {
   logos,
   stripeExample,
   theming,
+  themingClassNames,
   themingImage,
+  themingTailwind,
   usage,
 } from './snippets';
 
@@ -137,6 +139,26 @@ ${theming}
 
 \`\`\`css
 ${themingImage}
+\`\`\`
+
+### With Tailwind
+
+Every knob is a CSS custom property, so Tailwind arbitrary-property utilities theme
+the card with zero config — on the card or any ancestor (they inherit). Use
+\`var(--color-*)\` (v4) or \`theme(colors.*)\` (v3):
+
+\`\`\`tsx
+${themingTailwind}
+\`\`\`
+
+### Styling sections with classNames
+
+The library owns the card's markup, so add utility classes to its internal parts via
+a \`classNames\` slot map — merged with the built-in classes, using stable slot keys
+(root, chip, logo, number, name, expiry, meta, metaExpiry, metaCvc, cvc…):
+
+\`\`\`tsx
+${themingClassNames}
 \`\`\`
 
 The built-in brand marks are deliberately generic so the package ships no trademarked
