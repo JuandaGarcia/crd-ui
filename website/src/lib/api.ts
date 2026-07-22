@@ -48,7 +48,7 @@ export const API_ROWS: ApiRow[] = [
   {
     prop: 'tilt',
     type: 'boolean',
-    description: 'Pointer-tracked 3D hover tilt with a light glare; toggleable any time. Default: false.',
+    description: 'Pointer-tracked 3D hover tilt with a light glare; toggleable any time. Hover-only (flattened on touch devices). Default: false.',
   },
   {
     prop: 'brand',
