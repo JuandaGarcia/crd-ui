@@ -558,6 +558,21 @@ main section {
   }
 }
 
+/* On touch devices the hover tilt makes no sense (no cursor to track) and its
+   touch-action:none would block scrolling over the cards — neutralize it for
+   every card on the page. */
+@media (hover: none) {
+  .crd--tilt {
+    transform: none !important;
+    transition: none !important;
+    touch-action: auto;
+  }
+
+  .crd--tilt .crd__glare {
+    display: none;
+  }
+}
+
 /* ---- Playground demo panel ---- */
 
 /* On small screens the keyboard pushes the form up and the card would scroll
