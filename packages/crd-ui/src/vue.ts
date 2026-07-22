@@ -17,6 +17,7 @@ import {
 } from './index';
 
 export type { Brand, CardVariant, FocusedField };
+export { brandFromStripe } from './index';
 
 /**
  * Controlled card preview. Wraps the vanilla `crd-ui` renderer: the core owns

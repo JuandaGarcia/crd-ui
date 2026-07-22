@@ -15,21 +15,9 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { Card, type Brand, type FocusedField } from 'crd-ui/react';
+import { Card, brandFromStripe, type Brand, type FocusedField } from 'crd-ui/react';
 
 const PK = import.meta.env.VITE_STRIPE_PK as string | undefined;
-
-// Stripe brand slugs → crd-ui brands (Stripe reports 'diners'; crd-ui uses
-// 'dinersclub'). Anything unmapped renders the unknown state.
-const STRIPE_BRANDS: Record<string, Brand> = {
-  visa: 'visa',
-  mastercard: 'mastercard',
-  amex: 'amex',
-  discover: 'discover',
-  diners: 'dinersclub',
-  jcb: 'jcb',
-  unionpay: 'unionpay',
-};
 
 const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const ELEMENT_OPTIONS = {
@@ -108,7 +96,7 @@ function CheckoutForm() {
           <div className="stripe-field">
             <CardNumberElement
               options={ELEMENT_OPTIONS}
-              onChange={(e) => setBrand(STRIPE_BRANDS[e.brand] ?? null)}
+              onChange={(e) => setBrand(brandFromStripe(e.brand))}
               onFocus={focus('number')}
               onBlur={blur('number')}
             />

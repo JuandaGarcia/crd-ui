@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { detectBrand } from '../src/brands';
+import { brandFromStripe, detectBrand } from '../src/brands';
 
 describe('detectBrand', () => {
   it.each([
@@ -45,5 +45,22 @@ describe('detectBrand', () => {
     expect(detectBrand('')).toBeNull();
     expect(detectBrand('9999999999999999')).toBeNull();
     expect(detectBrand('1')).toBeNull();
+  });
+});
+
+describe('brandFromStripe', () => {
+  it.each([
+    ['visa', 'visa'],
+    ['mastercard', 'mastercard'],
+    ['amex', 'amex'],
+    ['diners', 'dinersclub'],
+    ['jcb', 'jcb'],
+    ['unionpay', 'unionpay'],
+  ])('maps %s to %s', (stripe, expected) => {
+    expect(brandFromStripe(stripe)).toBe(expected);
+  });
+
+  it.each([['unknown'], ['eftpos_au'], ['']])('returns null for %s', (stripe) => {
+    expect(brandFromStripe(stripe)).toBeNull();
   });
 });

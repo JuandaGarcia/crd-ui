@@ -9,6 +9,7 @@ import {
 } from './index';
 
 export type { Brand, CardVariant, FocusedField };
+export { brandFromStripe } from './index';
 
 export interface CardProps {
   number?: string;

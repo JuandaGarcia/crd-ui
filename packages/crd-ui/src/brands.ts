@@ -163,6 +163,17 @@ export function getBrandSpec(brand: Brand): BrandSpec {
 }
 
 /**
+ * Map the brand slug Stripe reports (Elements' change event or
+ * PaymentMethod.card.brand) to a crd-ui Brand, ready for the `brand` option:
+ * Stripe says 'diners' where crd-ui says 'dinersclub'; 'unknown' and any
+ * slug crd-ui doesn't support return null (the unknown card state).
+ */
+export function brandFromStripe(stripeBrand: string): Brand | null {
+  if (stripeBrand === 'diners') return 'dinersclub';
+  return SPECS_BY_NAME.has(stripeBrand as Brand) ? (stripeBrand as Brand) : null;
+}
+
+/**
  * How well `digits` matches a range: the range's prefix length when the input
  * fully covers it, 0.5 when the input is a shorter prefix that could still
  * grow into a match, 0 when it cannot match.

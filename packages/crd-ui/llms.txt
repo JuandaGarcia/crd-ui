@@ -43,7 +43,7 @@ Svelte: `import Card from 'crd-ui/svelte'` — same props, `onBrandChange` callb
 - focused: 'number' | 'name' | 'expiry' | 'cvc' | null — highlights a section; 'cvc' flips to the back.
 - variant: 'sunset' (default, brand-tinted bloom) | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient' (classic per-brand gradient).
 - tilt: boolean (default false) — pointer-tracked 3D hover tilt with a light glare; toggleable via update()/prop.
-- brand: Brand | null — force the displayed brand when the number never reaches you (e.g. Stripe Elements reports the brand; map its focus events to `focused` and the CVC focus flips the card). Omit for automatic detection. Full example: https://github.com/JuandaGarcia/crd-ui/tree/main/examples/stripe
+- brand: Brand | null — force the displayed brand when the number never reaches you (e.g. Stripe Elements reports the brand; map its focus events to `focused` and the CVC focus flips the card). Use the exported helper `brandFromStripe(stripeSlug)` to translate Stripe's slugs ('diners' → 'dinersclub', 'unknown' → null). Omit for automatic detection. Full example: https://github.com/JuandaGarcia/crd-ui/tree/main/examples/stripe
 - last4: string — show only the last digits ('•••• •••• •••• 4242') when the full number is unknown: saved cards or post-tokenization (Stripe's PaymentMethod.card.last4). Ignored while `number` has digits.
 - placeholders: { name?: string } · locale: { validThru?: string } · logos: Partial<Record<Brand, string>> — creation-time only; recreate (e.g. React `key`) to change.
 - onBrandChange(brand | null) — React/Svelte callback; Vue event `brand-change`.
