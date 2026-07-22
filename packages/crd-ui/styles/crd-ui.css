@@ -389,6 +389,22 @@
   }
 }
 
+/* The tilt tracks a cursor, so it's a hover-only enhancement: on touch devices
+   it's flattened, the glare hidden, and touch-action restored — otherwise the
+   pointer-driven tilt fires erratically on tap and its touch-action:none
+   swallows scroll gestures over the card. */
+@media (hover: none) {
+  .crd--tilt {
+    transform: none !important;
+    transition: none !important;
+    touch-action: auto;
+  }
+
+  .crd--tilt .crd__glare {
+    display: none;
+  }
+}
+
 .crd__front,
 .crd__back {
   position: absolute;
