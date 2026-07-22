@@ -209,6 +209,39 @@ Override the custom properties on `.crd` (or any ancestor):
 
 Brand themes are plain CSS classes (`.crd--brand-visa`, …) you can redefine entirely.
 
+### With Tailwind
+
+Because every knob is a CSS custom property, you can theme the card with Tailwind
+arbitrary-property utilities — on the card itself or any ancestor (they inherit):
+
+```tsx
+{/* v4: use var(--color-*); v3: use theme(colors.*) */}
+<Card className="[--crd-radius:1.25rem] [--crd-color:white]
+  [--crd-bg:var(--color-indigo-600)]" />
+```
+
+Themeable variables: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`,
+`--crd-shadow`, `--crd-font`, `--crd-flip-duration`.
+
+### Styling sections (`classNames`)
+
+To style the card's internal parts with utility classes, pass a `classNames` slot map.
+Your classes are merged with the built-ins (state modifiers stay intact):
+
+```tsx
+<Card
+  classNames={{
+    root: 'shadow-2xl ring-1 ring-white/10',
+    number: 'tracking-widest',
+    name: 'uppercase',
+    metaExpiry: 'tabular-nums opacity-80',
+  }}
+/>
+```
+
+Slots: `root`, `inner`, `front`, `back`, `chip`, `logo`, `number`, `footer`, `name`,
+`expiry`, `expiryLabel`, `expiryValue`, `meta`, `metaExpiry`, `metaCvc`, `cvc`.
+
 ### Brand logos
 
 The built-in marks are deliberately **generic** (plain wordmarks / abstract shapes) so the
