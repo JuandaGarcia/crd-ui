@@ -74,16 +74,11 @@ const focused = ref(null);
 };
 
 export const stripeExample = `import { CardCvcElement, CardNumberElement } from '@stripe/react-stripe-js';
-import { Card, type Brand } from 'crd-ui/react';
+import { Card, brandFromStripe, type Brand } from 'crd-ui/react';
 
 // Stripe reports the brand without ever exposing the number (PCI iframes) —
-// exactly what a display-only preview needs. Note: Stripe says 'diners',
-// crd-ui says 'dinersclub'.
-const STRIPE_BRANDS: Record<string, Brand> = {
-  visa: 'visa', mastercard: 'mastercard', amex: 'amex', discover: 'discover',
-  diners: 'dinersclub', jcb: 'jcb', unionpay: 'unionpay',
-};
-
+// exactly what a display-only preview needs. brandFromStripe() translates
+// Stripe's slugs (e.g. 'diners' → 'dinersclub'; 'unknown' → null).
 const [brand, setBrand] = useState<Brand | null>(null);
 const [focused, setFocused] = useState(null);
 
@@ -95,7 +90,7 @@ const blur = (field) => () => setFocused((f) => (f === field ? null : f));
 <Card number="" brand={brand} focused={focused} />
 
 <CardNumberElement
-  onChange={(e) => setBrand(STRIPE_BRANDS[e.brand] ?? null)}
+  onChange={(e) => setBrand(brandFromStripe(e.brand))}
   onFocus={() => setFocused('number')}
   onBlur={blur('number')}
 />
