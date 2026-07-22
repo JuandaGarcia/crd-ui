@@ -20,6 +20,7 @@
     last4 = '',
     layout = 'form',
     copyable = false,
+    classNames = undefined,
     placeholders = undefined,
     locale = undefined,
     logos = undefined,
@@ -56,6 +57,7 @@
       last4,
       layout,
       copyable,
+      classNames,
     });
     if (card.brand !== brand) {
       brand = card.brand;

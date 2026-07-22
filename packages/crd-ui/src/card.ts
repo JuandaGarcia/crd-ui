@@ -53,10 +53,39 @@ export interface CardData {
    * Default: false.
    */
   copyable?: boolean;
+  /**
+   * Extra classes per part of the card — for utility-first styling (Tailwind
+   * etc.) of sections the library owns. Merged with the built-in classes, so
+   * `.crd__number` (and state modifiers) stay intact. Keys are stable slot
+   * names (see CardSlot); the `root` slot also merges the top-level `.crd`.
+   */
+  classNames?: Partial<Record<CardSlot, string>>;
 }
 
 /** A copyable field in the display layout. */
 export type CopyField = 'number' | 'expiry' | 'cvc';
+
+/**
+ * A styleable part of the card, for the `classNames` slot map. Keys are stable
+ * across versions even if the internal CSS class names change.
+ */
+export type CardSlot =
+  | 'root'
+  | 'inner'
+  | 'front'
+  | 'back'
+  | 'chip'
+  | 'logo'
+  | 'number'
+  | 'footer'
+  | 'name'
+  | 'expiry'
+  | 'expiryLabel'
+  | 'expiryValue'
+  | 'meta'
+  | 'metaExpiry'
+  | 'metaCvc'
+  | 'cvc';
 
 export interface CardOptions extends Partial<CardData> {
   placeholders?: {
@@ -141,6 +170,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     last4: options.last4 ?? '',
     layout: options.layout ?? 'form',
     copyable: options.copyable ?? false,
+    classNames: options.classNames,
   };
   const namePlaceholder = options.placeholders?.name ?? 'FULL NAME';
   const validThru = options.locale?.validThru ?? 'valid thru';
@@ -174,6 +204,36 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     logoFront: query('.crd__logo'),
     logoBack: query('.crd__logo--back'),
     ring: query('.crd__ring'),
+    inner: query('.crd__inner'),
+    front: query('.crd__front'),
+    back: query('.crd__back'),
+    chip: query('.crd__chip'),
+    footer: query('.crd__footer'),
+    meta: query('.crd__meta'),
+  };
+
+  // Maps each slot to the element(s) whose base class it augments. `root` is
+  // handled inline (its class is rebuilt every render); the rest set here.
+  const slotTargets: Partial<Record<CardSlot, { el: HTMLElement; base: string }>> = {
+    inner: { el: refs.inner, base: 'crd__inner' },
+    front: { el: refs.front, base: 'crd__front' },
+    back: { el: refs.back, base: 'crd__back' },
+    chip: { el: refs.chip, base: 'crd__chip' },
+    logo: { el: refs.logoFront, base: 'crd__logo' },
+    number: { el: refs.number, base: 'crd__number' },
+    footer: { el: refs.footer, base: 'crd__footer' },
+    expiry: { el: refs.expiry, base: 'crd__expiry' },
+    expiryLabel: { el: refs.expiryLabel, base: 'crd__expiry-label' },
+    expiryValue: { el: refs.expiryValue, base: 'crd__expiry-value' },
+    meta: { el: refs.meta, base: 'crd__meta' },
+    metaExpiry: { el: refs.metaExpiry, base: 'crd__meta-expiry' },
+    metaCvc: { el: refs.metaCvc, base: 'crd__meta-cvc' },
+    cvc: { el: refs.cvc, base: 'crd__cvc' },
+  };
+
+  const withSlot = (base: string, slot: CardSlot): string => {
+    const extra = state.classNames?.[slot];
+    return extra ? `${base} ${extra}` : base;
   };
   refs.expiryLabel.textContent = validThru;
   query('.crd__meta-label--exp').textContent = expLabel;
@@ -364,9 +424,16 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
       flipped ? 'crd--flipped' : '',
       flipping ? 'crd--flipping' : '',
       state.focused ? `crd--focus-${state.focused}` : '',
+      state.classNames?.root ?? '',
     ]
       .filter(Boolean)
       .join(' ');
+
+    // User slot classes: append to each part's base (root handled above; name
+    // handled below with its placeholder modifier).
+    for (const [slot, target] of Object.entries(slotTargets)) {
+      if (target) target.el.className = withSlot(target.base, slot as CardSlot);
+    }
 
     refs.number.textContent =
       !state.number && state.last4
@@ -377,7 +444,10 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     // The display layout presents an existing card: no placeholder invitation
     // to type — an empty name simply doesn't render.
     refs.name.textContent = name || (state.layout === 'display' ? '' : namePlaceholder);
-    refs.name.classList.toggle('crd__name--placeholder', !name);
+    refs.name.className = withSlot(
+      name ? 'crd__name' : 'crd__name crd__name--placeholder',
+      'name',
+    );
 
     refs.expiryValue.textContent = formatExpiry(state.expiry);
     // Masked placeholder while empty ('•••'), consistent with the number and

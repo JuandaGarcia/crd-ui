@@ -55,4 +55,8 @@ Brands detected: visa, mastercard, amex, discover, dinersclub, jcb, unionpay, ma
 
 ## Theming
 
-Override CSS custom properties on `.crd` or any ancestor: `--crd-width`, `--crd-radius`, `--crd-bg`, `--crd-font`. Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`.
+Override CSS custom properties on `.crd` or any ancestor: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`, `--crd-shadow`, `--crd-font`, `--crd-flip-duration`. Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`.
+
+Tailwind: since it's all CSS variables, theme with arbitrary-property utilities on the card or an ancestor — `<Card className="[--crd-radius:1rem] [--crd-bg:var(--color-indigo-600)]" />` (v4 var(--color-*), v3 theme(colors.*)).
+
+classNames: Partial<Record<CardSlot, string>> — utility-first styling of internal parts, merged with the built-in classes (state modifiers preserved). Slots (stable keys): root, inner, front, back, chip, logo, number, footer, name, expiry, expiryLabel, expiryValue, meta, metaExpiry, metaCvc, cvc.

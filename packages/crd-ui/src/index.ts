@@ -3,6 +3,7 @@ export type {
   CardData,
   CardInstance,
   CardOptions,
+  CardSlot,
   CardVariant,
   CopyField,
   FocusedField,

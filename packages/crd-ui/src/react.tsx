@@ -3,13 +3,14 @@ import {
   type Brand,
   type CardInstance,
   type CardOptions,
+  type CardSlot,
   type CardVariant,
   type CopyField,
   type FocusedField,
   createCard,
 } from './index';
 
-export type { Brand, CardVariant, CopyField, FocusedField };
+export type { Brand, CardSlot, CardVariant, CopyField, FocusedField };
 export { brandFromStripe } from './index';
 
 export interface CardProps {
@@ -45,6 +46,11 @@ export interface CardProps {
    * only). Default: false.
    */
   copyable?: boolean;
+  /**
+   * Extra classes per part of the card (utility-first styling of internal
+   * sections). Merged with the built-in classes. See CardSlot for the keys.
+   */
+  classNames?: Partial<Record<CardSlot, string>>;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];
@@ -71,6 +77,7 @@ export function Card({
   last4 = '',
   layout = 'form',
   copyable = false,
+  classNames,
   placeholders,
   locale,
   logos,
@@ -122,12 +129,13 @@ export function Card({
       last4,
       layout,
       copyable,
+      classNames,
     });
     if (card.brand !== brandRef.current) {
       brandRef.current = card.brand;
       onBrandChangeRef.current?.(card.brand);
     }
-  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout, copyable]);
+  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout, copyable, classNames]);
 
   return <div ref={containerRef} className={className} />;
 }

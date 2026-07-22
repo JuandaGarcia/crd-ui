@@ -1,7 +1,7 @@
 import type { Component } from 'svelte';
-import type { Brand, CardOptions, CardVariant, FocusedField } from '../index';
+import type { Brand, CardOptions, CardSlot, CardVariant, FocusedField } from '../index';
 
-export type { Brand, CardVariant, FocusedField };
+export type { Brand, CardSlot, CardVariant, FocusedField };
 
 export interface CardProps {
   number?: string;
@@ -37,6 +37,11 @@ export interface CardProps {
   copyable?: boolean;
   /** Called after a copyable field is copied to the clipboard. */
   onCopy?: (field: 'number' | 'expiry' | 'cvc', value: string) => void;
+  /**
+   * Extra classes per part of the card (utility-first styling of internal
+   * sections). Merged with the built-in classes. See CardSlot for the keys.
+   */
+  classNames?: Partial<Record<CardSlot, string>>;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];

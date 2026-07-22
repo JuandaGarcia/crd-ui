@@ -186,6 +186,43 @@ describe('createCard', () => {
     expect(form.element.querySelector<HTMLElement>('.crd__number')!.dataset.crdCopy).toBeUndefined();
   });
 
+  it('merges classNames per slot without dropping base or state classes', () => {
+    const card = createCard(container, {
+      number: '4111 1111',
+      brand: 'visa',
+      layout: 'display',
+      classNames: {
+        root: 'shadow-xl',
+        number: 'tracking-widest',
+        metaExpiry: 'tabular-nums',
+        chip: 'opacity-90',
+      },
+    });
+    const el = card.element;
+    // Root keeps its state modifiers and gains the user class.
+    expect(el.classList.contains('crd')).toBe(true);
+    expect(el.classList.contains('crd--brand-visa')).toBe(true);
+    expect(el.classList.contains('crd--l-display')).toBe(true);
+    expect(el.classList.contains('shadow-xl')).toBe(true);
+    // Slot elements keep their base class and gain the user class.
+    const number = el.querySelector('.crd__number')!;
+    expect(number.classList.contains('crd__number')).toBe(true);
+    expect(number.classList.contains('tracking-widest')).toBe(true);
+    expect(el.querySelector('.crd__meta-expiry')!.classList.contains('tabular-nums')).toBe(true);
+    expect(el.querySelector('.crd__chip')!.classList.contains('opacity-90')).toBe(true);
+  });
+
+  it('classNames.name keeps the placeholder modifier and updates', () => {
+    const card = createCard(container, { classNames: { name: 'uppercase' } });
+    const name = card.element.querySelector('.crd__name')!;
+    expect(name.classList.contains('crd__name--placeholder')).toBe(true);
+    expect(name.classList.contains('uppercase')).toBe(true);
+    card.update({ name: 'ADA', classNames: { name: 'font-bold' } });
+    expect(name.classList.contains('crd__name--placeholder')).toBe(false);
+    expect(name.classList.contains('font-bold')).toBe(true);
+    expect(name.classList.contains('uppercase')).toBe(false);
+  });
+
   it('destroy() removes the card from the DOM', () => {
     const card = createCard(container);
     expect(container.querySelector('.crd')).not.toBeNull();

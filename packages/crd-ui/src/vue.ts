@@ -11,13 +11,14 @@ import {
   type Brand,
   type CardInstance,
   type CardOptions,
+  type CardSlot,
   type CardVariant,
   type CopyField,
   type FocusedField,
   createCard,
 } from './index';
 
-export type { Brand, CardVariant, CopyField, FocusedField };
+export type { Brand, CardSlot, CardVariant, CopyField, FocusedField };
 export { brandFromStripe } from './index';
 
 /**
@@ -59,6 +60,14 @@ export const Card = defineComponent({
      * only). Default: false.
      */
     copyable: { type: Boolean, default: false },
+    /**
+     * Extra classes per part of the card (utility-first styling of internal
+     * sections). Merged with the built-in classes. See CardSlot for the keys.
+     */
+    classNames: {
+      type: Object as PropType<Partial<Record<CardSlot, string>>>,
+      default: undefined,
+    },
     placeholders: { type: Object as PropType<CardOptions['placeholders']>, default: undefined },
     locale: { type: Object as PropType<CardOptions['locale']>, default: undefined },
     logos: { type: Object as PropType<CardOptions['logos']>, default: undefined },
@@ -86,6 +95,7 @@ export const Card = defineComponent({
         last4: props.last4,
         layout: props.layout,
         copyable: props.copyable,
+        classNames: props.classNames,
       });
       if (card.brand !== brand) {
         brand = card.brand;
@@ -119,6 +129,7 @@ export const Card = defineComponent({
         props.last4,
         props.layout,
         props.copyable,
+        props.classNames,
       ],
       sync,
     );
