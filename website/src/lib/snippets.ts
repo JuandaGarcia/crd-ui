@@ -100,7 +100,10 @@ const blur = (field) => () => setFocused((f) => (f === field ? null : f));
 />
 
 {/* focusing the CVC iframe flips the card */}
-<CardCvcElement onFocus={() => setFocused('cvc')} onBlur={blur('cvc')} />`;
+<CardCvcElement
+  onFocus={() => setFocused('cvc')}
+  onBlur={blur('cvc')}
+/>`;
 
 export const displayExample = {
   react: `import { useState } from 'react';
