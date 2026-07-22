@@ -23,6 +23,8 @@ npm i crd-ui
   each one with a spring settle.
 - 🪩 Optional 3D hover tilt (`tilt`): the card follows the pointer with a cursor-tracked
   glare (`prefers-reduced-motion` aware).
+- 🪪 Two layouts: `'form'` (payment-form preview, default) and `'display'` for presenting a
+  card the user owns — dashboards, saved cards, with click-to-reveal.
 - 🏷 Live brand detection while typing: Visa, Mastercard, Amex, Discover, Diners Club,
   JCB, UnionPay, Maestro, Elo, Hipercard.
 - ✨ Six built-in finishes via `variant` — the default `sunset` tints its color bloom to the
@@ -144,6 +146,43 @@ import { createCard } from 'crd-ui';
 
 const card = createCard(el, { variant: 'holo' });
 card.update({ variant: 'graphite' });
+```
+
+## Display layout
+
+Set `layout="display"` to present a card the user already owns — dashboards,
+saved-card lists, wallet views. Expiry and CVC move to a meta row on the front,
+empty values stay masked, the empty name hides, and focusing the CVC no longer
+flips the card. Start with `last4` and **reveal** by passing the real values
+(fetched securely on demand) — the component only presents; it never stores data.
+
+```tsx
+import { useState } from 'react';
+import { Card } from 'crd-ui/react';
+
+function SavedCard() {
+  const [revealed, setRevealed] = useState(false);
+  const details = revealed
+    ? { number: '5355 2400 0000 5460', expiry: '08/27', cvc: '123' }
+    : {};
+
+  return (
+    <>
+      <Card layout="display" brand="mastercard" last4="5460" variant="graphite" {...details} />
+      <button onClick={() => setRevealed((r) => !r)}>
+        {revealed ? 'Hide' : 'Reveal details'}
+      </button>
+    </>
+  );
+}
+```
+
+```js
+import { createCard } from 'crd-ui';
+
+const card = createCard(el, { layout: 'display', brand: 'mastercard', last4: '5460' });
+// later, when the user asks to reveal:
+card.update({ number: '5355 2400 0000 5460', expiry: '08/27', cvc: '123' });
 ```
 
 ## Theming
