@@ -39,6 +39,7 @@ export function Playground() {
   return (
     <div className="demo-panel">
       <Card
+        className="playground-card"
         number={number}
         name={name}
         expiry={expiry}

@@ -560,6 +560,21 @@ main section {
 
 /* ---- Playground demo panel ---- */
 
+/* On small screens the keyboard pushes the form up and the card would scroll
+   out of view — sticking it to the top keeps the live preview visible while
+   typing (slightly smaller so the focused input still fits below). */
+@media (max-width: 40rem) {
+  .playground-card {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 5;
+  }
+
+  .playground-card .crd {
+    --crd-width: 240px;
+  }
+}
+
 .demo-panel {
   display: grid;
   gap: 2rem;
