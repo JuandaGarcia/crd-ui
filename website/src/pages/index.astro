@@ -8,7 +8,16 @@ import CreatedBy from '../components/CreatedBy.astro';
 import BrandGrid from '../components/BrandGrid.astro';
 import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
-import { localization, logos, stripeExample, theming, themingImage, usage } from '../lib/snippets';
+import { DisplayDemo } from '../components/DisplayDemo';
+import {
+  displayExample,
+  localization,
+  logos,
+  stripeExample,
+  theming,
+  themingImage,
+  usage,
+} from '../lib/snippets';
 import ImageCards from '../components/ImageCards.astro';
 import { API_ROWS } from '../lib/api';
 import CopyPage from '../components/CopyPage.astro';
@@ -176,6 +185,30 @@ const themes = { light: 'github-light', dark: 'github-dark' };
             vanilla <code>createCard</code> API.
           </p>
           <BrandGrid />
+        </section>
+
+        <section id="display">
+          <h2>Display</h2>
+          <p>
+            Set <code>layout="display"</code> to present a card the user already owns —
+            dashboards, saved-card lists, wallet views. Expiry and CVC move to the front, empty
+            values stay masked, and the CVC no longer flips. Start with <code>last4</code> and
+            <em>reveal</em> by passing the real values (fetched securely on demand) — the
+            component only presents, it never stores data.
+          </p>
+          <DisplayDemo client:visible />
+          <div class="fw-block" data-block="react">
+            <Code code={displayExample.react} lang="tsx" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="vanilla">
+            <Code code={displayExample.vanilla} lang="js" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="vue">
+            <Code code={displayExample.vue} lang="vue" themes={themes} />
+          </div>
+          <div class="fw-block" data-block="svelte">
+            <Code code={displayExample.svelte} lang="svelte" themes={themes} />
+          </div>
         </section>
 
         <section id="theming">

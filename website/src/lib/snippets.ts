@@ -98,6 +98,72 @@ const blur = (field) => () => setFocused((f) => (f === field ? null : f));
 {/* focusing the CVC iframe flips the card */}
 <CardCvcElement onFocus={() => setFocused('cvc')} onBlur={blur('cvc')} />`;
 
+export const displayExample = {
+  react: `import { useState } from 'react';
+import { Card } from 'crd-ui/react';
+
+function SavedCard() {
+  const [revealed, setRevealed] = useState(false);
+
+  // In a real app the reveal handler fetches the sensitive values on demand.
+  const details = revealed
+    ? { number: '5355 2400 0000 5460', expiry: '08/27', cvc: '123' }
+    : {};
+
+  return (
+    <>
+      <Card layout="display" brand="mastercard" last4="5460" variant="graphite" {...details} />
+      <button onClick={() => setRevealed((r) => !r)}>
+        {revealed ? 'Hide' : 'Reveal details'}
+      </button>
+    </>
+  );
+}`,
+  vanilla: `import { createCard } from 'crd-ui';
+import 'crd-ui/styles.css';
+
+const card = createCard(el, {
+  layout: 'display',
+  brand: 'mastercard',
+  last4: '5460',
+  variant: 'graphite',
+});
+
+// later, when the user asks to reveal (fetch the real values first):
+revealBtn.addEventListener('click', () => {
+  card.update({ number: '5355 2400 0000 5460', expiry: '08/27', cvc: '123' });
+});`,
+  vue: `<script setup>
+import { ref } from 'vue';
+import { Card } from 'crd-ui/vue';
+import 'crd-ui/styles.css';
+
+const details = ref({});
+const reveal = () => {
+  // fetch the real values on demand
+  details.value = { number: '5355 2400 0000 5460', expiry: '08/27', cvc: '123' };
+};
+</script>
+
+<template>
+  <Card layout="display" brand="mastercard" last4="5460" variant="graphite" v-bind="details" />
+  <button @click="reveal">Reveal details</button>
+</template>`,
+  svelte: `<script>
+  import Card from 'crd-ui/svelte';
+  import 'crd-ui/styles.css';
+
+  let details = $state({});
+  const reveal = () => {
+    // fetch the real values on demand
+    details = { number: '5355 2400 0000 5460', expiry: '08/27', cvc: '123' };
+  };
+</script>
+
+<Card layout="display" brand="mastercard" last4="5460" variant="graphite" {...details} />
+<button onclick={reveal}>Reveal details</button>`,
+};
+
 export const theming = `.crd {
   --crd-width: 340px;
   --crd-radius: 18px;

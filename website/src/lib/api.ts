@@ -29,6 +29,12 @@ export const API_ROWS: ApiRow[] = [
     description: 'Security code, shown on the back.',
   },
   {
+    prop: 'layout',
+    type: "'form' | 'display'",
+    description:
+      "'form' (default) is the payment-form preview; 'display' presents an existing card for dashboards — expiry/CVC on the front, no flip, reveal by passing the real values.",
+  },
+  {
     prop: 'variant',
     type: "'sunset' | 'ember' | 'holo' | 'porcelain' | 'graphite' | 'gradient'",
     description: "Card finish; 'sunset' (default) tints its bloom to the brand.",

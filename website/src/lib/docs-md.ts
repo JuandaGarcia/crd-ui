@@ -3,7 +3,15 @@
 // Served at /llms-full.txt and /index.md; the short index lives at /llms.txt.
 
 import { API_ROWS } from './api';
-import { localization, logos, stripeExample, theming, themingImage, usage } from './snippets';
+import {
+  displayExample,
+  localization,
+  logos,
+  stripeExample,
+  theming,
+  themingImage,
+  usage,
+} from './snippets';
 
 const SITE = 'https://crd-ui.juanda.co';
 
@@ -96,6 +104,22 @@ Pick the card's finish with the \`variant\` prop/option:
 
 Live detection for 10 brands, each with its own theme: Visa, Mastercard, Amex, Discover,
 Diners Club, JCB, UnionPay, Maestro, Elo, Hipercard.
+
+## Display layout (dashboards)
+
+Set \`layout="display"\` to present a card the user already owns — dashboards,
+saved-card lists, wallet views. Expiry and CVC move to a meta row on the front,
+empty values stay masked, the empty name hides, and focusing the CVC no longer
+flips. Start with \`last4\` and reveal by passing the real values (fetched
+securely on demand) — the component only presents, it never stores data.
+
+\`\`\`tsx
+${displayExample.react}
+\`\`\`
+
+\`\`\`js
+${displayExample.vanilla}
+\`\`\`
 
 ## Theming
 

@@ -573,6 +573,21 @@ main section {
   }
 }
 
+/* ---- Display-layout demo ---- */
+
+.display-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 1.5em 0;
+}
+
+.display-demo .btn {
+  min-width: 11rem;
+  justify-content: center;
+}
+
 /* ---- Playground demo panel ---- */
 
 /* On small screens the keyboard pushes the form up and the card would scroll
