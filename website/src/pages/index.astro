@@ -26,6 +26,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#09090b" />
     <link rel="alternate" type="text/markdown" href="/index.md" title="crd-ui docs as Markdown" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -335,6 +336,10 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     </nav>
 
     <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+
       const btn = document.getElementById('copy-install')!;
       btn.addEventListener('click', async () => {
         await navigator.clipboard.writeText('npm i crd-ui');

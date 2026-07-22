@@ -2,6 +2,9 @@
   "name": "crd-ui",
   "short_name": "crd-ui",
   "description": "A credit & debit card component for React, Vue, Svelte and vanilla JS.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
