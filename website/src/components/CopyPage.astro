@@ -140,6 +140,10 @@ const SCIRA_URL = `https://scira.ai/?q=${Q}`;
     background: var(--bg);
   }
 
+  .copy-page__main.is-copied {
+    color: var(--accent);
+  }
+
   .copy-page__more {
     position: relative;
     display: flex;
@@ -225,14 +229,26 @@ const SCIRA_URL = `https://scira.ai/?q=${Q}`;
   const menu = document.getElementById('copy-page-menu') as HTMLDetailsElement;
   const label = btn.querySelector('.copy-page__label');
 
+  // The label is hidden on small screens, so the icon itself must carry the
+  // feedback: it swaps to a check and the button tints to the accent color.
+  const COPY_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>';
+  const CHECK_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>';
+  let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
   btn.addEventListener('click', async () => {
     const md = await fetch('/llms-full.txt').then((r) => r.text());
     await navigator.clipboard.writeText(md);
-    if (label) {
-      const prev = label.textContent;
-      label.textContent = 'Copied!';
-      setTimeout(() => (label.textContent = prev), 1200);
-    }
+    btn.classList.add('is-copied');
+    btn.querySelector('svg')!.outerHTML = CHECK_ICON;
+    if (label) label.textContent = 'Copied!';
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => {
+      btn.classList.remove('is-copied');
+      btn.querySelector('svg')!.outerHTML = COPY_ICON;
+      if (label) label.textContent = 'Copy Page';
+    }, 1200);
   });
 
   document.addEventListener('click', (e) => {
