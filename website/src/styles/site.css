@@ -496,10 +496,10 @@ main section {
   font-size: 0.8125rem;
   line-height: 1.7;
   margin: 1.25em 0;
-  /* Soft-wrap long lines so every snippet is fully readable without a
-     horizontal scrollbar; leading indentation is preserved. */
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  /* Scroll genuinely long lines instead of wrapping them: wrapping breaks
+     dense one-liners mid-expression. Most snippets fit (props are one per
+     line), and horizontal scroll reads better on mobile. */
+  overflow-x: auto;
 }
 
 .astro-code code {
