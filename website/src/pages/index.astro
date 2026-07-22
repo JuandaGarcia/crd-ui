@@ -336,8 +336,16 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     </nav>
 
     <script>
+      // The SW only belongs in production — in dev it would cache Vite's
+      // unhashed modules and freeze the site; unregister any leftover one.
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
+        if (import.meta.env.PROD) {
+          navigator.serviceWorker.register('/sw.js');
+        } else {
+          navigator.serviceWorker.getRegistrations().then((regs) => {
+            for (const reg of regs) reg.unregister();
+          });
+        }
       }
 
       const btn = document.getElementById('copy-install')!;
