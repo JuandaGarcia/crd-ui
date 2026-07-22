@@ -751,6 +751,14 @@ main section {
   color: var(--text);
 }
 
+/* iOS Safari auto-zooms the page when a focused input's font-size is under
+   16px — meet the threshold on small screens so focusing never rescales. */
+@media (max-width: 40rem) {
+  .demo-form input {
+    font-size: 1rem;
+  }
+}
+
 .demo-form input::placeholder {
   color: var(--zinc-400);
 }
