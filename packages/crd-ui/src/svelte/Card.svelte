@@ -19,10 +19,12 @@
     brand: brandOverride = undefined,
     last4 = '',
     layout = 'form',
+    copyable = false,
     placeholders = undefined,
     locale = undefined,
     logos = undefined,
     onBrandChange = undefined,
+    onCopy = undefined,
     class: className = undefined,
   } = $props();
 
@@ -33,7 +35,7 @@
   // placeholders/locale/logos are creation-time options of the core; changing
   // them after mount is not supported (recreate the component with a #key).
   $effect(() => {
-    card = createCard(container, { placeholders, locale, logos });
+    card = createCard(container, { placeholders, locale, logos, onCopy });
     return () => {
       card.destroy();
       card = null;
@@ -53,6 +55,7 @@
       brand: brandOverride,
       last4,
       layout,
+      copyable,
     });
     if (card.brand !== brand) {
       brand = card.brand;

@@ -519,6 +519,80 @@
   margin-top: 5%;
 }
 
+/* Copyable fields: a subtle hover affordance and a transient "Copied" bubble.
+   The number/expiry already carry padding + radius from the focus-ring block;
+   the meta values get their own so the hover pill wraps them snugly. */
+[data-crd-copy] {
+  position: relative;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s ease-out;
+}
+
+.crd__meta-expiry[data-crd-copy],
+.crd__meta-cvc[data-crd-copy] {
+  padding: 1px 5px;
+  margin: -1px -5px;
+}
+
+[data-crd-copy]:hover,
+[data-crd-copy]:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  outline: none;
+}
+
+/* Shared bubble above the field: 'Click to copy' on hover, 'Copied' after a
+   copy. One ::after, its content swapped by state. */
+[data-crd-copy]::after {
+  content: attr(data-copy-label);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.15em 0.5em;
+  border-radius: 5px;
+  background: rgba(20, 20, 24, 0.92);
+  color: #fff;
+  font-size: calc(var(--crd-width) / 30);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+
+[data-crd-copy]:hover::after,
+[data-crd-copy]:focus-visible::after {
+  opacity: 1;
+}
+
+/* The copied state wins over hover (later rule) and fades itself out. */
+[data-crd-copy][data-copied]::after {
+  content: attr(data-copied-label);
+  opacity: 1;
+  animation: crd-copied 1.2s ease-out forwards;
+}
+
+@keyframes crd-copied {
+  0%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-crd-copy]::after {
+    transition: none;
+  }
+  [data-crd-copy][data-copied]::after {
+    animation: none;
+  }
+}
+
 /* ---- Focus ring ----
    A single ring element travels between the focused sections, sliding and
    resizing with a spring — the core keeps its transform/size in sync. */

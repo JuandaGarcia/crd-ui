@@ -12,11 +12,12 @@ import {
   type CardInstance,
   type CardOptions,
   type CardVariant,
+  type CopyField,
   type FocusedField,
   createCard,
 } from './index';
 
-export type { Brand, CardVariant, FocusedField };
+export type { Brand, CardVariant, CopyField, FocusedField };
 export { brandFromStripe } from './index';
 
 /**
@@ -53,12 +54,18 @@ export const Card = defineComponent({
      * existing card for dashboards (expiry/CVC on the front, no flip).
      */
     layout: { type: String as PropType<'form' | 'display'>, default: 'form' },
+    /**
+     * Make the revealed number, expiry and CVC click-to-copy (display layout
+     * only). Default: false.
+     */
+    copyable: { type: Boolean, default: false },
     placeholders: { type: Object as PropType<CardOptions['placeholders']>, default: undefined },
     locale: { type: Object as PropType<CardOptions['locale']>, default: undefined },
     logos: { type: Object as PropType<CardOptions['logos']>, default: undefined },
   },
   emits: {
     brandChange: (_brand: Brand | null) => true,
+    copy: (_field: CopyField, _value: string) => true,
   },
   setup(props, { emit }) {
     const container = ref<HTMLDivElement>();
@@ -78,6 +85,7 @@ export const Card = defineComponent({
         brand: props.brand,
         last4: props.last4,
         layout: props.layout,
+        copyable: props.copyable,
       });
       if (card.brand !== brand) {
         brand = card.brand;
@@ -93,6 +101,7 @@ export const Card = defineComponent({
         placeholders: props.placeholders,
         locale: props.locale,
         logos: props.logos,
+        onCopy: (field, value) => emit('copy', field, value),
       });
       sync();
     });
@@ -109,6 +118,7 @@ export const Card = defineComponent({
         props.brand,
         props.last4,
         props.layout,
+        props.copyable,
       ],
       sync,
     );

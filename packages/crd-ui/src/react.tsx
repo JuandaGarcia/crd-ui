@@ -4,11 +4,12 @@ import {
   type CardInstance,
   type CardOptions,
   type CardVariant,
+  type CopyField,
   type FocusedField,
   createCard,
 } from './index';
 
-export type { Brand, CardVariant, FocusedField };
+export type { Brand, CardVariant, CopyField, FocusedField };
 export { brandFromStripe } from './index';
 
 export interface CardProps {
@@ -39,11 +40,18 @@ export interface CardProps {
    * passing the real values).
    */
   layout?: 'form' | 'display';
+  /**
+   * Make the revealed number, expiry and CVC click-to-copy (display layout
+   * only). Default: false.
+   */
+  copyable?: boolean;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];
   /** Called whenever the detected brand changes (null when unrecognized). */
   onBrandChange?: (brand: Brand | null) => void;
+  /** Called after a copyable field is copied to the clipboard. */
+  onCopy?: (field: CopyField, value: string) => void;
   className?: string;
 }
 
@@ -62,10 +70,12 @@ export function Card({
   brand,
   last4 = '',
   layout = 'form',
+  copyable = false,
   placeholders,
   locale,
   logos,
   onBrandChange,
+  onCopy,
   className,
 }: CardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -73,10 +83,18 @@ export function Card({
   const brandRef = useRef<Brand | null>(null);
   const onBrandChangeRef = useRef(onBrandChange);
   onBrandChangeRef.current = onBrandChange;
+  const onCopyRef = useRef(onCopy);
+  onCopyRef.current = onCopy;
 
-  // placeholders/locale/logos are creation-time options of the core; changing
-  // them after mount is not supported (recreate the component with a `key`).
-  const initialOptionsRef = useRef({ placeholders, locale, logos });
+  // placeholders/locale/logos/onCopy are creation-time options of the core;
+  // changing them after mount is not supported (recreate with a `key`). onCopy
+  // goes through a stable wrapper so a fresh handler each render still fires.
+  const initialOptionsRef = useRef({
+    placeholders,
+    locale,
+    logos,
+    onCopy: (field: CopyField, value: string) => onCopyRef.current?.(field, value),
+  });
 
   useEffect(() => {
     const container = containerRef.current;
@@ -92,12 +110,24 @@ export function Card({
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
-    card.update({ number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout });
+    card.update({
+      number,
+      name,
+      expiry,
+      cvc,
+      focused,
+      variant,
+      tilt,
+      brand,
+      last4,
+      layout,
+      copyable,
+    });
     if (card.brand !== brandRef.current) {
       brandRef.current = card.brand;
       onBrandChangeRef.current?.(card.brand);
     }
-  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout]);
+  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout, copyable]);
 
   return <div ref={containerRef} className={className} />;
 }

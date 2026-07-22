@@ -30,6 +30,13 @@ export interface CardProps {
    * existing card for dashboards (expiry/CVC on the front, no flip).
    */
   layout?: 'form' | 'display';
+  /**
+   * Make the revealed number, expiry and CVC click-to-copy (display layout
+   * only). Default: false.
+   */
+  copyable?: boolean;
+  /** Called after a copyable field is copied to the clipboard. */
+  onCopy?: (field: 'number' | 'expiry' | 'cvc', value: string) => void;
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createCard } from '../src/card';
 
 describe('createCard', () => {
@@ -135,6 +135,55 @@ describe('createCard', () => {
     });
     expect(card.element.querySelector('.crd__meta-label--exp')?.textContent).toBe('Vence');
     expect(card.element.querySelector('.crd__meta-label--cvc')?.textContent).toBe('CVV');
+  });
+
+  it('makes revealed display fields copyable, masked ones not', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal('navigator', { clipboard: { writeText } });
+    const onCopy = vi.fn();
+
+    const card = createCard(container, {
+      layout: 'display',
+      copyable: true,
+      brand: 'visa',
+      last4: '4242',
+      number: '4111 1111 1111 1111',
+      expiry: '12/29',
+      cvc: '123',
+      onCopy,
+    });
+
+    const number = card.element.querySelector<HTMLElement>('.crd__number')!;
+    const exp = card.element.querySelector<HTMLElement>('.crd__meta-expiry')!;
+    const cvc = card.element.querySelector<HTMLElement>('.crd__meta-cvc')!;
+    expect(number.dataset.crdCopy).toBe('number');
+    expect(number.getAttribute('role')).toBe('button');
+    expect(number.dataset.copyLabel).toBe('Click to copy');
+    expect(number.dataset.copiedLabel).toBe('Copied');
+    expect(exp.dataset.crdCopy).toBe('expiry');
+    expect(cvc.dataset.crdCopy).toBe('cvc');
+
+    number.click();
+    exp.click();
+    cvc.click();
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(writeText).toHaveBeenNthCalledWith(1, '4111111111111111');
+    expect(writeText).toHaveBeenNthCalledWith(2, '12/29');
+    expect(writeText).toHaveBeenNthCalledWith(3, '123');
+    expect(number.dataset.copied).toBe('');
+    expect(onCopy).toHaveBeenCalledWith('number', '4111111111111111');
+
+    vi.unstubAllGlobals();
+  });
+
+  it('does not make masked or form-layout fields copyable', () => {
+    const masked = createCard(container, { layout: 'display', copyable: true, last4: '4242' });
+    expect(masked.element.querySelector<HTMLElement>('.crd__number')!.dataset.crdCopy).toBeUndefined();
+    expect(masked.element.querySelector<HTMLElement>('.crd__meta-cvc')!.dataset.crdCopy).toBeUndefined();
+
+    const form = createCard(container, { copyable: true, number: '4111 1111 1111 1111' });
+    expect(form.element.querySelector<HTMLElement>('.crd__number')!.dataset.crdCopy).toBeUndefined();
   });
 
   it('destroy() removes the card from the DOM', () => {

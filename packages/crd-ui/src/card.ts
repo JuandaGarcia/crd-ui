@@ -1,5 +1,12 @@
 import { type Brand, detectBrand, getBrandSpec } from './brands';
-import { formatCvc, formatExpiry, maskCardNumber, maskCvc, maskLast4 } from './format';
+import {
+  formatCvc,
+  formatExpiry,
+  maskCardNumber,
+  maskCvc,
+  maskLast4,
+  normalizeDigits,
+} from './format';
 import { CHIP_SVG, LOGOS } from './logos';
 
 export type FocusedField = 'number' | 'name' | 'expiry' | 'cvc';
@@ -40,7 +47,16 @@ export interface CardData {
    * focus no longer flips.
    */
   layout?: 'form' | 'display';
+  /**
+   * Make the revealed number, expiry and CVC click-to-copy (display layout
+   * only). Masked values aren't copyable — only what the app has revealed.
+   * Default: false.
+   */
+  copyable?: boolean;
 }
+
+/** A copyable field in the display layout. */
+export type CopyField = 'number' | 'expiry' | 'cvc';
 
 export interface CardOptions extends Partial<CardData> {
   placeholders?: {
@@ -54,9 +70,18 @@ export interface CardOptions extends Partial<CardData> {
     exp?: string;
     /** CVC label on the display-layout meta row. Default: 'CVC'. */
     cvc?: string;
+    /** Hover hint on a copyable field. Default: 'Click to copy'. */
+    copy?: string;
+    /** Feedback bubble shown after copying a field. Default: 'Copied'. */
+    copied?: string;
   };
   /** Override the built-in generic brand marks with your own inline SVG. */
   logos?: Partial<Record<Brand, string>>;
+  /**
+   * Called after a copyable field is copied to the clipboard (analytics, your
+   * own toast…). The card already writes the value; this is just an observer.
+   */
+  onCopy?: (field: CopyField, value: string) => void;
 }
 
 export interface CardInstance {
@@ -115,12 +140,21 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     brand: options.brand,
     last4: options.last4 ?? '',
     layout: options.layout ?? 'form',
+    copyable: options.copyable ?? false,
   };
   const namePlaceholder = options.placeholders?.name ?? 'FULL NAME';
   const validThru = options.locale?.validThru ?? 'valid thru';
   const expLabel = options.locale?.exp ?? 'Exp';
   const cvcLabel = options.locale?.cvc ?? 'CVC';
+  const copyLabel = options.locale?.copy ?? 'Click to copy';
+  const copiedLabel = options.locale?.copied ?? 'Copied';
+  const onCopy = options.onCopy;
   const logos: Record<Brand, string> = { ...LOGOS, ...options.logos };
+  const COPY_ARIA: Record<CopyField, string> = {
+    number: 'Copy card number',
+    expiry: 'Copy expiry date',
+    cvc: 'Copy security code',
+  };
 
   const root = document.createElement('div');
   root.setAttribute('role', 'img');
@@ -217,6 +251,76 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
   root.addEventListener('pointermove', onTiltMove);
   root.addEventListener('pointerleave', onTiltLeave);
 
+  // Click-to-copy for the revealed display-layout fields. The element carries
+  // its field via data-crd-copy; the raw value is derived from state on demand
+  // so it's always current. A transient data-copied attribute drives the CSS
+  // feedback bubble.
+  const copyTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
+
+  function markCopyable(el: HTMLElement, field: CopyField, on: boolean): void {
+    if (on) {
+      el.dataset.crdCopy = field;
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label', COPY_ARIA[field]);
+      el.dataset.copyLabel = copyLabel;
+      el.dataset.copiedLabel = copiedLabel;
+    } else if (el.dataset.crdCopy) {
+      delete el.dataset.crdCopy;
+      delete el.dataset.copyLabel;
+      delete el.dataset.copiedLabel;
+      delete el.dataset.copied;
+      el.removeAttribute('role');
+      el.removeAttribute('tabindex');
+      el.removeAttribute('aria-label');
+    }
+  }
+
+  function copyRawValue(field: CopyField): string {
+    if (field === 'number') return normalizeDigits(state.number);
+    if (field === 'expiry') return formatExpiry(state.expiry);
+    return formatCvc(state.cvc, brand);
+  }
+
+  function doCopy(el: HTMLElement): void {
+    const field = el.dataset.crdCopy as CopyField | undefined;
+    if (!field) return;
+    const value = copyRawValue(field);
+    if (!value) return;
+    const clipboard = navigator?.clipboard;
+    const done = () => {
+      el.dataset.copied = '';
+      const prev = copyTimers.get(el);
+      if (prev) clearTimeout(prev);
+      copyTimers.set(
+        el,
+        setTimeout(() => {
+          delete el.dataset.copied;
+          copyTimers.delete(el);
+        }, 1200),
+      );
+      onCopy?.(field, value);
+    };
+    if (clipboard?.writeText) {
+      clipboard.writeText(value).then(done, () => {});
+    } else {
+      done();
+    }
+  }
+
+  root.addEventListener('click', (event) => {
+    const el = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-crd-copy]');
+    if (el && root.contains(el)) doCopy(el);
+  });
+  root.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const el = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-crd-copy]');
+    if (el && root.contains(el)) {
+      event.preventDefault();
+      doCopy(el);
+    }
+  });
+
   let brand: Brand | null = null;
   let renderedLogoBrand: Brand | null | undefined;
 
@@ -285,6 +389,13 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     refs.metaExpiry.textContent = formatExpiry(state.expiry);
     refs.metaCvc.textContent = state.cvc ? formatCvc(state.cvc, brand) : maskCvc('', brand);
 
+    // Mark the revealed fields copyable (display layout only). Masked values
+    // carry no data to copy, so they stay plain.
+    const canCopy = state.layout === 'display' && !!state.copyable;
+    markCopyable(refs.number, 'number', canCopy && !!state.number.trim());
+    markCopyable(refs.metaExpiry, 'expiry', canCopy && !!state.expiry.trim());
+    markCopyable(refs.metaCvc, 'cvc', canCopy && !!state.cvc.trim());
+
     if (brand !== renderedLogoBrand) {
       const logo = brand ? logos[brand] : '';
       refs.logoFront.innerHTML = logo;
@@ -313,6 +424,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     },
     destroy() {
       if (ringHideTimer) clearTimeout(ringHideTimer);
+      for (const timer of copyTimers.values()) clearTimeout(timer);
       root.remove();
     },
   };

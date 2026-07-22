@@ -185,6 +185,15 @@ const card = createCard(el, { layout: 'display', brand: 'mastercard', last4: '54
 card.update({ number: '5355 2400 0000 5460', expiry: '08/27', cvc: '123' });
 ```
 
+Add `copyable` to let the user click the revealed number, expiry and CVC to
+copy them (with a "Copied" bubble); an optional `onCopy(field, value)` fires
+after each copy for your own toast or analytics:
+
+```tsx
+<Card layout="display" copyable brand="mastercard" last4="5460" {...details}
+  onCopy={(field, value) => console.log('copied', field)} />
+```
+
 ## Theming
 
 Override the custom properties on `.crd` (or any ancestor):
