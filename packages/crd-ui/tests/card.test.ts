@@ -101,6 +101,42 @@ describe('createCard', () => {
     expect(card.element.classList.contains('crd--tilt')).toBe(false);
   });
 
+  it('display layout shows a masked meta row on the front', () => {
+    const card = createCard(container, { layout: 'display', brand: 'mastercard', last4: '5460' });
+    expect(card.element.classList.contains('crd--l-display')).toBe(true);
+    expect(card.element.querySelector('.crd__number')?.textContent).toBe('•••• •••• •••• 5460');
+    expect(card.element.querySelector('.crd__meta-expiry')?.textContent).toBe('••/••');
+    expect(card.element.querySelector('.crd__meta-cvc')?.textContent).toBe('•••');
+    expect(card.element.querySelector('.crd__meta-label--exp')?.textContent).toBe('Exp');
+  });
+
+  it('display layout reveals real values on update()', () => {
+    const card = createCard(container, { layout: 'display', brand: 'visa' });
+    card.update({ number: '4111 1111 1111 1111', expiry: '12/29', cvc: '123' });
+    expect(card.element.querySelector('.crd__number')?.textContent).toBe('4111 1111 1111 1111');
+    expect(card.element.querySelector('.crd__meta-expiry')?.textContent).toBe('12/29');
+    expect(card.element.querySelector('.crd__meta-cvc')?.textContent).toBe('123');
+  });
+
+  it('display layout hides the empty name and never flips on cvc focus', () => {
+    const card = createCard(container, { layout: 'display', focused: 'cvc' });
+    expect(card.element.querySelector('.crd__name')?.textContent).toBe('');
+    expect(card.element.classList.contains('crd--flipped')).toBe(false);
+    // A form-layout card with the same focus does flip.
+    const form = createCard(container, { focused: 'cvc' });
+    expect(form.element.classList.contains('crd--flipped')).toBe(true);
+    expect(form.element.querySelector('.crd__name')?.textContent).toBe('FULL NAME');
+  });
+
+  it('respects custom exp/cvc labels in the display layout', () => {
+    const card = createCard(container, {
+      layout: 'display',
+      locale: { exp: 'Vence', cvc: 'CVV' },
+    });
+    expect(card.element.querySelector('.crd__meta-label--exp')?.textContent).toBe('Vence');
+    expect(card.element.querySelector('.crd__meta-label--cvc')?.textContent).toBe('CVV');
+  });
+
   it('destroy() removes the card from the DOM', () => {
     const card = createCard(container);
     expect(container.querySelector('.crd')).not.toBeNull();

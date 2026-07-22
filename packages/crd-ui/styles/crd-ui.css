@@ -477,6 +477,48 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ---- Display layout ----
+   Presents an existing card (dashboards): expiry and CVC sit on a meta row on
+   the front, under the number. Hidden by default; the layout='display' class
+   reveals it and hides the form-mode expiry in the footer. */
+
+.crd__meta {
+  display: none;
+}
+
+.crd--l-display .crd__meta {
+  display: flex;
+  gap: 9%;
+  margin-top: 6%;
+}
+
+.crd__meta-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.crd__meta-label {
+  font-size: calc(var(--crd-width) / 30);
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+}
+
+.crd__meta-expiry,
+.crd__meta-cvc {
+  font-size: calc(var(--crd-width) / 22);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+.crd--l-display .crd__footer .crd__expiry {
+  display: none;
+}
+
+.crd--l-display .crd__footer {
+  margin-top: 5%;
+}
+
 /* ---- Focus ring ----
    A single ring element travels between the focused sections, sliding and
    resizing with a spring — the core keeps its transform/size in sync. */

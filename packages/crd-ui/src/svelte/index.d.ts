@@ -25,6 +25,11 @@ export interface CardProps {
    * `number` has digits.
    */
   last4?: string;
+  /**
+   * 'form' (default) is the payment-form preview; 'display' presents an
+   * existing card for dashboards (expiry/CVC on the front, no flip).
+   */
+  layout?: 'form' | 'display';
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];

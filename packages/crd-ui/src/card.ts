@@ -32,6 +32,14 @@ export interface CardData {
    * PaymentMethod.card.last4). Ignored while `number` has digits.
    */
   last4?: string;
+  /**
+   * 'form' (default) is the payment-form preview: CVC on the back, flip on
+   * focus, name placeholder. 'display' presents an existing card (dashboards):
+   * expiry and CVC move to a meta row on the front, empty values stay masked
+   * (reveal = update() with the real data), the empty name hides, and the CVC
+   * focus no longer flips.
+   */
+  layout?: 'form' | 'display';
 }
 
 export interface CardOptions extends Partial<CardData> {
@@ -42,6 +50,10 @@ export interface CardOptions extends Partial<CardData> {
   locale?: {
     /** Label next to the expiry date. Default: 'valid thru'. */
     validThru?: string;
+    /** Expiry label on the display-layout meta row. Default: 'Exp'. */
+    exp?: string;
+    /** CVC label on the display-layout meta row. Default: 'CVC'. */
+    cvc?: string;
   };
   /** Override the built-in generic brand marks with your own inline SVG. */
   logos?: Partial<Record<Brand, string>>;
@@ -64,6 +76,16 @@ const TEMPLATE = `
     <div class="crd__chip">${CHIP_SVG}</div>
     <div class="crd__logo"></div>
     <div class="crd__number"></div>
+    <div class="crd__meta">
+      <span class="crd__meta-item">
+        <span class="crd__meta-label crd__meta-label--exp"></span>
+        <span class="crd__meta-expiry"></span>
+      </span>
+      <span class="crd__meta-item">
+        <span class="crd__meta-label crd__meta-label--cvc"></span>
+        <span class="crd__meta-cvc"></span>
+      </span>
+    </div>
     <div class="crd__footer">
       <div class="crd__name"></div>
       <div class="crd__expiry">
@@ -92,9 +114,12 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     tilt: options.tilt ?? false,
     brand: options.brand,
     last4: options.last4 ?? '',
+    layout: options.layout ?? 'form',
   };
   const namePlaceholder = options.placeholders?.name ?? 'FULL NAME';
   const validThru = options.locale?.validThru ?? 'valid thru';
+  const expLabel = options.locale?.exp ?? 'Exp';
+  const cvcLabel = options.locale?.cvc ?? 'CVC';
   const logos: Record<Brand, string> = { ...LOGOS, ...options.logos };
 
   const root = document.createElement('div');
@@ -110,11 +135,15 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
     expiryLabel: query('.crd__expiry-label'),
     expiryValue: query('.crd__expiry-value'),
     cvc: query('.crd__cvc'),
+    metaExpiry: query('.crd__meta-expiry'),
+    metaCvc: query('.crd__meta-cvc'),
     logoFront: query('.crd__logo'),
     logoBack: query('.crd__logo--back'),
     ring: query('.crd__ring'),
   };
   refs.expiryLabel.textContent = validThru;
+  query('.crd__meta-label--exp').textContent = expLabel;
+  query('.crd__meta-label--cvc').textContent = cvcLabel;
 
   // The focus ring is one element that travels between sections: on focus
   // changes it slides/resizes to the target (spring transition in CSS); when
@@ -206,7 +235,9 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
   function render(): void {
     brand = state.brand !== undefined ? state.brand : detectBrand(state.number);
 
-    const nowFlipped = state.focused === 'cvc';
+    // In the display layout the CVC lives on the front, so its focus no
+    // longer flips the card.
+    const nowFlipped = state.focused === 'cvc' && state.layout !== 'display';
     if (nowFlipped !== flipped) {
       flipped = nowFlipped;
       if (flipping) {
@@ -223,6 +254,7 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
       'crd',
       brand ? `crd--brand-${brand}` : 'crd--unknown',
       state.variant && state.variant !== 'gradient' ? `crd--v-${state.variant}` : '',
+      state.layout === 'display' ? 'crd--l-display' : '',
       state.tilt ? 'crd--tilt' : '',
       tiltHover ? 'crd--tilt-hover' : '',
       flipped ? 'crd--flipped' : '',
@@ -238,13 +270,20 @@ export function createCard(container: HTMLElement, options: CardOptions = {}): C
         : maskCardNumber(state.number, brand);
 
     const name = state.name.trim();
-    refs.name.textContent = name || namePlaceholder;
+    // The display layout presents an existing card: no placeholder invitation
+    // to type — an empty name simply doesn't render.
+    refs.name.textContent = name || (state.layout === 'display' ? '' : namePlaceholder);
     refs.name.classList.toggle('crd__name--placeholder', !name);
 
     refs.expiryValue.textContent = formatExpiry(state.expiry);
     // Masked placeholder while empty ('•••'), consistent with the number and
     // expiry — also what PCI integrations show, where the CVC never arrives.
     refs.cvc.textContent = state.cvc ? formatCvc(state.cvc, brand) : maskCvc('', brand);
+
+    // Display-layout meta row: values render verbatim when known, masked when
+    // not — presence of data is what "revealed" means.
+    refs.metaExpiry.textContent = formatExpiry(state.expiry);
+    refs.metaCvc.textContent = state.cvc ? formatCvc(state.cvc, brand) : maskCvc('', brand);
 
     if (brand !== renderedLogoBrand) {
       const logo = brand ? logos[brand] : '';

@@ -33,6 +33,12 @@ export interface CardProps {
    * `number` has digits.
    */
   last4?: string;
+  /**
+   * 'form' (default) is the payment-form preview; 'display' presents an
+   * existing card for dashboards (expiry/CVC on the front, no flip, reveal by
+   * passing the real values).
+   */
+  layout?: 'form' | 'display';
   placeholders?: CardOptions['placeholders'];
   locale?: CardOptions['locale'];
   logos?: CardOptions['logos'];
@@ -55,6 +61,7 @@ export function Card({
   tilt = false,
   brand,
   last4 = '',
+  layout = 'form',
   placeholders,
   locale,
   logos,
@@ -85,12 +92,12 @@ export function Card({
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
-    card.update({ number, name, expiry, cvc, focused, variant, tilt, brand, last4 });
+    card.update({ number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout });
     if (card.brand !== brandRef.current) {
       brandRef.current = card.brand;
       onBrandChangeRef.current?.(card.brand);
     }
-  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4]);
+  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout]);
 
   return <div ref={containerRef} className={className} />;
 }

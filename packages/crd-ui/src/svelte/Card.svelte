@@ -18,6 +18,7 @@
     tilt = false,
     brand: brandOverride = undefined,
     last4 = '',
+    layout = 'form',
     placeholders = undefined,
     locale = undefined,
     logos = undefined,
@@ -51,6 +52,7 @@
       tilt,
       brand: brandOverride,
       last4,
+      layout,
     });
     if (card.brand !== brand) {
       brand = card.brand;

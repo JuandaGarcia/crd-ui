@@ -48,6 +48,11 @@ export const Card = defineComponent({
      * `number` has digits.
      */
     last4: { type: String, default: '' },
+    /**
+     * 'form' (default) is the payment-form preview; 'display' presents an
+     * existing card for dashboards (expiry/CVC on the front, no flip).
+     */
+    layout: { type: String as PropType<'form' | 'display'>, default: 'form' },
     placeholders: { type: Object as PropType<CardOptions['placeholders']>, default: undefined },
     locale: { type: Object as PropType<CardOptions['locale']>, default: undefined },
     logos: { type: Object as PropType<CardOptions['logos']>, default: undefined },
@@ -72,6 +77,7 @@ export const Card = defineComponent({
         tilt: props.tilt,
         brand: props.brand,
         last4: props.last4,
+        layout: props.layout,
       });
       if (card.brand !== brand) {
         brand = card.brand;
@@ -102,6 +108,7 @@ export const Card = defineComponent({
         props.tilt,
         props.brand,
         props.last4,
+        props.layout,
       ],
       sync,
     );
