@@ -9,7 +9,7 @@ Website: https://crd-ui.juanda.co · GitHub: https://github.com/JuandaGarcia/crd
 
 npm i crd-ui
 
-Subpaths: `crd-ui` (vanilla core) · `crd-ui/react` · `crd-ui/vue` · `crd-ui/svelte` · `crd-ui/styles.css` (required stylesheet). Framework peers are optional.
+Subpaths: `crd-ui` (vanilla core) · `crd-ui/react` · `crd-ui/vue` · `crd-ui/svelte` · `crd-ui/styles.css` (required stylesheet) · `crd-ui/styles.layer.css` (same, wrapped in an @layer crd-ui cascade layer, for utility-class users). Framework peers are optional.
 
 ## Quick usage
 
@@ -55,8 +55,8 @@ Brands detected: visa, mastercard, amex, discover, dinersclub, jcb, unionpay, ma
 
 ## Theming
 
-Override CSS custom properties on the card element itself: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`, `--crd-shadow`, `--crd-font`, `--crd-flip-duration`. `.crd` declares each one in its own rule, so ancestor values never inherit through — scope with a descendant selector (`.checkout .crd`). Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`.
+Override CSS custom properties on `.crd` or any ancestor: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`, `--crd-shadow`, `--crd-font`, `--crd-flip-duration`. Defaults are `var()` fallbacks, never declarations on `.crd`, so an inherited value always reaches the card and wins over the brand/variant themes. Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`.
 
-Tailwind: import the stylesheet into a cascade layer first, from a CSS entry (a JS `import 'crd-ui/styles.css'` can't carry a layer) — Tailwind's utilities sit in `@layer utilities` and unlayered CSS always beats layered CSS, so otherwise crd-ui's own rules win and the utilities are ignored: `@layer crd-ui, theme, base, components, utilities;` then `@import "tailwindcss";` and `@import "crd-ui/styles.css" layer(crd-ui);`. Then theme on the card — `<Card className="[--crd-radius:1rem] [--crd-bg:var(--color-indigo-600)]" />` (v4 var(--color-*), v3 theme(colors.*)).
+Tailwind: arbitrary-property utilities theme the card with zero config — `<Card className="[--crd-radius:1rem] [--crd-bg:var(--color-indigo-600)]" />` (v4 var(--color-*), v3 theme(colors.*)). `className`/`class` targets the card root (.crd). Only utilities that override crd-ui's own rules (e.g. `text-2xl` vs the number's font-size) need the cascade layer: declare `@layer crd-ui, theme, base, components, utilities;` before `@import "tailwindcss";` and import `crd-ui/styles.layer.css` instead of `crd-ui/styles.css`.
 
 classNames: Partial<Record<CardSlot, string>> — utility-first styling of internal parts, merged with the built-in classes (state modifiers preserved). Slots (stable keys): root, inner, front, back, chip, logo, number, footer, name, expiry, expiryLabel, expiryValue, meta, metaExpiry, metaCvc, cvc.

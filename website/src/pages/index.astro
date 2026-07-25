@@ -18,8 +18,8 @@ import {
   themingClassNames,
   themingImage,
   themingImageTailwind,
+  themingLayer,
   themingTailwind,
-  themingTailwindSetup,
   usage,
 } from '../lib/snippets';
 import ImageCards from '../components/ImageCards.astro';
@@ -222,9 +222,9 @@ const themes = { light: 'github-light', dark: 'github-dark' };
         <section id="theming">
           <h2>Theming</h2>
           <p>
-            Override CSS custom properties on the card element. <code>.crd</code> declares each
-            one in its own rule, so setting them on an ancestor won't inherit through — scope
-            with a descendant selector (<code>.checkout .crd</code>) instead.
+            Override CSS custom properties on <code>.crd</code> or any ancestor — the defaults
+            are <code>var()</code> fallbacks, never declarations on the card, so an inherited
+            value always reaches it.
           </p>
           <Code code={theming} lang="css" themes={themes} />
           <p>
@@ -235,15 +235,20 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <ImageCards />
           <h3 class="subhead">With Tailwind</h3>
           <p>
-            Every knob is a CSS variable, so Tailwind arbitrary-property utilities can theme the
-            card — but import the stylesheet into a cascade layer first, from your CSS entry
-            (a JS <code>import 'crd-ui/styles.css'</code> can't carry a layer):
+            Every knob is a CSS variable, so Tailwind arbitrary-property utilities theme the card
+            with zero config. <code>className</code> goes to the card root, and utilities beat the
+            brand and variant themes:
           </p>
-          <Code code={themingTailwindSetup} lang="css" themes={themes} />
-          <p>With that in place, the utilities go on the card itself:</p>
           <Code code={themingTailwind} lang="tsx" themes={themes} />
           <p>The image background above, as a utility:</p>
           <Code code={themingImageTailwind} lang="tsx" themes={themes} />
+          <p>
+            One case needs setup: utilities that override the card's <em>own</em> rules — say
+            <code>text-2xl</code> against the number's font size. Tailwind puts utilities in
+            <code>@layer utilities</code> and unlayered CSS always wins, so load the pre-layered
+            build and order the layer first:
+          </p>
+          <Code code={themingLayer} lang="css" themes={themes} />
           <h3 class="subhead">Style any section</h3>
           <p>
             The library owns the card's markup, so to add utility classes to its internal parts

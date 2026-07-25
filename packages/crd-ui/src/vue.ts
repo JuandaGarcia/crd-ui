@@ -2,6 +2,7 @@ import {
   type PropType,
   defineComponent,
   h,
+  normalizeClass,
   onBeforeUnmount,
   onMounted,
   ref,
@@ -72,17 +73,24 @@ export const Card = defineComponent({
     locale: { type: Object as PropType<CardOptions['locale']>, default: undefined },
     logos: { type: Object as PropType<CardOptions['logos']>, default: undefined },
   },
+  // `class` is taken off the fallthrough attrs and applied to the card root
+  // (.crd) instead of the container div, matching every other component
+  // library — a custom property on the container would never reach the card.
+  inheritAttrs: false,
   emits: {
     brandChange: (_brand: Brand | null) => true,
     copy: (_field: CopyField, _value: string) => true,
   },
-  setup(props, { emit }) {
+  setup(props, { emit, attrs }) {
     const container = ref<HTMLDivElement>();
     let card: CardInstance | null = null;
     let brand: Brand | null = null;
 
     const sync = (): void => {
       if (!card) return;
+      const root = [normalizeClass(attrs.class), props.classNames?.root]
+        .filter(Boolean)
+        .join(' ');
       card.update({
         number: props.number,
         name: props.name,
@@ -95,7 +103,7 @@ export const Card = defineComponent({
         last4: props.last4,
         layout: props.layout,
         copyable: props.copyable,
-        classNames: props.classNames,
+        classNames: root ? { ...props.classNames, root } : props.classNames,
       });
       if (card.brand !== brand) {
         brand = card.brand;
@@ -130,6 +138,7 @@ export const Card = defineComponent({
         props.layout,
         props.copyable,
         props.classNames,
+        attrs.class,
       ],
       sync,
     );
@@ -139,6 +148,9 @@ export const Card = defineComponent({
       card = null;
     });
 
-    return () => h('div', { ref: container });
+    return () => {
+      const { class: _class, ...rest } = attrs;
+      return h('div', { ...rest, ref: container });
+    };
   },
 });

@@ -1,33 +1,39 @@
 /* crd-ui — card visualization styles.
    Customize via the custom properties below; brand themes via .crd--brand-*. */
 
+/* The public knobs (--crd-*) are never declared on .crd itself — they are only
+   read, with the default supplied as the var() fallback. A declaration here
+   would beat any inherited value, so this is what lets a knob set anywhere
+   (an ancestor, a utility class, an inline style) actually reach the card.
+   Brand and variant themes feed the private --_crd-*-theme slots instead, so
+   a user value still takes precedence over them. */
 .crd {
-  --crd-width: 290px;
-  --crd-radius: 14px;
-  --crd-font: 'Avenir Next', 'Segoe UI', ui-sans-serif, sans-serif;
-  --crd-color: #fff;
-  --crd-bg: linear-gradient(135deg, #43464b, #1e2126);
-  --crd-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-  --crd-flip-duration: 0.75s;
+  --_crd-width: var(--crd-width, 290px);
+  --_crd-radius: var(--crd-radius, 14px);
+  --_crd-font: var(--crd-font, 'Avenir Next', 'Segoe UI', ui-sans-serif, sans-serif);
+  --_crd-color: var(--crd-color, var(--_crd-color-theme, #fff));
+  --_crd-bg: var(--crd-bg, var(--_crd-bg-theme, linear-gradient(135deg, #43464b, #1e2126)));
+  --_crd-shadow: var(--crd-shadow, 0 8px 24px rgba(0, 0, 0, 0.28));
+  --_crd-flip-duration: var(--crd-flip-duration, 0.75s);
 
-  width: var(--crd-width);
+  width: var(--_crd-width);
   aspect-ratio: 1.586; /* ISO/IEC 7810 ID-1 */
   perspective: 1000px;
-  font-family: var(--crd-font);
-  color: var(--crd-color);
+  font-family: var(--_crd-font);
+  color: var(--_crd-color);
 }
 
 /* Brand themes */
-.crd--brand-visa      { --crd-bg: linear-gradient(135deg, #0f509e, #1399cd); }
-.crd--brand-mastercard{ --crd-bg: linear-gradient(135deg, #354057, #191c22); }
-.crd--brand-amex      { --crd-bg: linear-gradient(135deg, #106d90, #4ba6c3); }
-.crd--brand-discover  { --crd-bg: linear-gradient(135deg, #d05e28, #f2a33c); }
-.crd--brand-dinersclub{ --crd-bg: linear-gradient(135deg, #33526f, #6f9ab8); }
-.crd--brand-jcb       { --crd-bg: linear-gradient(135deg, #1d6b48, #37a26a); }
-.crd--brand-unionpay  { --crd-bg: linear-gradient(135deg, #274b70, #b23a48); }
-.crd--brand-maestro   { --crd-bg: linear-gradient(135deg, #45327a, #7a5fb8); }
-.crd--brand-elo       { --crd-bg: linear-gradient(135deg, #2d2d2d, #565656); }
-.crd--brand-hipercard { --crd-bg: linear-gradient(135deg, #8a1a2b, #c34a5a); }
+.crd--brand-visa      { --_crd-bg-theme: linear-gradient(135deg, #0f509e, #1399cd); }
+.crd--brand-mastercard{ --_crd-bg-theme: linear-gradient(135deg, #354057, #191c22); }
+.crd--brand-amex      { --_crd-bg-theme: linear-gradient(135deg, #106d90, #4ba6c3); }
+.crd--brand-discover  { --_crd-bg-theme: linear-gradient(135deg, #d05e28, #f2a33c); }
+.crd--brand-dinersclub{ --_crd-bg-theme: linear-gradient(135deg, #33526f, #6f9ab8); }
+.crd--brand-jcb       { --_crd-bg-theme: linear-gradient(135deg, #1d6b48, #37a26a); }
+.crd--brand-unionpay  { --_crd-bg-theme: linear-gradient(135deg, #274b70, #b23a48); }
+.crd--brand-maestro   { --_crd-bg-theme: linear-gradient(135deg, #45327a, #7a5fb8); }
+.crd--brand-elo       { --_crd-bg-theme: linear-gradient(135deg, #2d2d2d, #565656); }
+.crd--brand-hipercard { --_crd-bg-theme: linear-gradient(135deg, #8a1a2b, #c34a5a); }
 
 /* ---- Variants ----
    Brand-agnostic finishes selected via the `variant` option; they override
@@ -42,8 +48,8 @@
 /* Ember: warm grainy bloom over a dark crown, number on a dark band,
    light lower body. */
 .crd--v-ember {
-  --crd-color: #17181c;
-  --crd-bg:
+  --_crd-color-theme: #17181c;
+  --_crd-bg-theme:
     var(--crd-noise-light),
     linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(26, 19, 10, 0.85) 16%, rgba(140, 95, 30, 0.32) 32%, transparent 50%),
     radial-gradient(90% 46% at 50% 24%, rgba(255, 176, 64, 0.6), rgba(255, 150, 40, 0.14) 58%, transparent 74%),
@@ -76,8 +82,8 @@
 /* Holo: iridescent interference over near-black — two offset ripple fields
    crossing over soft color blooms. */
 .crd--v-holo {
-  --crd-color: #f4f4f6;
-  --crd-bg:
+  --_crd-color-theme: #f4f4f6;
+  --_crd-bg-theme:
     var(--crd-noise-light),
     repeating-radial-gradient(circle at 18% 30%, rgba(255, 255, 255, 0.1) 0 1.5px, transparent 1.5px 5px),
     repeating-radial-gradient(circle at 82% 70%, rgba(255, 255, 255, 0.08) 0 1.5px, transparent 1.5px 6px),
@@ -90,8 +96,8 @@
 
 /* Porcelain: near-white with faint pastel washes, dark type. */
 .crd--v-porcelain {
-  --crd-color: #1d1d1f;
-  --crd-bg:
+  --_crd-color-theme: #1d1d1f;
+  --_crd-bg-theme:
     var(--crd-noise-dark),
     radial-gradient(60% 70% at 12% 88%, rgba(255, 205, 120, 0.35), transparent 65%),
     radial-gradient(55% 65% at 45% 65%, rgba(255, 140, 160, 0.22), transparent 65%),
@@ -112,12 +118,12 @@
 /* Sunset (default): blooms on cream, name on a dark base band. The bloom
    palette adapts to the detected brand via the custom properties below. */
 .crd--v-sunset {
-  --crd-color: #17171a;
+  --_crd-color-theme: #17171a;
   --crd-sunset-a: rgba(255, 170, 40, 0.75);
   --crd-sunset-b: rgba(70, 190, 255, 0.65);
   --crd-sunset-c: rgba(255, 120, 190, 0.5);
   --crd-sunset-ring: rgba(255, 140, 0, 0.9);
-  --crd-bg:
+  --_crd-bg-theme:
     var(--crd-noise-light),
     linear-gradient(180deg, transparent 64%, #131316 64%),
     radial-gradient(55% 60% at 38% 34%, var(--crd-sunset-a), transparent 68%),
@@ -218,8 +224,8 @@
 /* Graphite: brushed near-black with fine vertical pinstripes and a deep
    left edge. */
 .crd--v-graphite {
-  --crd-color: #e8e9ec;
-  --crd-bg:
+  --_crd-color-theme: #e8e9ec;
+  --_crd-bg-theme:
     var(--crd-noise-light),
     linear-gradient(90deg, rgba(5, 6, 8, 0.9) 0%, rgba(5, 6, 8, 0.75) 10%, transparent 13%),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 7px),
@@ -232,7 +238,7 @@
   height: 100%;
   transform-style: preserve-3d;
   /* Springy rotation: overshoots ~180° and settles back. */
-  transition: transform var(--crd-flip-duration) cubic-bezier(0.34, 1.3, 0.5, 1);
+  transition: transform var(--_crd-flip-duration) cubic-bezier(0.34, 1.3, 0.5, 1);
 }
 
 .crd--flipped .crd__inner {
@@ -245,7 +251,7 @@
    deepens while airborne, and a light sheen sweeps across the faces. */
 
 .crd--flipping {
-  animation: crd-lift var(--crd-flip-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  animation: crd-lift var(--_crd-flip-duration) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes crd-lift {
@@ -265,13 +271,13 @@
 
 .crd--flipping .crd__front,
 .crd--flipping .crd__back {
-  animation: crd-airborne-shadow var(--crd-flip-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  animation: crd-airborne-shadow var(--_crd-flip-duration) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes crd-airborne-shadow {
   0%,
   100% {
-    box-shadow: var(--crd-shadow);
+    box-shadow: var(--_crd-shadow);
   }
   45% {
     box-shadow: 0 34px 54px rgba(0, 0, 0, 0.45);
@@ -298,7 +304,7 @@
 
 .crd--flipping .crd__front::after,
 .crd--flipping .crd__back::after {
-  animation: crd-sheen var(--crd-flip-duration) ease;
+  animation: crd-sheen var(--_crd-flip-duration) ease;
 }
 
 @keyframes crd-sheen {
@@ -348,7 +354,7 @@
 .crd__glare {
   position: absolute;
   inset: 0;
-  border-radius: var(--crd-radius);
+  border-radius: var(--_crd-radius);
   pointer-events: none;
   opacity: 0;
   z-index: 3;
@@ -409,9 +415,9 @@
 .crd__back {
   position: absolute;
   inset: 0;
-  border-radius: var(--crd-radius);
-  background: var(--crd-bg);
-  box-shadow: var(--crd-shadow);
+  border-radius: var(--_crd-radius);
+  background: var(--_crd-bg);
+  box-shadow: var(--_crd-shadow);
   backface-visibility: hidden;
   overflow: hidden;
   padding: 6.5%;
@@ -442,12 +448,12 @@
   top: 6.5%;
   right: 6.5%;
   width: 26%;
-  color: var(--crd-color);
+  color: var(--_crd-color);
 }
 
 .crd__number {
   margin-top: 9%;
-  font-size: calc(var(--crd-width) / 17.5);
+  font-size: calc(var(--_crd-width) / 17.5);
   letter-spacing: 0.08em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -463,7 +469,7 @@
 }
 
 .crd__name {
-  font-size: calc(var(--crd-width) / 24);
+  font-size: calc(var(--_crd-width) / 24);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   overflow: hidden;
@@ -482,14 +488,14 @@
 
 .crd__expiry-label {
   display: block;
-  font-size: calc(var(--crd-width) / 41);
+  font-size: calc(var(--_crd-width) / 41);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   opacity: 0.65;
 }
 
 .crd__expiry-value {
-  font-size: calc(var(--crd-width) / 24);
+  font-size: calc(var(--_crd-width) / 24);
   font-variant-numeric: tabular-nums;
 }
 
@@ -515,14 +521,14 @@
 }
 
 .crd__meta-label {
-  font-size: calc(var(--crd-width) / 30);
+  font-size: calc(var(--_crd-width) / 30);
   letter-spacing: 0.02em;
   opacity: 0.55;
 }
 
 .crd__meta-expiry,
 .crd__meta-cvc {
-  font-size: calc(var(--crd-width) / 22);
+  font-size: calc(var(--_crd-width) / 22);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.05em;
 }
@@ -569,7 +575,7 @@
   border-radius: 5px;
   background: rgba(20, 20, 24, 0.92);
   color: #fff;
-  font-size: calc(var(--crd-width) / 30);
+  font-size: calc(var(--_crd-width) / 30);
   font-weight: 500;
   letter-spacing: 0.02em;
   white-space: nowrap;
@@ -682,7 +688,7 @@
 
 .crd__cvc {
   color: #333;
-  font-size: calc(var(--crd-width) / 26);
+  font-size: calc(var(--_crd-width) / 26);
   font-style: italic;
   letter-spacing: 0.15em;
   font-variant-numeric: tabular-nums;

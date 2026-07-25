@@ -206,24 +206,25 @@ export const theming = `.crd {
   --crd-bg: linear-gradient(135deg, #1a1f71, #4b6cb7);
 }`;
 
-export const themingTailwindSetup = `/* app.css — import crd-ui into a cascade layer. Tailwind's
-   utilities live in @layer utilities, and unlayered CSS always
-   beats layered CSS: with a plain import, crd-ui's own rules
-   win and the utilities below do nothing. */
-@layer crd-ui, theme, base, components, utilities;
-@import "tailwindcss";
-@import "crd-ui/styles.css" layer(crd-ui);`;
-
-export const themingTailwind = `// Every knob is a CSS custom property, so arbitrary-property
-// utilities theme the card — they beat the brand and variant
-// themes. Put them on the card itself: .crd declares each
-// variable in its own rule, so ancestor values never inherit.
+export const themingTailwind = `// Every knob is a CSS custom property whose default is a var()
+// fallback, never a declaration on .crd — so utilities theme the
+// card with zero config, on the card or on any ancestor.
 // v4: var(--color-*)   ·   v3: theme(colors.*)
 <Card
   className="[--crd-radius:1.25rem] [--crd-color:white]
     [--crd-bg:var(--color-indigo-600)]
     [--crd-shadow:0_10px_40px_theme(colors.indigo.500/40%)]"
 />;`;
+
+export const themingLayer = `/* app.css — optional: only for utilities that must override the
+   card's own rules (font-size, letter-spacing…). Theming through
+   --crd-* works without any of this. Tailwind's utilities sit in
+   @layer utilities, and unlayered CSS always wins, so load crd-ui
+   pre-wrapped in a layer that you order first. */
+@layer crd-ui, theme, base, components, utilities;
+@import "tailwindcss";
+
+/* …then import 'crd-ui/styles.layer.css' instead of styles.css */`;
 
 export const themingImageTailwind = `// The image background above, in Tailwind — underscores
 // become spaces. variant="gradient" keeps the variant

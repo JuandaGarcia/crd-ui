@@ -12,8 +12,8 @@ import {
   themingClassNames,
   themingImage,
   themingImageTailwind,
+  themingLayer,
   themingTailwind,
-  themingTailwindSetup,
   usage,
 } from './snippets';
 
@@ -55,6 +55,7 @@ Subpath exports (one package for every framework):
 - \`crd-ui/vue\` — Vue 3 component \`<Card />\` (peer: vue >=3).
 - \`crd-ui/svelte\` — Svelte 5 component \`<Card />\` (peer: svelte >=5).
 - \`crd-ui/styles.css\` — required stylesheet.
+- \`crd-ui/styles.layer.css\` — same stylesheet wrapped in an \`@layer crd-ui\` cascade layer.
 
 All framework peers are optional: install only the one you use.
 
@@ -130,9 +131,8 @@ ${displayExample.vanilla}
 
 ## Theming
 
-Override CSS custom properties on the card element. \`.crd\` declares each one in its own
-rule, so setting them on an ancestor won't inherit through — scope with a descendant
-selector (\`.checkout .crd\`) instead:
+Override CSS custom properties on \`.crd\` or any ancestor — the defaults are \`var()\`
+fallbacks, never declarations on the card, so an inherited value always reaches it:
 
 \`\`\`css
 ${theming}
@@ -147,19 +147,11 @@ ${themingImage}
 
 ### With Tailwind
 
-Every knob is a CSS custom property, so Tailwind arbitrary-property utilities can theme
-the card — but first import the stylesheet into a cascade layer. Tailwind emits its
-utilities inside \`@layer utilities\`, and unlayered CSS always beats layered CSS, so with
-a plain import crd-ui's own \`.crd\` rules win and the utilities are ignored. Layering has
-to happen from your CSS entry: a JS \`import 'crd-ui/styles.css'\` can't carry a layer.
-
-\`\`\`css
-${themingTailwindSetup}
-\`\`\`
-
-With that in place the utilities win, even over the brand and variant themes. Put them on
-the card itself — \`.crd\` declares every variable in its own rule, so a value inherited
-from an ancestor never applies. Use \`var(--color-*)\` (v4) or \`theme(colors.*)\` (v3):
+Every knob is a CSS custom property whose default is a \`var()\` fallback rather than a
+declaration on \`.crd\`, so Tailwind arbitrary-property utilities theme the card with zero
+config — on the card or on any ancestor, and they beat the brand and variant themes.
+\`className\` (Vue/Svelte: \`class\`) targets the card root. Use \`var(--color-*)\` (v4) or
+\`theme(colors.*)\` (v3):
 
 \`\`\`tsx
 ${themingTailwind}
@@ -169,6 +161,15 @@ The image background, as a utility:
 
 \`\`\`tsx
 ${themingImageTailwind}
+\`\`\`
+
+One case needs setup: utilities that override the card's *own* rules (e.g. \`text-2xl\`
+against the number's font size). Tailwind emits utilities inside \`@layer utilities\`, and
+unlayered CSS always beats layered CSS, so import the pre-layered build
+(\`crd-ui/styles.layer.css\`) and declare the layer order first:
+
+\`\`\`css
+${themingLayer}
 \`\`\`
 
 ### Styling sections with classNames

@@ -32,6 +32,29 @@ describe('<Card />', () => {
     expect(onBrandChange).toHaveBeenLastCalledWith(null);
   });
 
+  it('applies className to the card root, not the container', () => {
+    const { container } = render(<Card className="ring-1 [--crd-radius:1rem]" />);
+    const root = container.querySelector('.crd')!;
+    expect(root.classList.contains('ring-1')).toBe(true);
+    expect(root.classList.contains('[--crd-radius:1rem]')).toBe(true);
+    // the mount container stays unstyled — a knob set there never reaches .crd
+    expect((container.firstElementChild as HTMLElement).className).toBe('');
+  });
+
+  it('merges className with classNames.root and keeps state modifiers', () => {
+    const { container, rerender } = render(
+      <Card className="shadow-xl" classNames={{ root: 'ring-2' }} number="4111" />,
+    );
+    const root = container.querySelector('.crd')!;
+    expect(root.classList.contains('shadow-xl')).toBe(true);
+    expect(root.classList.contains('ring-2')).toBe(true);
+    expect(root.classList.contains('crd--brand-visa')).toBe(true);
+
+    rerender(<Card className="shadow-none" number="4111" />);
+    expect(container.querySelector('.crd')!.classList.contains('shadow-none')).toBe(true);
+    expect(container.querySelector('.crd')!.classList.contains('shadow-xl')).toBe(false);
+  });
+
   it('cleans up on unmount', () => {
     const { container, unmount } = render(<Card />);
     unmount();

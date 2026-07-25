@@ -45,6 +45,10 @@
 
   $effect(() => {
     if (!card) return;
+    // `class` targets the card root (.crd), like every other component
+    // library — the container div is only an internal mount point, and a
+    // custom property set on it would never reach the card.
+    const root = [className, classNames?.root].filter(Boolean).join(' ');
     card.update({
       number,
       name,
@@ -57,7 +61,7 @@
       last4,
       layout,
       copyable,
-      classNames,
+      classNames: root ? { ...classNames, root } : classNames,
     });
     if (card.brand !== brand) {
       brand = card.brand;
@@ -66,4 +70,4 @@
   });
 </script>
 
-<div bind:this={container} class={className}></div>
+<div bind:this={container}></div>

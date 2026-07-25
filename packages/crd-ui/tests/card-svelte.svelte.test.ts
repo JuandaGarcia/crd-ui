@@ -23,6 +23,25 @@ describe('<Card /> (Svelte)', () => {
     unmount(component);
   });
 
+  it('applies class to the card root, not the container', () => {
+    const props = $state({ class: 'ring-1 [--crd-radius:1rem]', number: '4111' });
+    const component = mount(Card, { target, props });
+    flushSync();
+    const root = target.querySelector('.crd')!;
+    expect(root.classList.contains('ring-1')).toBe(true);
+    expect(root.classList.contains('[--crd-radius:1rem]')).toBe(true);
+    expect(root.classList.contains('crd--brand-visa')).toBe(true);
+    // the mount container stays unstyled
+    expect((target.firstElementChild as HTMLElement).className).toBe('');
+
+    props.class = 'ring-2';
+    flushSync();
+    const updated = target.querySelector('.crd')!;
+    expect(updated.classList.contains('ring-2')).toBe(true);
+    expect(updated.classList.contains('ring-1')).toBe(false);
+    unmount(component);
+  });
+
   it('updates the card and calls onBrandChange when props change', () => {
     const onBrandChange = vi.fn();
     const props = $state({ number: '', focused: null, onBrandChange });

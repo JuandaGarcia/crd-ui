@@ -32,6 +32,24 @@ describe('<Card /> (Vue)', () => {
     expect(wrapper.find('.crd').classes()).toContain('crd--v-holo');
   });
 
+  it('applies class to the card root and keeps other attrs on the container', async () => {
+    const wrapper = mount(Card, {
+      attrs: { class: 'ring-1 [--crd-radius:1rem]', 'data-testid': 'card' },
+      props: { classNames: { root: 'shadow-xl' } },
+    });
+    const root = wrapper.find('.crd');
+    expect(root.classes()).toContain('ring-1');
+    expect(root.classes()).toContain('[--crd-radius:1rem]');
+    expect(root.classes()).toContain('shadow-xl');
+    // class is taken off the container; unrelated attrs still fall through
+    expect(wrapper.element.className).toBe('');
+    expect(wrapper.element.getAttribute('data-testid')).toBe('card');
+
+    await wrapper.setProps({ number: '4111' });
+    expect(wrapper.find('.crd').classes()).toContain('ring-1');
+    expect(wrapper.find('.crd').classes()).toContain('crd--brand-visa');
+  });
+
   it('passes creation-time options through', () => {
     const wrapper = mount(Card, {
       props: { placeholders: { name: 'NOMBRE COMPLETO' }, locale: { validThru: 'válida hasta' } },

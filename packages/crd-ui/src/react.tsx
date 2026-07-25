@@ -58,6 +58,7 @@ export interface CardProps {
   onBrandChange?: (brand: Brand | null) => void;
   /** Called after a copyable field is copied to the clipboard. */
   onCopy?: (field: CopyField, value: string) => void;
+  /** Classes for the card root (`.crd`) — shorthand for `classNames.root`. */
   className?: string;
 }
 
@@ -117,6 +118,10 @@ export function Card({
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
+    // `className` targets the card root (.crd), like every other component
+    // library — the container div is only an internal mount point, and a
+    // custom property set on it would never reach the card anyway.
+    const root = [className, classNames?.root].filter(Boolean).join(' ');
     card.update({
       number,
       name,
@@ -129,13 +134,13 @@ export function Card({
       last4,
       layout,
       copyable,
-      classNames,
+      classNames: root ? { ...classNames, root } : classNames,
     });
     if (card.brand !== brandRef.current) {
       brandRef.current = card.brand;
       onBrandChangeRef.current?.(card.brand);
     }
-  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout, copyable, classNames]);
+  }, [number, name, expiry, cvc, focused, variant, tilt, brand, last4, layout, copyable, classNames, className]);
 
-  return <div ref={containerRef} className={className} />;
+  return <div ref={containerRef} />;
 }
