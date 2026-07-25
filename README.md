@@ -196,7 +196,9 @@ after each copy for your own toast or analytics:
 
 ## Theming
 
-Override the custom properties on `.crd` (or any ancestor):
+Override the custom properties on the card element. `.crd` declares each one in its own
+rule, so setting them on an ancestor won't inherit through — scope with a descendant
+selector (`.checkout .crd`) instead:
 
 ```css
 .crd {
@@ -212,12 +214,34 @@ Brand themes are plain CSS classes (`.crd--brand-visa`, …) you can redefine en
 ### With Tailwind
 
 Because every knob is a CSS custom property, you can theme the card with Tailwind
-arbitrary-property utilities — on the card itself or any ancestor (they inherit):
+arbitrary-property utilities — but import the stylesheet into a **cascade layer** first.
+Tailwind emits its utilities inside `@layer utilities`, and unlayered CSS always beats
+layered CSS, so with a plain import crd-ui's own `.crd` rules win and your utilities are
+silently ignored. Do it from your CSS entry — a JS `import 'crd-ui/styles.css'` can't
+carry a layer:
+
+```css
+/* app.css */
+@layer crd-ui, theme, base, components, utilities;
+@import "tailwindcss";
+@import "crd-ui/styles.css" layer(crd-ui);
+```
+
+Now the utilities win, even over the brand and variant themes. Put them on the card
+itself: `.crd` declares every variable in its own rule, so a value inherited from an
+ancestor never applies.
 
 ```tsx
 {/* v4: use var(--color-*); v3: use theme(colors.*) */}
 <Card className="[--crd-radius:1.25rem] [--crd-color:white]
   [--crd-bg:var(--color-indigo-600)]" />
+```
+
+`--crd-bg` takes a full background, so images work here too (underscores become spaces):
+
+```tsx
+<Card variant="gradient"
+  className="[--crd-bg:url('/textures/holo.png')_center/cover_no-repeat]" />
 ```
 
 Themeable variables: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`,

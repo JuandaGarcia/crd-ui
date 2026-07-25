@@ -206,16 +206,35 @@ export const theming = `.crd {
   --crd-bg: linear-gradient(135deg, #1a1f71, #4b6cb7);
 }`;
 
-export const themingTailwind = `// Every knob is a CSS custom property, so Tailwind arbitrary-property
-// utilities theme the card — on the card or any ancestor (they inherit).
+export const themingTailwindSetup = `/* app.css — import crd-ui into a cascade layer. Tailwind's
+   utilities live in @layer utilities, and unlayered CSS always
+   beats layered CSS: with a plain import, crd-ui's own rules
+   win and the utilities below do nothing. */
+@layer crd-ui, theme, base, components, utilities;
+@import "tailwindcss";
+@import "crd-ui/styles.css" layer(crd-ui);`;
+
+export const themingTailwind = `// Every knob is a CSS custom property, so arbitrary-property
+// utilities theme the card — they beat the brand and variant
+// themes. Put them on the card itself: .crd declares each
+// variable in its own rule, so ancestor values never inherit.
 // v4: var(--color-*)   ·   v3: theme(colors.*)
 <Card
   className="[--crd-radius:1.25rem] [--crd-color:white]
-    [--crd-bg:var(--color-indigo-600)] [--crd-shadow:0_10px_40px_theme(colors.indigo.500/40%)]"
+    [--crd-bg:var(--color-indigo-600)]
+    [--crd-shadow:0_10px_40px_theme(colors.indigo.500/40%)]"
+/>;`;
+
+export const themingImageTailwind = `// The image background above, in Tailwind — underscores
+// become spaces. variant="gradient" keeps the variant
+// artwork from covering the image.
+<Card
+  variant="gradient"
+  className="[--crd-bg:url('/textures/holo.png')_center/cover]"
 />;`;
 
 export const themingClassNames = `// Style the card's internal sections with a classNames slot map.
-// Your classes are merged with the built-ins (state modifiers stay intact).
+// Your classes merge with the built-ins (state modifiers stay).
 <Card
   classNames={{
     root: 'shadow-2xl ring-1 ring-white/10',
@@ -225,9 +244,9 @@ export const themingClassNames = `// Style the card's internal sections with a c
   }}
 />;
 
-// Slots: root · inner · front · back · chip · logo · number · footer ·
-//        name · expiry · expiryLabel · expiryValue · meta · metaExpiry ·
-//        metaCvc · cvc`;
+// Slots: root · inner · front · back · chip · logo · number ·
+//        footer · name · expiry · expiryLabel · expiryValue ·
+//        meta · metaExpiry · metaCvc · cvc`;
 
 export const themingImage = `/* --crd-bg is a full CSS background: images work too */
 .crd {
