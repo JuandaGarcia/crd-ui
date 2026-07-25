@@ -13,6 +13,7 @@ npm i crd-ui
 - **`crd-ui/react`** — React component (`<Card />`).
 - **`crd-ui/vue`** — Vue 3 component (`<Card />`).
 - **`crd-ui/svelte`** — Svelte 5 component (`<Card />`).
+- **`crd-ui/styles.css`** — the stylesheet (`crd-ui/styles.layer.css` for a cascade-layered build).
 
 ## Features
 
@@ -196,7 +197,8 @@ after each copy for your own toast or analytics:
 
 ## Theming
 
-Override the custom properties on `.crd` (or any ancestor):
+Override the custom properties on `.crd` or any ancestor — the defaults are `var()`
+fallbacks rather than declarations on the card, so an inherited value always reaches it:
 
 ```css
 .crd {
@@ -211,8 +213,10 @@ Brand themes are plain CSS classes (`.crd--brand-visa`, …) you can redefine en
 
 ### With Tailwind
 
-Because every knob is a CSS custom property, you can theme the card with Tailwind
-arbitrary-property utilities — on the card itself or any ancestor (they inherit):
+Every knob is a CSS custom property whose default is a `var()` fallback rather than a
+declaration on `.crd`, so Tailwind arbitrary-property utilities theme the card with **zero
+config** — on the card or on any ancestor, and they win over the brand and variant themes.
+`className` (Vue/Svelte: `class`) targets the card root:
 
 ```tsx
 {/* v4: use var(--color-*); v3: use theme(colors.*) */}
@@ -220,8 +224,27 @@ arbitrary-property utilities — on the card itself or any ancestor (they inheri
   [--crd-bg:var(--color-indigo-600)]" />
 ```
 
-Themeable variables: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`,
-`--crd-shadow`, `--crd-font`, `--crd-flip-duration`.
+`--crd-bg` takes a full background, so images work here too (underscores become spaces):
+
+```tsx
+<Card variant="gradient"
+  className="[--crd-bg:url('/textures/holo.png')_center/cover]" />
+```
+
+One case needs setup: utilities that override the card's *own* rules — `text-2xl` against
+the number's font size, say. Tailwind emits utilities inside `@layer utilities`, and
+unlayered CSS always beats layered CSS, so import the pre-layered build and order the
+layer first:
+
+```css
+/* app.css */
+@layer crd-ui, theme, base, components, utilities;
+@import "tailwindcss";
+```
+
+```js
+import 'crd-ui/styles.layer.css'; // instead of crd-ui/styles.css
+```
 
 ### Styling sections (`classNames`)
 
@@ -289,3 +312,14 @@ pnpm dev     # playground
 ## License
 
 [MIT](./LICENSE)
+
+## Upgrading to 0.12.0
+
+`className` (Vue/Svelte: `class`) now lands on the card root (`.crd`) instead of the
+container element the component mounts into — matching how other component libraries
+behave, and making CSS-variable theming through it actually work. If you were using it to
+position the card in a layout, move those classes to a wrapper of your own.
+
+The stylesheet no longer *declares* the `--crd-*` knobs on `.crd`; it reads them with the
+defaults as `var()` fallbacks. Overrides keep working exactly as before, and now they also
+work from an ancestor and from utility classes.
