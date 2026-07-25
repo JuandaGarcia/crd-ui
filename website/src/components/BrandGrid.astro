@@ -7,22 +7,10 @@
 
 <script>
   import { createCard } from 'crd-ui';
-
-  const SAMPLES: [string, string, string][] = [
-    ['4111 1111 1111 1111', 'Visa', '12/29'],
-    ['5555 5555 5555 4444', 'Mastercard', '06/30'],
-    ['3782 822463 10005', 'American Express', '09/28'],
-    ['6011 1111 1111 1117', 'Discover', '03/29'],
-    ['3056 930902 5904', 'Diners Club', '01/28'],
-    ['3530 1113 3330 0000', 'JCB', '10/29'],
-    ['6200 0000 0000 0005', 'UnionPay', '05/30'],
-    ['6759 6498 2643 8453', 'Maestro', '08/28'],
-    ['5066 9911 1111 1118', 'Elo', '02/30'],
-    ['6062 8256 2425 4001', 'Hipercard', '07/29'],
-  ];
+  import { TEST_CARDS } from '../lib/test-cards';
 
   const grid = document.getElementById('brand-grid')!;
-  for (const [number, name, expiry] of SAMPLES) {
+  for (const { number, name, expiry } of TEST_CARDS) {
     const cell = document.createElement('div');
     grid.appendChild(cell);
     createCard(cell, { number, name, expiry, tilt: true });

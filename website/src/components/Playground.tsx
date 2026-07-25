@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Card, type CardVariant, type FocusedField } from 'crd-ui/react';
 import { detectBrand, formatCardNumber, formatExpiry, normalizeDigits } from 'crd-ui';
+import { TEST_CARDS, type TestCard } from '../lib/test-cards';
 
 export function Playground() {
   const [number, setNumber] = useState('');
@@ -11,11 +12,29 @@ export function Playground() {
   const [variant, setVariant] = useState<CardVariant>('sunset');
   const [tilt, setTilt] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [copiedCard, setCopiedCard] = useState<string | null>(null);
+  const numberRef = useRef<HTMLInputElement>(null);
 
   const VARIANTS: CardVariant[] = ['sunset', 'ember', 'holo', 'porcelain', 'graphite', 'gradient'];
 
   const focus = (field: FocusedField) => () => setFocused(field);
   const blur = () => setFocused(null);
+
+  // Test-number chips: fill the form so the brand switches live, and put the
+  // number on the clipboard for pasting into the reader's own payment form.
+  const useTestCard = async (card: TestCard) => {
+    setNumber(formatCardNumber(card.number, detectBrand(card.number)));
+    setExpiry(card.expiry);
+    numberRef.current?.focus();
+    try {
+      await navigator.clipboard.writeText(card.number);
+      setCopiedCard(card.label);
+      setTimeout(() => setCopiedCard(null), 1200);
+    } catch {
+      // clipboard can be blocked (permissions, insecure origin) — the form is
+      // filled either way, which is the part that matters here.
+    }
+  };
 
   // Builds a ready-to-paste snippet for the framework picked in the masthead,
   // reflecting the playground's current variant/tilt configuration.
@@ -38,16 +57,19 @@ export function Playground() {
 
   return (
     <div className="demo-panel">
-      <Card
-        className="playground-card"
-        number={number}
-        name={name}
-        expiry={expiry}
-        cvc={cvc}
-        focused={focused}
-        variant={variant}
-        tilt={tilt}
-      />
+      {/* own wrapper: className now lands on .crd, and the sticky/width rules
+          below target the box the card sits in */}
+      <div className="playground-card">
+        <Card
+          number={number}
+          name={name}
+          expiry={expiry}
+          cvc={cvc}
+          focused={focused}
+          variant={variant}
+          tilt={tilt}
+        />
+      </div>
       <form className="demo-form" onSubmit={(e) => e.preventDefault()}>
         <label>
           Card number
@@ -55,6 +77,7 @@ export function Playground() {
             inputMode="numeric"
             autoComplete="cc-number"
             placeholder="4111 1111 1111 1111"
+            ref={numberRef}
             value={number}
             onChange={(e) =>
               setNumber(formatCardNumber(e.target.value, detectBrand(e.target.value)))
@@ -113,6 +136,22 @@ export function Playground() {
             </svg>
             {copied ? 'copied!' : 'copy code'}
           </button>
+        </div>
+        <div className="customize__row">
+          <span className="customize__label">Test numbers</span>
+          <div className="variant-row" role="group" aria-label="Fill a test card number">
+            {TEST_CARDS.map((card) => (
+              <button
+                key={card.label}
+                type="button"
+                className="variant-chip"
+                title={`${card.number} — click to fill and copy`}
+                onClick={() => useTestCard(card)}
+              >
+                {copiedCard === card.label ? 'copied!' : card.label}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="customize__row">
           <span className="customize__label">Variant</span>
