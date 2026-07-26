@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card, type CardVariant, type FocusedField } from 'crd-ui/react';
 import { detectBrand, formatCardNumber, formatExpiry, normalizeDigits } from 'crd-ui';
 import { TEST_CARDS, type TestCard } from '../lib/test-cards';
@@ -14,17 +14,35 @@ export function Playground() {
   const [copied, setCopied] = useState(false);
   const [copiedCard, setCopiedCard] = useState<string | null>(null);
   const numberRef = useRef<HTMLInputElement>(null);
+  const pickerRef = useRef<HTMLDetailsElement>(null);
 
   const VARIANTS: CardVariant[] = ['sunset', 'ember', 'holo', 'porcelain', 'graphite', 'gradient'];
 
   const focus = (field: FocusedField) => () => setFocused(field);
   const blur = () => setFocused(null);
 
-  // Test-number chips: fill the form so the brand switches live, and put the
+  useEffect(() => {
+    const close = (e: Event) => {
+      const picker = pickerRef.current;
+      if (picker?.open && !picker.contains(e.target as Node)) picker.open = false;
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && pickerRef.current) pickerRef.current.open = false;
+    };
+    document.addEventListener('click', close);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('click', close);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, []);
+
+  // Test-card picker: fills the form so the brand switches live, and puts the
   // number on the clipboard for pasting into the reader's own payment form.
   const useTestCard = async (card: TestCard) => {
     setNumber(formatCardNumber(card.number, detectBrand(card.number)));
     setExpiry(card.expiry);
+    if (pickerRef.current) pickerRef.current.open = false;
     numberRef.current?.focus();
     try {
       await navigator.clipboard.writeText(card.number);
@@ -71,9 +89,36 @@ export function Playground() {
         />
       </div>
       <form className="demo-form" onSubmit={(e) => e.preventDefault()}>
-        <label>
-          Card number
+        {/* The picker is a sibling of the label, not nested inside it: a
+            <summary> within a <label> would also toggle the input's focus. */}
+        <div className="field">
+          <div className="field-head">
+            <label htmlFor="pg-number">Card number</label>
+            <details className="test-select" ref={pickerRef}>
+              <summary aria-label="Fill a test card number">
+                {copiedCard ? 'copied!' : 'Test card'}
+                <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </summary>
+              <div className="test-menu" role="menu">
+                {TEST_CARDS.map((card) => (
+                  <button
+                    key={card.label}
+                    type="button"
+                    className="test-option"
+                    role="menuitem"
+                    onClick={() => useTestCard(card)}
+                  >
+                    <span className="test-option__brand">{card.label}</span>
+                    <span className="test-option__number">{card.number}</span>
+                  </button>
+                ))}
+              </div>
+            </details>
+          </div>
           <input
+            id="pg-number"
             inputMode="numeric"
             autoComplete="cc-number"
             placeholder="4111 1111 1111 1111"
@@ -85,7 +130,7 @@ export function Playground() {
             onFocus={focus('number')}
             onBlur={blur}
           />
-        </label>
+        </div>
         <label>
           Name
           <input
@@ -136,22 +181,6 @@ export function Playground() {
             </svg>
             {copied ? 'copied!' : 'copy code'}
           </button>
-        </div>
-        <div className="customize__row">
-          <span className="customize__label">Test numbers</span>
-          <div className="variant-row" role="group" aria-label="Fill a test card number">
-            {TEST_CARDS.map((card) => (
-              <button
-                key={card.label}
-                type="button"
-                className="variant-chip"
-                title={`${card.number} — click to fill and copy`}
-                onClick={() => useTestCard(card)}
-              >
-                {copiedCard === card.label ? 'copied!' : card.label}
-              </button>
-            ))}
-          </div>
         </div>
         <div className="customize__row">
           <span className="customize__label">Variant</span>
