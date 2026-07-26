@@ -21,6 +21,25 @@ export function Playground() {
   const focus = (field: FocusedField) => () => setFocused(field);
   const blur = () => setFocused(null);
 
+  // The built-in marks are right-anchored in a 120x40 viewBox (that's how they
+  // sit on the card), so left-aligning them means cropping the box to the ink.
+  // getBBox needs the node rendered, hence on open rather than on mount.
+  const cropLogos = (): void => {
+    const menu = pickerRef.current;
+    if (!menu?.open) return;
+    menu.querySelectorAll<SVGGraphicsElement>('.test-option__logo svg').forEach((svg) => {
+      if (svg.dataset.cropped) return;
+      try {
+        const b = svg.getBBox();
+        if (!b.width || !b.height) return;
+        svg.setAttribute('viewBox', `${b.x} ${b.y} ${b.width} ${b.height}`);
+        svg.dataset.cropped = 'true';
+      } catch {
+        // not laid out yet — the next open will crop it
+      }
+    });
+  };
+
   useEffect(() => {
     const close = (e: Event) => {
       const picker = pickerRef.current;
@@ -94,7 +113,7 @@ export function Playground() {
         <div className="field">
           <div className="field-head">
             <label htmlFor="pg-number">Card number</label>
-            <details className="test-select" ref={pickerRef}>
+            <details className="test-select" ref={pickerRef} onToggle={cropLogos}>
               <summary aria-label="Fill a test card number">
                 {copiedCard ? 'copied!' : 'Test card'}
                 <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

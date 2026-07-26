@@ -865,10 +865,10 @@ main section {
 }
 
 .test-option {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 3.75rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
   padding: 0.35rem 0.5rem;
   border: 0;
   border-radius: 0.5rem;
@@ -885,24 +885,29 @@ main section {
   background: var(--hover-wash);
 }
 
-/* The marks are right-anchored inside a 120x40 viewBox (same as on the card),
-   so a fixed box keeps every brand optically aligned in the column. */
+/* Fixed first column so every mark starts at the same x and the numbers line
+   up with them; the viewBox is cropped to the ink at runtime (see Playground)
+   so each mark sits flush left instead of trailing its original right anchor. */
 .test-option__logo {
-  flex: 0 0 auto;
-  width: 3.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   color: var(--text);
+  overflow: hidden;
 }
 
 .test-option__logo svg {
   display: block;
-  width: 100%;
-  height: auto;
+  height: 0.8rem;
+  width: auto;
+  max-width: 100%;
 }
 
 .test-option__number {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
   font-size: 0.75rem;
+  text-align: left;
 }
 
 /* ---- Brand grid ---- */
