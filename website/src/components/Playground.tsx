@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Card, type CardVariant, type FocusedField } from 'crd-ui/react';
-import { detectBrand, formatCardNumber, formatExpiry, normalizeDigits } from 'crd-ui';
+import { LOGOS, detectBrand, formatCardNumber, formatExpiry, normalizeDigits } from 'crd-ui';
 import { TEST_CARDS, type TestCard } from '../lib/test-cards';
 
 export function Playground() {
@@ -108,9 +108,15 @@ export function Playground() {
                     type="button"
                     className="test-option"
                     role="menuitem"
+                    /* the marks are decorative SVG, so the button carries the name */
+                    aria-label={`${card.label} — ${card.number}`}
                     onClick={() => useTestCard(card)}
                   >
-                    <span className="test-option__brand">{card.label}</span>
+                    <span
+                      className="test-option__logo"
+                      /* static marks shipped by the library, not user input */
+                      dangerouslySetInnerHTML={{ __html: LOGOS[detectBrand(card.number)!] }}
+                    />
                     <span className="test-option__number">{card.number}</span>
                   </button>
                 ))}

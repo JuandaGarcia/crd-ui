@@ -10,6 +10,8 @@ export type {
 } from './card';
 export { BRANDS, brandFromStripe, detectBrand, getBrandSpec } from './brands';
 export type { Brand, BrandSpec } from './brands';
+/** The built-in generic marks, keyed by brand — the defaults the `logos` option replaces. */
+export { LOGOS } from './logos';
 export {
   formatCardNumber,
   formatCvc,

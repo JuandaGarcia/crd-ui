@@ -885,8 +885,18 @@ main section {
   background: var(--hover-wash);
 }
 
-.test-option__brand {
-  font-weight: 500;
+/* The marks are right-anchored inside a 120x40 viewBox (same as on the card),
+   so a fixed box keeps every brand optically aligned in the column. */
+.test-option__logo {
+  flex: 0 0 auto;
+  width: 3.25rem;
+  color: var(--text);
+}
+
+.test-option__logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .test-option__number {
