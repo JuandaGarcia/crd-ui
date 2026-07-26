@@ -77,11 +77,10 @@ const SCIRA_URL = `https://scira.ai/?q=${Q}`;
 </div>
 
 <style>
+  /* Positioned by .top-utils (see site.css); relative here so the dropdown
+     and the beam overlay still anchor to the button bar. */
   .copy-page {
-    position: absolute;
-    top: clamp(1.25rem, 3vw, 2rem);
-    right: clamp(1rem, 3vw, 2rem);
-    z-index: 30;
+    position: relative;
     display: flex;
     align-items: stretch;
     border-radius: 0.625rem;

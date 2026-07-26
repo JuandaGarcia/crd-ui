@@ -25,6 +25,7 @@ import {
 import ImageCards from '../components/ImageCards.astro';
 import { API_ROWS } from '../lib/api';
 import CopyPage from '../components/CopyPage.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { SideRays } from '../components/SideRays';
 
 const themes = { light: 'github-light', dark: 'github-dark' };
@@ -101,6 +102,14 @@ const themes = { light: 'github-light', dark: 'github-dark' };
       })}
     />
     <script is:inline>
+      // Runs before paint so a stored light choice never flashes dark first.
+      // No stored value means dark, which is the CSS default.
+      try {
+        var t = localStorage.getItem('crd-ui-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <script is:inline>
       try {
         var fw = localStorage.getItem('crd-ui-fw');
         if (['react', 'vanilla', 'vue', 'svelte'].indexOf(fw) !== -1)
@@ -109,7 +118,10 @@ const themes = { light: 'github-light', dark: 'github-dark' };
     </script>
   </head>
   <body>
-    <CopyPage />
+    <div class="top-utils">
+      <ThemeToggle />
+      <CopyPage />
+    </div>
     <div class="hero-rays" aria-hidden="true">
       <SideRays
         client:load

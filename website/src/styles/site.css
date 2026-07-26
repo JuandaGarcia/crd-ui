@@ -16,6 +16,27 @@
   --zinc-900: #18181b;
   --zinc-950: #09090b;
 
+  /* Dark is the site's default, independent of the OS setting — the theme
+     toggle opts into light and persists the choice. Keeping dark as the
+     unattributed base means it also holds if the theme script never runs. */
+  --bg: var(--zinc-950);
+  --text: var(--zinc-50);
+  --body: var(--zinc-300);
+  --muted: var(--zinc-400);
+  --border-faint: var(--zinc-800);
+  --ring: rgba(255, 255, 255, 0.1);
+  --dock-bg: rgba(24, 24, 27, 0.38);
+  --dock-item-active: rgba(255, 255, 255, 0.125);
+  --popover-bg: var(--zinc-950);
+  --btn-primary-bg: var(--zinc-100);
+  --btn-primary-text: var(--zinc-900);
+  --hover-wash: var(--zinc-900);
+  --accent: #3b82f6;
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
   --bg: color-mix(in srgb, var(--zinc-50), white 33%);
   --text: var(--zinc-950);
   --body: var(--zinc-600);
@@ -28,26 +49,8 @@
   --btn-primary-bg: var(--zinc-900);
   --btn-primary-text: var(--zinc-50);
   --hover-wash: var(--zinc-100);
-  --accent: #3b82f6;
 
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: var(--zinc-950);
-    --text: var(--zinc-50);
-    --body: var(--zinc-300);
-    --muted: var(--zinc-400);
-    --border-faint: var(--zinc-800);
-    --ring: rgba(255, 255, 255, 0.1);
-    --dock-bg: rgba(24, 24, 27, 0.38);
-    --dock-item-active: rgba(255, 255, 255, 0.125);
-    --popover-bg: var(--zinc-950);
-    --btn-primary-bg: var(--zinc-100);
-    --btn-primary-text: var(--zinc-900);
-    --hover-wash: var(--zinc-900);
-  }
+  color-scheme: light;
 }
 
 html[data-fw='react'] {
@@ -260,6 +263,54 @@ html[data-fw='svelte'] .fw-block[data-block='svelte'] {
   display: block;
 }
 
+/* ---- Top-right utilities: theme switch + Copy Page ---- */
+
+.top-utils {
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 2rem);
+  right: clamp(1rem, 3vw, 2rem);
+  z-index: 30;
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  border: 0;
+  border-radius: 0.625rem;
+  box-shadow: 0 0 0 1px var(--ring);
+  background: var(--hover-wash);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.16s ease-out;
+}
+
+.theme-toggle:hover {
+  background: var(--border-faint);
+}
+
+.theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Show the theme you'd switch to: sun while dark, moon while light. */
+.theme-toggle__moon {
+  display: none;
+}
+
+:root[data-theme='light'] .theme-toggle__sun {
+  display: none;
+}
+
+:root[data-theme='light'] .theme-toggle__moon {
+  display: block;
+}
+
 /* ---- Hero decor ---- */
 
 body {
@@ -395,11 +446,9 @@ body {
   filter: brightness(1.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  .btn-primary:hover {
-    filter: none;
-    background: #fff;
-  }
+:root:not([data-theme='light']) .btn-primary:hover {
+  filter: none;
+  background: #fff;
 }
 
 .btn-secondary {
@@ -472,10 +521,8 @@ main section {
   text-decoration-color: currentColor;
 }
 
-@media (prefers-color-scheme: dark) {
-  .prose a {
-    text-decoration-color: var(--zinc-600);
-  }
+:root:not([data-theme='light']) .prose a {
+  text-decoration-color: var(--zinc-600);
 }
 
 :not(pre) > code {
@@ -555,17 +602,15 @@ main section {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .astro-code {
-    background-color: var(--zinc-900) !important;
-  }
+:root:not([data-theme='light']) .astro-code {
+  background-color: var(--zinc-900) !important;
+}
 
-  /* Tokens carry color only — a background here paints a lighter box behind
-     every span, which reads as accidental text selection. */
-  .astro-code span {
-    color: var(--shiki-dark) !important;
-    background-color: transparent !important;
-  }
+/* Tokens carry color only — a background here paints a lighter box behind
+   every span, which reads as accidental text selection. */
+:root:not([data-theme='light']) .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: transparent !important;
 }
 
 /* ---- Display-layout demo ---- */
@@ -1011,10 +1056,8 @@ main section {
   transform: translateX(calc(var(--effect, 0) * 12px));
 }
 
-@media (prefers-color-scheme: dark) {
-  .toc a {
-    opacity: calc(0.5 + var(--effect, 0) * 0.5);
-  }
+:root:not([data-theme='light']) .toc a {
+  opacity: calc(0.5 + var(--effect, 0) * 0.5);
 }
 
 /* Leading marker line per item. */
@@ -1084,11 +1127,9 @@ main section {
   display: flex;
 }
 
-@media (prefers-color-scheme: dark) {
-  .dock-inner {
-    box-shadow: none;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
+:root:not([data-theme='light']) .dock-inner {
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .dock-inner::-webkit-scrollbar {
