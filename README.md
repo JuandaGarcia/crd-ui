@@ -275,6 +275,16 @@ logos, pass your own SVG per brand:
 createCard(el, { logos: { visa: '<svg …>…</svg>' } });
 ```
 
+The built-ins are exported as `LOGOS` (a `Record<Brand, string>` of SVG markup) if you
+need to render the same marks elsewhere — a brand picker, a saved-card list — or want to
+extend rather than replace them:
+
+```js
+import { LOGOS } from 'crd-ui';
+
+createCard(el, { logos: { ...LOGOS, visa: myLicensedVisaSvg } });
+```
+
 ## Localization
 
 ```js

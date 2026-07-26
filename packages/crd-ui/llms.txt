@@ -55,7 +55,7 @@ Brands detected: visa, mastercard, amex, discover, dinersclub, jcb, unionpay, ma
 
 ## Theming
 
-Override CSS custom properties on `.crd` or any ancestor: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`, `--crd-shadow`, `--crd-font`, `--crd-flip-duration`. Defaults are `var()` fallbacks, never declarations on `.crd`, so an inherited value always reaches the card and wins over the brand/variant themes. Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`.
+Override CSS custom properties on `.crd` or any ancestor: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`, `--crd-shadow`, `--crd-font`, `--crd-flip-duration`. Defaults are `var()` fallbacks, never declarations on `.crd`, so an inherited value always reaches the card and wins over the brand/variant themes. Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`. The built-ins are exported as `LOGOS: Record<Brand, string>` (SVG markup) for rendering the same marks elsewhere or extending them: `logos: { ...LOGOS, visa: mySvg }`.
 
 Tailwind: arbitrary-property utilities theme the card with zero config — `<Card className="[--crd-radius:1rem] [--crd-bg:var(--color-indigo-600)]" />` (v4 var(--color-*), v3 theme(colors.*)). `className`/`class` targets the card root (.crd). Only utilities that override crd-ui's own rules (e.g. `text-2xl` vs the number's font-size) need the cascade layer: declare `@layer crd-ui, theme, base, components, utilities;` before `@import "tailwindcss";` and import `crd-ui/styles.layer.css` instead of `crd-ui/styles.css`.
 
