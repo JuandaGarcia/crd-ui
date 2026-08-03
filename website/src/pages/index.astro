@@ -10,6 +10,7 @@ import { HeroCard } from '../components/HeroCard';
 import { Playground } from '../components/Playground';
 import { DisplayDemo } from '../components/DisplayDemo';
 import {
+  backgroundUsage,
   displayExample,
   localization,
   logos,
@@ -23,7 +24,9 @@ import {
   usage,
 } from '../lib/snippets';
 import ImageCards from '../components/ImageCards.astro';
+import BackgroundLibrary from '../components/BackgroundLibrary.astro';
 import { API_ROWS } from '../lib/api';
+import { BACKGROUNDS } from '../lib/backgrounds';
 import CopyPage from '../components/CopyPage.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import { SideRays } from '../components/SideRays';
@@ -287,6 +290,19 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <div class="fw-block" data-block="svelte">
             <Code code={logos.svelte} lang="svelte" themes={themes} />
           </div>
+        </section>
+
+        <section id="backgrounds">
+          <h2>Backgrounds</h2>
+          <p>
+            Artwork for the cards you build — {BACKGROUNDS.length} originals, each already at
+            the card's ratio so it fills <code>--crd-bg</code> without cropping. Click any one
+            to download it. They're released under
+            <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0</a>,
+            so use them anywhere, commercially included, with no attribution required.
+          </p>
+          <Code code={backgroundUsage} lang="css" themes={themes} />
+          <BackgroundLibrary />
         </section>
 
         <section id="localization">

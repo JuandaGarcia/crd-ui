@@ -3,7 +3,9 @@
 // Served at /llms-full.txt and /index.md; the short index lives at /llms.txt.
 
 import { API_ROWS } from './api';
+import { BACKGROUNDS } from './backgrounds';
 import {
+  backgroundUsage,
   displayExample,
   localization,
   logos,
@@ -192,6 +194,21 @@ ${logos.react}
 \`\`\`js
 ${logos.vanilla}
 \`\`\`
+
+## Backgrounds
+
+A library of ${BACKGROUNDS.length} original card backgrounds, downloadable from
+${SITE}/#backgrounds — each a WebP already at the card's ratio (430x270), so it fills
+\`--crd-bg\` without cropping. Files live at \`${SITE}/backgrounds/<slug>.webp\`.
+
+Released under CC0 1.0 (public domain): use them anywhere, commercially included, with no
+attribution required. https://creativecommons.org/publicdomain/zero/1.0/
+
+\`\`\`css
+${backgroundUsage}
+\`\`\`
+
+Download the file into your own project rather than hot-linking the site.
 
 ## Localization
 

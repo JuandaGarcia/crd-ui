@@ -965,6 +965,74 @@ main section {
   text-align: left;
 }
 
+/* ---- Background library ---- */
+
+.bg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25em 0;
+}
+
+/* Tiles carry the card's own ratio and rounding so the grid reads as a shelf
+   of cards rather than a photo gallery. */
+.bg-tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 1.586;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--ring);
+  text-decoration: none;
+  transition: transform 0.16s ease-out;
+}
+
+.bg-tile:hover {
+  transform: translateY(-2px);
+}
+
+.bg-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Name + download affordance ride a scrim that only shows on hover/focus —
+   same reveal the code blocks' copy button uses, and forced on for touch. */
+.bg-tile__meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 0.5rem 0.4rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.16s ease-out;
+}
+
+.bg-tile:hover .bg-tile__meta,
+.bg-tile:focus-visible .bg-tile__meta {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .bg-tile__meta {
+    opacity: 1;
+  }
+}
+
+.bg-tile__icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: 0 0 auto;
+}
+
 /* ---- Brand grid ---- */
 
 .brand-grid {

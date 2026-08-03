@@ -1,0 +1,33 @@
+---
+// The downloadable background gallery. Static on purpose: each tile is an
+// <a download>, so getting a file needs no JavaScript at all and it saves under
+// the slug rather than a hashed build name.
+import { BACKGROUNDS } from '../lib/backgrounds';
+---
+
+<div class="bg-grid">
+  {
+    BACKGROUNDS.map(({ slug, name }) => (
+      <a class="bg-tile" href={`/backgrounds/${slug}.webp`} download aria-label={`Download ${name}`}>
+        {/* Intrinsic size + lazy: 40-odd images below the fold that must not
+            reserve the wrong box or all fetch at once. */}
+        <img
+          src={`/backgrounds/${slug}.webp`}
+          alt=""
+          width="430"
+          height="270"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="bg-tile__meta">
+          <span class="bg-tile__name">{name}</span>
+          <svg class="bg-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12" />
+            <path d="m7 12 5 5 5-5" />
+            <path d="M5 21h14" />
+          </svg>
+        </span>
+      </a>
+    ))
+  }
+</div>

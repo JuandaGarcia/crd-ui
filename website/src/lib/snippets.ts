@@ -234,6 +234,13 @@ export const themingImageTailwind = `// The image background above, in Tailwind 
   className="[--crd-bg:url('/textures/holo.png')_center/cover]"
 />;`;
 
+export const backgroundUsage = `/* Drop the downloaded file in your project and point
+   --crd-bg at it. variant="gradient" keeps the variant
+   artwork from painting over the image. */
+.crd {
+  --crd-bg: url('/backgrounds/opal.webp') center / cover;
+}`;
+
 export const themingClassNames = `// Style the card's internal sections with a classNames slot map.
 // Your classes merge with the built-ins (state modifiers stay).
 <Card

@@ -285,6 +285,17 @@ import { LOGOS } from 'crd-ui';
 createCard(el, { logos: { ...LOGOS, visa: myLicensedVisaSvg } });
 ```
 
+### Card backgrounds
+
+The website ships a library of original card backgrounds — free to download and use, at
+the card's ratio so they fill `--crd-bg` without cropping:
+
+**https://crd-ui.juanda.co/#backgrounds**
+
+They're released under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+(public domain): use them anywhere, commercially included, no attribution required. The
+crd-ui library itself stays MIT.
+
 ## Localization
 
 ```js

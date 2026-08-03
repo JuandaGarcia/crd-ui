@@ -1,0 +1,21 @@
+crd-ui background library
+=========================
+
+Original artwork by Juan David Garcia Rincon.
+https://crd-ui.juanda.co/#backgrounds
+
+CC0 1.0 Universal (Public Domain Dedication)
+--------------------------------------------
+
+To the extent possible under law, the author has waived all copyright and
+related or neighboring rights to these images. You may copy, modify and
+distribute them, including for commercial purposes, all without asking
+permission and without attribution.
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+Summary:   https://creativecommons.org/publicdomain/zero/1.0/
+
+The images are provided "as is", without warranty of any kind.
+
+Note: this dedication covers the images in this folder only. The crd-ui
+library itself is MIT licensed — see the LICENSE file at the repository root.
