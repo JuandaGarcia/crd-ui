@@ -1233,6 +1233,17 @@ main section {
   font-family: inherit;
 }
 
+/* A fifth item no longer fits the narrowest screens at full size. The dock
+   scrolls, but a permanently clipped item reads as broken — tighten the box
+   instead so all five sit inside it. */
+@media (max-width: 26rem) {
+  .dock-item {
+    min-width: 4.75em;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
 .dock-item:hover {
   color: var(--text);
 }

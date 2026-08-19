@@ -330,6 +330,12 @@ pnpm dev     # playground
 - [ ] Prebuilt official-logo add-on pack (opt-in)
 - [ ] Bank/issuer custom themes gallery
 
+## Sponsor
+
+crd-ui is free and MIT licensed. If it saved you time, you can support its upkeep:
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-db61a2?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/JuandaGarcia)
+
 ## License
 
 [MIT](./LICENSE)
