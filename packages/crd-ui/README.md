@@ -10,10 +10,6 @@
 Framework-agnostic credit/debit card visualization for your payment forms.
 One package: a zero-dependency vanilla core, with framework adapters as subpaths.
 
-<p align="center">
-  <img src="https://crd-ui.juanda.co/demo.gif" alt="Typing a card number: the brand is detected live, the focus ring travels between fields, focusing the CVC flips the card, and the variant switches." width="534" />
-</p>
-
 ```bash
 npm i crd-ui
 ```
