@@ -42,26 +42,6 @@ npm i crd-ui
   [`examples/stripe`](./examples/stripe).
 - 📦 Zero runtime dependencies (React/Vue/Svelte are optional peers, only for their subpaths).
 
-## Coming from react-credit-cards?
-
-[`react-credit-cards`](https://www.npmjs.com/package/react-credit-cards) hasn't shipped a
-release since June 2020, and its fork
-[`react-credit-cards-2`](https://www.npmjs.com/package/react-credit-cards-2) exposes the
-same prop API — so one migration covers both.
-
-`number`, `name`, `expiry`, `cvc` and `focused` keep their names and values, so for most
-codebases the swap is the import and the stylesheet:
-
-```diff
-- import Cards from 'react-credit-cards';
-- import 'react-credit-cards/es/styles-compiled.css';
-+ import { Card } from 'crd-ui/react';
-+ import 'crd-ui/styles.css';
-```
-
-**[Full migration guide →](https://crd-ui.juanda.co/migrate/react-credit-cards/)** — every
-prop mapped, including the two that aren't drop-in (`callback` and `acceptedCards`).
-
 ## React usage
 
 ```tsx
@@ -340,6 +320,26 @@ The documentation is available as plain markdown for LLMs and coding agents:
 - The [website](https://crd-ui.juanda.co) has a **Copy Page** button: copy the docs as
   markdown, view them raw, or open them in Claude/ChatGPT.
 - [`AGENTS.md`](./AGENTS.md) guides coding agents working on this repo.
+
+## Coming from react-credit-cards?
+
+[`react-credit-cards`](https://www.npmjs.com/package/react-credit-cards) hasn't shipped a
+release since June 2020, and its fork
+[`react-credit-cards-2`](https://www.npmjs.com/package/react-credit-cards-2) exposes the
+same prop API — so one migration covers both.
+
+`number`, `name`, `expiry`, `cvc` and `focused` keep their names and values, so for most
+codebases the swap is the import and the stylesheet:
+
+```diff
+- import Cards from 'react-credit-cards';
+- import 'react-credit-cards/es/styles-compiled.css';
++ import { Card } from 'crd-ui/react';
++ import 'crd-ui/styles.css';
+```
+
+**[Full migration guide →](https://crd-ui.juanda.co/migrate/react-credit-cards/)** — every
+prop mapped, including the two that aren't drop-in (`callback` and `acceptedCards`).
 
 ## Development
 
