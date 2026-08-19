@@ -6,6 +6,10 @@ import { API_ROWS } from './api';
 import { BACKGROUNDS } from './backgrounds';
 import {
   backgroundUsage,
+  migrateAccepted,
+  migrateAfter,
+  migrateBefore,
+  migrateCallback,
   displayExample,
   localization,
   logos,
@@ -209,6 +213,42 @@ ${backgroundUsage}
 \`\`\`
 
 Download the file into your own project rather than hot-linking the site.
+
+## Coming from react-credit-cards
+
+\`react-credit-cards\` has had no release since June 2020; its fork
+\`react-credit-cards-2\` is maintained but exposes the same prop API, so one migration
+covers both. Full guide: ${SITE}/migrate/react-credit-cards/
+
+\`number\`, \`name\`, \`expiry\`, \`cvc\` and \`focused\` keep their names and values, so the
+swap is close to a drop-in:
+
+\`\`\`tsx
+${migrateBefore}
+\`\`\`
+
+\`\`\`tsx
+${migrateAfter}
+\`\`\`
+
+Prop mapping: \`placeholders\` is unchanged; \`locale: { valid }\` becomes
+\`locale: { validThru }\`; \`preview\` + \`issuer\` become \`layout="display"\` + \`brand\` +
+\`last4\`; the \`$rccs-*\` SCSS variables become \`--crd-*\` CSS custom properties, so there is
+no stylesheet to recompile.
+
+Two props have no direct equal. \`callback(type, isValid)\` reported brand, max length and
+validity together; \`onBrandChange\` gives the brand, and the exported \`detectBrand\` /
+\`getBrandSpec\` helpers give the rest:
+
+\`\`\`tsx
+${migrateCallback}
+\`\`\`
+
+\`acceptedCards\` has no equal — gate on the detected brand yourself:
+
+\`\`\`tsx
+${migrateAccepted}
+\`\`\`
 
 ## Localization
 

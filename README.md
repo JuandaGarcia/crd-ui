@@ -2,8 +2,17 @@
 
 # crd-ui
 
+[![npm](https://img.shields.io/npm/v/crd-ui?color=0b7285)](https://www.npmjs.com/package/crd-ui)
+[![downloads](https://img.shields.io/npm/dw/crd-ui?color=0b7285)](https://www.npmjs.com/package/crd-ui)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/crd-ui?color=0b7285)](https://bundlephobia.com/package/crd-ui)
+[![license](https://img.shields.io/npm/l/crd-ui?color=0b7285)](./LICENSE)
+
 Framework-agnostic credit/debit card visualization for your payment forms.
 One package: a zero-dependency vanilla core, with framework adapters as subpaths.
+
+<p align="center">
+  <img src="https://crd-ui.juanda.co/demo.gif" alt="Typing a card number: the brand is detected live, the focus ring travels between fields, focusing the CVC flips the card, and the variant switches." width="534" />
+</p>
 
 ```bash
 npm i crd-ui
@@ -36,6 +45,26 @@ npm i crd-ui
   metadata without ever touching the number — see
   [`examples/stripe`](./examples/stripe).
 - 📦 Zero runtime dependencies (React/Vue/Svelte are optional peers, only for their subpaths).
+
+## Coming from react-credit-cards?
+
+[`react-credit-cards`](https://www.npmjs.com/package/react-credit-cards) hasn't shipped a
+release since June 2020, and its fork
+[`react-credit-cards-2`](https://www.npmjs.com/package/react-credit-cards-2) exposes the
+same prop API — so one migration covers both.
+
+`number`, `name`, `expiry`, `cvc` and `focused` keep their names and values, so for most
+codebases the swap is the import and the stylesheet:
+
+```diff
+- import Cards from 'react-credit-cards';
+- import 'react-credit-cards/es/styles-compiled.css';
++ import { Card } from 'crd-ui/react';
++ import 'crd-ui/styles.css';
+```
+
+**[Full migration guide →](https://crd-ui.juanda.co/migrate/react-credit-cards/)** — every
+prop mapped, including the two that aren't drop-in (`callback` and `acceptedCards`).
 
 ## React usage
 

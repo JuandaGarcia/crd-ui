@@ -1047,6 +1047,37 @@ main section {
   margin: 0 auto;
 }
 
+/* ---- Standalone doc pages (e.g. /migrate/react-credit-cards) ---- */
+
+/* The masthead is a link back home here rather than the framework picker. */
+.masthead__home {
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.masthead__home:hover {
+  text-decoration: underline;
+}
+
+/* Only these pages lead with an h1 — the homepage's sections start at h2. */
+.prose h1 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 0.75em;
+}
+
+.prose ul {
+  padding-left: 1.25rem;
+  margin: 1.25em 0;
+  color: var(--body);
+}
+
+.prose li {
+  margin: 0.375em 0;
+}
+
 /* ---- API table ---- */
 
 .api-scroll {

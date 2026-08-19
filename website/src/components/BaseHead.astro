@@ -1,0 +1,71 @@
+---
+// Shared <head> for every page. Split out when the site gained a second route:
+// the per-page metadata (title, description, canonical) has to differ for each
+// URL to be worth indexing, while the icons, fonts and pre-paint scripts don't.
+// The homepage keeps its JSON-LD inline via the <slot />.
+interface Props {
+  title: string;
+  description: string;
+  /** Path from the site root, e.g. '/' or '/migrate/react-credit-cards/'. */
+  path: string;
+  ogTitle?: string;
+  ogDescription?: string;
+}
+
+const SITE = 'https://crd-ui.juanda.co';
+const { title, description, path, ogTitle = title, ogDescription = description } = Astro.props;
+const url = `${SITE}${path}`;
+---
+
+<meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
+/>
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#09090b" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
+  rel="stylesheet"
+/>
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={url} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="crd-ui" />
+<meta property="og:title" content={ogTitle} />
+<meta property="og:description" content={ogDescription} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={`${SITE}/banner.png`} />
+<meta property="og:image:width" content="3104" />
+<meta property="og:image:height" content="900" />
+<meta property="og:image:alt" content="crd-ui — a credit & debit card component. Dependency-free. Themeable. Localizable." />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={ogTitle} />
+<meta name="twitter:description" content={ogDescription} />
+<meta name="twitter:image" content={`${SITE}/banner.png`} />
+
+<slot />
+
+<script is:inline>
+  // Runs before paint so a stored light choice never flashes dark first.
+  // No stored value means dark, which is the CSS default.
+  try {
+    var t = localStorage.getItem('crd-ui-theme');
+    if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<script is:inline>
+  try {
+    var fw = localStorage.getItem('crd-ui-fw');
+    if (['react', 'vanilla', 'vue', 'svelte'].indexOf(fw) !== -1)
+      document.documentElement.dataset.fw = fw;
+  } catch (e) {}
+</script>

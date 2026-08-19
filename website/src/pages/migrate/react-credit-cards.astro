@@ -1,0 +1,151 @@
+---
+// Acquisition page: react-credit-cards has been unmaintained since 2020 and
+// its fork react-credit-cards-2 shares the same prop API, so one guide serves
+// both. Its own route (rather than a homepage section) so it can carry its own
+// title/description/canonical and be found by people searching for a
+// replacement rather than for crd-ui.
+import { Code } from 'astro:components';
+import 'crd-ui/styles.css';
+import '../../styles/site.css';
+import BaseHead from '../../components/BaseHead.astro';
+import Dock from '../../components/Dock.astro';
+import ThemeToggle from '../../components/ThemeToggle.astro';
+import CreatedBy from '../../components/CreatedBy.astro';
+import {
+  migrateAccepted,
+  migrateAfter,
+  migrateBefore,
+  migrateCallback,
+  migratePreview,
+  migrateTheming,
+} from '../../lib/snippets';
+
+const themes = { light: 'github-light', dark: 'github-dark' };
+
+// Every prop the two libraries expose, and where it lands in crd-ui.
+const MAP: { from: string; to: string; note: string }[] = [
+  { from: 'number', to: 'number', note: 'Same name, same string.' },
+  { from: 'name', to: 'name', note: 'Same name, same string.' },
+  { from: 'expiry', to: 'expiry', note: 'Same name; normalized to MM/YY.' },
+  { from: 'cvc', to: 'cvc', note: 'Same name, same string.' },
+  { from: 'focused', to: 'focused', note: "Same name and same values ('number' | 'name' | 'expiry' | 'cvc')." },
+  { from: 'placeholders', to: 'placeholders', note: 'Same shape: { name }.' },
+  { from: 'locale', to: 'locale', note: 'Key renamed: { valid } becomes { validThru }.' },
+  { from: 'preview + issuer', to: 'layout="display" + brand + last4', note: 'Also reveals real values on demand and can copy them on click.' },
+  { from: 'callback', to: 'onBrandChange', note: 'Partial — reports the brand only. See below.' },
+  { from: 'acceptedCards', to: '—', note: 'No equivalent. Gate on the detected brand yourself. See below.' },
+  { from: '$rccs-size (SCSS)', to: '--crd-width (CSS var)', note: 'No stylesheet to recompile.' },
+  { from: '$rccs-shadow', to: '--crd-shadow', note: 'Same idea, as a custom property.' },
+  { from: '$rccs-card-ratio', to: '—', note: 'Fixed at the ISO/IEC 7810 ID-1 ratio.' },
+];
+---
+
+<!doctype html>
+<html lang="en" data-fw="react">
+  <head>
+    <BaseHead
+      title="Migrating from react-credit-cards to crd-ui"
+      description="react-credit-cards has been unmaintained since 2020. crd-ui is a maintained, zero-dependency replacement with the same prop API — plus Vue, Svelte and vanilla. Prop-by-prop migration guide."
+      path="/migrate/react-credit-cards/"
+    />
+  </head>
+  <body>
+    <div class="top-utils">
+      <ThemeToggle />
+    </div>
+
+    <div class="container masthead">
+      <a href="/" class="masthead__home">crd-ui</a>
+    </div>
+
+    <main>
+      <div class="container prose">
+        <h1>Migrating from react-credit-cards</h1>
+        <p>
+          <a href="https://www.npmjs.com/package/react-credit-cards" target="_blank" rel="noopener">react-credit-cards</a>
+          has not shipped a release since June 2020. Its fork,
+          <a href="https://www.npmjs.com/package/react-credit-cards-2" target="_blank" rel="noopener">react-credit-cards-2</a>,
+          is maintained but exposes the same API — so this guide covers both.
+        </p>
+        <p>
+          <strong>The move is close to a drop-in.</strong> The four value props and
+          <code>focused</code> keep their names and their types, so most codebases only change
+          the import and the stylesheet.
+        </p>
+
+        <h2>The swap</h2>
+        <p>Before:</p>
+        <Code code={migrateBefore} lang="tsx" themes={themes} />
+        <p>After:</p>
+        <Code code={migrateAfter} lang="tsx" themes={themes} />
+
+        <h2>Every prop, mapped</h2>
+        <div class="api-scroll">
+          <table class="api-table">
+            <thead>
+              <tr><th>react-credit-cards</th><th>crd-ui</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              {MAP.map((row) => (
+                <tr>
+                  <td><code>{row.from}</code></td>
+                  <td>{row.to === '—' ? <em>—</em> : <code>{row.to}</code>}</td>
+                  <td>{row.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h2>The two that aren't drop-in</h2>
+        <p>
+          <code>callback(type, isValid)</code> reported the brand, the max length and validity
+          in one go. <code>onBrandChange</code> gives you the brand; the rest comes from the
+          same helpers the library uses internally, so nothing is lost:
+        </p>
+        <Code code={migrateCallback} lang="tsx" themes={themes} />
+        <p>
+          <code>acceptedCards</code> has no equivalent — crd-ui always shows what it detects.
+          Deciding what you accept stays in your code, which also lets you word the rejection
+          yourself:
+        </p>
+        <Code code={migrateAccepted} lang="tsx" themes={themes} />
+
+        <h2>Preview mode becomes a layout</h2>
+        <p>
+          <code>preview</code> plus <code>issuer</code> rendered a scrambled card. In crd-ui
+          that's <code>layout="display"</code>, built for dashboards and saved-card lists:
+        </p>
+        <Code code={migratePreview} lang="tsx" themes={themes} />
+
+        <h2>Theming without SCSS</h2>
+        <p>
+          The <code>$rccs-*</code> SCSS variables required compiling the stylesheet. crd-ui
+          exposes CSS custom properties instead, so you override them anywhere — including
+          from Tailwind utilities:
+        </p>
+        <Code code={migrateTheming} lang="css" themes={themes} />
+
+        <h2>What you gain</h2>
+        <ul>
+          <li><strong>It's maintained.</strong> That's the whole reason you're reading this.</li>
+          <li><strong>Zero runtime dependencies.</strong></li>
+          <li><strong>Not just React.</strong> The same component ships for Vue, Svelte and vanilla JS from one package.</li>
+          <li><strong>TypeScript</strong> types in the box.</li>
+          <li><strong>A display layout</strong> for cards the user already owns, with click-to-reveal and click-to-copy.</li>
+          <li><strong>Six finishes</strong>, a 3D hover tilt, and <a href="/#backgrounds">45 free card backgrounds</a>.</li>
+        </ul>
+
+        <p>
+          <a href="/">See the full documentation →</a>
+        </p>
+
+        <footer class="site-footer">
+          <CreatedBy />
+        </footer>
+      </div>
+    </main>
+
+    <Dock />
+  </body>
+</html>

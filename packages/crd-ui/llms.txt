@@ -53,6 +53,10 @@ Svelte: `import Card from 'crd-ui/svelte'` — same props, `onBrandChange` callb
 
 Brands detected: visa, mastercard, amex, discover, dinersclub, jcb, unionpay, maestro, elo, hipercard.
 
+## Coming from react-credit-cards
+
+`react-credit-cards` (unmaintained since June 2020) and its fork `react-credit-cards-2` share the same prop API, and crd-ui is close to a drop-in replacement for both: `number`, `name`, `expiry`, `cvc` and `focused` keep their names and values. `placeholders` is unchanged; `locale: { valid }` -> `locale: { validThru }`; `preview` + `issuer` -> `layout: 'display'` + `brand` + `last4`; `$rccs-*` SCSS variables -> `--crd-*` CSS custom properties. Two have no direct equal: `callback(type, isValid)` -> `onBrandChange(brand)` plus the exported `detectBrand`/`getBrandSpec` helpers, and `acceptedCards` -> gate on the detected brand yourself. Full guide: https://crd-ui.juanda.co/migrate/react-credit-cards/
+
 ## Theming
 
 Override CSS custom properties on `.crd` or any ancestor: `--crd-width`, `--crd-radius`, `--crd-color`, `--crd-bg`, `--crd-shadow`, `--crd-font`, `--crd-flip-duration`. Defaults are `var()` fallbacks, never declarations on `.crd`, so an inherited value always reaches the card and wins over the brand/variant themes. Brand themes are plain classes (`.crd--brand-visa`, ...). Built-in logos are generic (no trademarks); pass licensed SVGs via `logos`. The built-ins are exported as `LOGOS: Record<Brand, string>` (SVG markup) for rendering the same marks elsewhere or extending them: `logos: { ...LOGOS, visa: mySvg }`.

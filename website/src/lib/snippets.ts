@@ -286,3 +286,63 @@ export const localization = {
   locale={{ validThru: 'válida hasta' }}
 />`,
 };
+
+// ---- Migrating from react-credit-cards (and react-credit-cards-2) ----
+// Both expose the same prop API, so one set of snippets covers both.
+
+export const migrateBefore = `import Cards from 'react-credit-cards';
+import 'react-credit-cards/es/styles-compiled.css';
+
+<Cards
+  number={number}
+  name={name}
+  expiry={expiry}
+  cvc={cvc}
+  focused={focused}
+/>;`;
+
+export const migrateAfter = `import { Card } from 'crd-ui/react';
+import 'crd-ui/styles.css';
+
+<Card
+  number={number}
+  name={name}
+  expiry={expiry}
+  cvc={cvc}
+  focused={focused}
+/>;`;
+
+export const migratePreview = `// preview + issuer becomes the display layout, which also
+// reveals real values on demand and can copy them on click.
+<Card
+  layout="display"
+  brand="visa"
+  last4="4242"
+  copyable
+/>;`;
+
+export const migrateCallback = `// callback(type, isValid) has no direct equal: onBrandChange
+// reports the brand. Rebuild the rest from the exported helpers.
+import { detectBrand, getBrandSpec } from 'crd-ui';
+
+const onNumber = (value) => {
+  const brand = detectBrand(value);
+  if (!brand) return { brand: null, maxLength: 19, isValid: false };
+  const { lengths, maskLength } = getBrandSpec(brand); // maskLength counts digits
+  const digits = value.replace(/\\D/g, '').length;
+  return { brand, maxLength: maskLength, isValid: lengths.includes(digits) };
+};`;
+
+export const migrateAccepted = `// acceptedCards has no equal either — gate on the detected
+// brand yourself, which also lets you show your own message.
+const ACCEPTED = ['visa', 'mastercard'];
+
+<Card number={number} onBrandChange={(b) => setRejected(!!b && !ACCEPTED.includes(b))} />;`;
+
+export const migrateTheming = `/* The SCSS variables become CSS custom properties, so there is
+   no stylesheet to recompile: $rccs-size -> --crd-width, and so on. */
+.crd {
+  --crd-width: 290px;
+  --crd-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  --crd-font: Consolas, Courier, monospace;
+}`;

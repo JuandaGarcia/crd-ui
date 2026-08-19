@@ -27,7 +27,9 @@ import ImageCards from '../components/ImageCards.astro';
 import BackgroundLibrary from '../components/BackgroundLibrary.astro';
 import { API_ROWS } from '../lib/api';
 import { BACKGROUNDS } from '../lib/backgrounds';
+import BaseHead from '../components/BaseHead.astro';
 import CopyPage from '../components/CopyPage.astro';
+import Dock from '../components/Dock.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import { SideRays } from '../components/SideRays';
 
@@ -37,51 +39,13 @@ const themes = { light: 'github-light', dark: 'github-dark' };
 <!doctype html>
 <html lang="en" data-fw="react">
   <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
-    />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#09090b" />
-    <link rel="alternate" type="text/markdown" href="/index.md" title="crd-ui docs as Markdown" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
-      rel="stylesheet"
-    />
-    <title>crd-ui — Credit Card Component for React, Vue, Svelte & Vanilla JS</title>
-    <meta
-      name="description"
-      content="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies — React, Vue, Svelte and vanilla JS in one package."
-    />
-    <link rel="canonical" href="https://crd-ui.juanda.co/" />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="crd-ui" />
-    <meta property="og:title" content="crd-ui — Credit Card Component for React, Vue, Svelte & Vanilla JS" />
-    <meta
-      property="og:description"
-      content="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies."
-    />
-    <meta property="og:url" content="https://crd-ui.juanda.co/" />
-    <meta property="og:image" content="https://crd-ui.juanda.co/banner.png" />
-    <meta property="og:image:width" content="3104" />
-    <meta property="og:image:height" content="900" />
-    <meta property="og:image:alt" content="crd-ui — a credit & debit card component. Dependency-free. Themeable. Localizable." />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="crd-ui — Credit Card Component for React, Vue, Svelte & Vanilla JS" />
-    <meta
-      name="twitter:description"
-      content="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies."
-    />
-    <meta name="twitter:image" content="https://crd-ui.juanda.co/banner.png" />
-
+    <BaseHead
+      title="crd-ui — Credit Card Component for React, Vue, Svelte & Vanilla JS"
+      description="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies — React, Vue, Svelte and vanilla JS in one package."
+      ogDescription="A credit & debit card component for payment forms: live brand detection, 3D flip, themeable variants. Zero dependencies."
+      path="/"
+    >
+      <link rel="alternate" type="text/markdown" href="/index.md" title="crd-ui docs as Markdown" />
     <script
       type="application/ld+json"
       is:inline
@@ -104,21 +68,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
         ],
       })}
     />
-    <script is:inline>
-      // Runs before paint so a stored light choice never flashes dark first.
-      // No stored value means dark, which is the CSS default.
-      try {
-        var t = localStorage.getItem('crd-ui-theme');
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
-      } catch (e) {}
-    </script>
-    <script is:inline>
-      try {
-        var fw = localStorage.getItem('crd-ui-fw');
-        if (['react', 'vanilla', 'vue', 'svelte'].indexOf(fw) !== -1)
-          document.documentElement.dataset.fw = fw;
-      } catch (e) {}
-    </script>
+    </BaseHead>
   </head>
   <body>
     <div class="top-utils">
@@ -406,42 +356,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
       </div>
     </main>
 
-    <div class="dock-mask" aria-hidden="true"></div>
-    <nav class="dock" aria-label="Site">
-      <div class="dock-inner">
-        <a class="dock-item" href="#usage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
-          </svg>
-          Docs
-        </a>
-        <a class="dock-item" href="#playground">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
-            <path d="M2 10h20"></path>
-          </svg>
-          Playground
-        </a>
-        <a class="dock-item" href="https://github.com/JuandaGarcia/crd-ui" target="_blank" rel="noopener">
-          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
-          </svg>
-          GitHub
-        </a>
-        <a class="dock-item" href="https://www.npmjs.com/package/crd-ui" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M2 22H12V7H17V22H22V2H2V22Z"></path>
-          </svg>
-          npm
-        </a>
-        <a class="dock-item" href="https://github.com/sponsors/JuandaGarcia" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-          </svg>
-          Sponsor
-        </a>
-      </div>
-    </nav>
+    <Dock />
 
     <script>
       // The service worker was retired: unregister it and drop its caches for
