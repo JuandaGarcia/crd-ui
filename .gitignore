@@ -7,3 +7,6 @@ coverage/
 
 # Generated at build time from styles/crd-ui.css
 packages/crd-ui/styles/crd-ui.layer.css
+
+# Launch/marketing drafts — internal notes, kept locally and never published
+docs/launch/
