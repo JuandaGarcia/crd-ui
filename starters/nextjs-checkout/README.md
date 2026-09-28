@@ -16,6 +16,9 @@ npm install
 npm run dev
 ```
 
+StackBlitz starts it with `next dev --webpack`, because Turbopack's native bindings don't run
+in the browser. Locally, plain `npm run dev` uses Turbopack.
+
 ## What's where
 
 - `app/checkout.tsx` — the form. A client component: the card and the inputs share state.

@@ -4,7 +4,7 @@
 // never sends anything anywhere. In production, replace these plain inputs with
 // your payment provider's fields (see the README for Stripe Elements) — the
 // preview keeps working from the brand and focus they report.
-import { type FormEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { Card, type FocusedField } from 'crd-ui/react';
 import {
   detectBrand,
@@ -39,7 +39,7 @@ export function Checkout() {
   const focus = (field: FocusedField) => () => setFocused(field);
   const blur = () => setFocused(null);
 
-  const submit = (event: FormEvent) => {
+  const submit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);
   };
