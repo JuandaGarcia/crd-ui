@@ -1,27 +1,29 @@
-# Next.js checkout with crd-ui
+# React checkout with crd-ui
 
 A payment form with a live credit card preview: brand detection, formatting, and a 3D flip
-when the CVC is focused. Next.js App Router, React 19, TypeScript, no other dependencies.
+when the CVC is focused. Vite, React 19, TypeScript, no other dependencies.
 
-To try it in the browser, open the React version in StackBlitz — Next.js doesn't render
-inside StackBlitz today: [react-checkout](https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/react-checkout?file=src%2FCheckout.tsx).
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/react-checkout?file=src%2FCheckout.tsx)
 
 Try `4242 4242 4242 4242` (Visa) or `3782 822463 10005` (Amex) — any future expiry.
 
 ## Run it locally
 
 ```bash
-npx degit JuandaGarcia/crd-ui/starters/nextjs-checkout my-checkout
+npx degit JuandaGarcia/crd-ui/starters/react-checkout my-checkout
 cd my-checkout
 npm install
 npm run dev
 ```
 
+Using Next.js? The same form as an App Router project is in
+[`starters/nextjs-checkout`](../nextjs-checkout).
+
 ## What's where
 
-- `app/checkout.tsx` — the form. A client component: the card and the inputs share state.
-- `app/layout.tsx` — imports `crd-ui/styles.css` once for the whole app.
-- `app/globals.css` — the page styles. The card itself is themed through `--crd-*` CSS
+- `src/Checkout.tsx` — the form. The card and the inputs share state.
+- `src/main.tsx` — imports `crd-ui/styles.css` once and mounts the page.
+- `src/styles.css` — the page styles. The card itself is themed through `--crd-*` CSS
   custom properties; see the [theming docs](https://crd-ui.juanda.co/#theming).
 
 ## Going to production

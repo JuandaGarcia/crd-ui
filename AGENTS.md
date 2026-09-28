@@ -18,9 +18,11 @@ https://crd-ui.juanda.co/llms-full.txt (also in `packages/crd-ui/llms.txt`).
   - `src/lib/snippets.ts` + `src/lib/api.ts` — single source of truth for docs:
     both the HTML page and `/llms-full.txt` (`src/lib/docs-md.ts`) render from them.
 - `examples/playground` — Vite+React dev playground.
-- `starters/nextjs-checkout` — standalone Next.js checkout starter, opened from StackBlitz.
-  Outside the pnpm workspace on purpose: it installs `crd-ui` from npm like a real user
-  would. Bump its `crd-ui` range after a breaking release.
+- `starters/react-checkout` (Vite, opened from StackBlitz) and `starters/nextjs-checkout`
+  (App Router, local use only — Next.js doesn't render inside StackBlitz) — standalone
+  checkout starters sharing the same form. Outside the pnpm workspace on purpose: they
+  install `crd-ui` from npm like a real user would. Bump their `crd-ui` range after a
+  breaking release, and keep the two forms in sync.
 
 ## Commands
 

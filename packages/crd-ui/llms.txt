@@ -55,7 +55,8 @@ Brands detected: visa, mastercard, amex, discover, dinersclub, jcb, unionpay, ma
 
 ## Starter
 
-A Next.js checkout using crd-ui, runnable in the browser: https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/nextjs-checkout
+A checkout form using crd-ui, runnable in the browser: https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/react-checkout
+The same form as a Next.js App Router project: https://github.com/JuandaGarcia/crd-ui/tree/main/starters/nextjs-checkout
 
 ## Coming from react-credit-cards
 

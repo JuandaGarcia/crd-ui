@@ -20,9 +20,9 @@ npm i crd-ui
 - **`crd-ui/svelte`** — Svelte 5 component (`<Card />`).
 - **`crd-ui/styles.css`** — the stylesheet (`crd-ui/styles.layer.css` for a cascade-layered build).
 
-Starter: a Next.js checkout with a live card preview —
-[open it in StackBlitz](https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/nextjs-checkout?file=app%2Fcheckout.tsx)
-or copy it from [`starters/nextjs-checkout`](./starters/nextjs-checkout).
+Starter: a checkout form with a live card preview —
+[open it in StackBlitz](https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/react-checkout?file=src%2FCheckout.tsx),
+or copy the [React](./starters/react-checkout) or [Next.js](./starters/nextjs-checkout) version.
 
 ## Features
 
