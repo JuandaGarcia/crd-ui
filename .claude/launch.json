@@ -4,22 +4,47 @@
     {
       "name": "playground",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "playground", "dev"],
+      "runtimeArgs": [
+        "--filter",
+        "playground",
+        "dev"
+      ],
       "port": 5173,
       "autoPort": true
     },
     {
       "name": "stripe-example",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "stripe-example", "dev"],
+      "runtimeArgs": [
+        "--filter",
+        "stripe-example",
+        "dev"
+      ],
       "port": 5174,
       "autoPort": true
     },
     {
       "name": "website",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "website", "dev"],
+      "runtimeArgs": [
+        "--filter",
+        "website",
+        "dev"
+      ],
       "port": 4321,
+      "autoPort": true
+    },
+    {
+      "name": "nextjs-starter",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "--prefix",
+        "starters/nextjs-checkout",
+        "run",
+        "dev"
+      ],
+      "port": 3100,
       "autoPort": true
     }
   ]

@@ -53,6 +53,10 @@ Svelte: `import Card from 'crd-ui/svelte'` — same props, `onBrandChange` callb
 
 Brands detected: visa, mastercard, amex, discover, dinersclub, jcb, unionpay, maestro, elo, hipercard.
 
+## Starter
+
+A Next.js checkout using crd-ui, runnable in the browser: https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/nextjs-checkout
+
 ## Coming from react-credit-cards
 
 `react-credit-cards` (unmaintained since June 2020, and failing to install on React 18/19 with ERESOLVE because it peers on `react@^15 || ^16`) and its fork `react-credit-cards-2` share the same prop API, and crd-ui is close to a drop-in replacement for both: `number`, `name`, `expiry`, `cvc` and `focused` keep their names and values. `placeholders` is unchanged; `locale: { valid }` -> `locale: { validThru }`; `preview` + `issuer` -> `layout: 'display'` + `brand` + `last4`; `$rccs-*` SCSS variables -> `--crd-*` CSS custom properties. Two have no direct equal: `callback(type, isValid)` -> `onBrandChange(brand)` plus the exported `detectBrand`/`getBrandSpec` helpers, and `acceptedCards` -> gate on the detected brand yourself. Full guide: https://crd-ui.juanda.co/migrate/react-credit-cards/

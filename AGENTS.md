@@ -18,6 +18,9 @@ https://crd-ui.juanda.co/llms-full.txt (also in `packages/crd-ui/llms.txt`).
   - `src/lib/snippets.ts` + `src/lib/api.ts` — single source of truth for docs:
     both the HTML page and `/llms-full.txt` (`src/lib/docs-md.ts`) render from them.
 - `examples/playground` — Vite+React dev playground.
+- `starters/nextjs-checkout` — standalone Next.js checkout starter, opened from StackBlitz.
+  Outside the pnpm workspace on purpose: it installs `crd-ui` from npm like a real user
+  would. Bump its `crd-ui` range after a breaking release.
 
 ## Commands
 
