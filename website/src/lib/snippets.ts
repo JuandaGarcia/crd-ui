@@ -301,6 +301,13 @@ import 'react-credit-cards/es/styles-compiled.css';
   focused={focused}
 />;`;
 
+export const migrateEresolve = `npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error Found: react@19.3.0
+npm error Could not resolve dependency:
+npm error peer react@"^15.0.0 || ^16.0.0" from react-credit-cards@0.8.3`;
+
 export const migrateAfter = `import { Card } from 'crd-ui/react';
 import 'crd-ui/styles.css';
 

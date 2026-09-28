@@ -328,6 +328,9 @@ release since June 2020, and its fork
 [`react-credit-cards-2`](https://www.npmjs.com/package/react-credit-cards-2) exposes the
 same prop API — so one migration covers both.
 
+On React 18 or 19, `npm i react-credit-cards` fails with `ERESOLVE`: it declares
+`react@^15 || ^16` as a peer dependency. crd-ui supports React 18 and 19.
+
 `number`, `name`, `expiry`, `cvc` and `focused` keep their names and values, so for most
 codebases the swap is the import and the stylesheet:
 

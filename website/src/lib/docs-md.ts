@@ -10,6 +10,7 @@ import {
   migrateAfter,
   migrateBefore,
   migrateCallback,
+  migrateEresolve,
   displayExample,
   localization,
   logos,
@@ -219,6 +220,13 @@ Download the file into your own project rather than hot-linking the site.
 \`react-credit-cards\` has had no release since June 2020; its fork
 \`react-credit-cards-2\` is maintained but exposes the same prop API, so one migration
 covers both. Full guide: ${SITE}/migrate/react-credit-cards/
+
+On React 18 and 19, \`react-credit-cards\` fails to install because it declares
+\`react@^15 || ^16\` as a peer dependency:
+
+\`\`\`text
+${migrateEresolve}
+\`\`\`
 
 \`number\`, \`name\`, \`expiry\`, \`cvc\` and \`focused\` keep their names and values, so the
 swap is close to a drop-in:

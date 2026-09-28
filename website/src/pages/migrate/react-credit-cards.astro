@@ -16,6 +16,7 @@ import {
   migrateAfter,
   migrateBefore,
   migrateCallback,
+  migrateEresolve,
   migratePreview,
   migrateTheming,
 } from '../../lib/snippets';
@@ -44,8 +45,8 @@ const MAP: { from: string; to: string; note: string }[] = [
 <html lang="en" data-fw="react">
   <head>
     <BaseHead
-      title="Migrating from react-credit-cards to crd-ui"
-      description="react-credit-cards has been unmaintained since 2020. crd-ui is a maintained, zero-dependency replacement with the same prop API — plus Vue, Svelte and vanilla. Prop-by-prop migration guide."
+      title="react-credit-cards alternative for React 18 and 19 — migrate to crd-ui"
+      description="react-credit-cards is unmaintained since 2020 and fails to install on React 18 and 19 (ERESOLVE). crd-ui is a maintained, zero-dependency alternative with the same prop API — plus Vue, Svelte and vanilla. Prop-by-prop migration guide."
       path="/migrate/react-credit-cards/"
     />
   </head>
@@ -71,6 +72,18 @@ const MAP: { from: string; to: string; note: string }[] = [
           <strong>The move is close to a drop-in.</strong> The four value props and
           <code>focused</code> keep their names and their types, so most codebases only change
           the import and the stylesheet.
+        </p>
+
+        <h2>Why it breaks on React 18 and 19</h2>
+        <p>
+          react-credit-cards declares <code>react@^15 || ^16</code> as a peer dependency, so on
+          any newer React npm refuses to install it:
+        </p>
+        <Code code={migrateEresolve} lang="text" themes={themes} />
+        <p>
+          <code>--legacy-peer-deps</code> silences the error but not the cause: it's a class
+          component validated with <code>propTypes</code>, which React 19 no longer checks.
+          crd-ui supports React 18 and 19 and ships its own TypeScript types.
         </p>
 
         <h2>The swap</h2>
