@@ -76,9 +76,12 @@
     currentIcon.innerHTML = ICONS[fw]!;
     currentLabel.textContent = LABELS[fw]!;
     for (const tab of tabs) tab.setAttribute('aria-pressed', String(tab.dataset.fw === fw));
-    try {
-      localStorage.setItem('crd-ui-fw', fw);
-    } catch {}
+    // Mirror the choice into the URL so the link is shareable. React is the
+    // default and stays param-free.
+    const url = new URL(location.href);
+    if (fw === 'react') url.searchParams.delete('fw');
+    else url.searchParams.set('fw', fw);
+    if (url.href !== location.href) history.replaceState(history.state, '', url);
   }
 
   apply(root.dataset.fw && root.dataset.fw in LABELS ? root.dataset.fw : 'react');

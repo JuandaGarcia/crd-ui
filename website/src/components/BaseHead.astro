@@ -63,8 +63,10 @@ const url = `${SITE}${path}`;
   } catch (e) {}
 </script>
 <script is:inline>
+  // The framework lives in the URL (?fw=vue) so a link shares it; no param
+  // means React, the markup default. Runs before paint to avoid a flash.
   try {
-    var fw = localStorage.getItem('crd-ui-fw');
+    var fw = new URLSearchParams(location.search).get('fw');
     if (['react', 'vanilla', 'vue', 'svelte'].indexOf(fw) !== -1)
       document.documentElement.dataset.fw = fw;
   } catch (e) {}
