@@ -252,6 +252,60 @@ html[data-fw='svelte'] .fw-option[data-fw='svelte'] .check {
   height: 100%;
 }
 
+/* Framework tabs above each snippet group (FrameworkTabs.astro). The negative
+   bottom margin collapses into the code block's own, tucking the row to it. */
+.fw-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 1.25em 0 -0.625em;
+}
+
+.fw-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: 0 0 0 1px var(--ring);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease-out,
+    color 0.16s ease-out;
+}
+
+.fw-tab .fw-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition:
+    filter 0.16s ease-out,
+    opacity 0.16s ease-out;
+}
+
+.fw-tab:hover {
+  background: var(--hover-wash);
+  color: var(--text);
+}
+
+.fw-tab[aria-pressed='true'] {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  box-shadow: none;
+}
+
+.fw-tab[aria-pressed='true'] .fw-icon {
+  filter: none;
+  opacity: 1;
+}
+
 .fw-block {
   display: none;
 }
@@ -621,6 +675,71 @@ main section {
 :root:not([data-theme='light']) .astro-code span {
   color: var(--shiki-dark) !important;
   background-color: transparent !important;
+}
+
+/* ---- ASCII sweep between framework snippets (src/lib/ascii-sweep.ts) ----
+   The real pre keeps the box; two transparent copies carry the outgoing and
+   incoming text, each masked to its side of the glyph band. */
+
+.code-block.is-sweeping > .astro-code {
+  overflow: hidden;
+}
+
+.code-block.is-sweeping > .astro-code:not(.sweep-layer) > code {
+  opacity: 0;
+}
+
+:root .code-block > .astro-code.sweep-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  background: transparent !important;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.sweep-layer--from {
+  -webkit-mask-image: linear-gradient(
+    var(--sweep-dir),
+    transparent calc(var(--sweep-x) + var(--sweep-jitter)),
+    #000 calc(var(--sweep-x) + var(--sweep-jitter) + var(--sweep-feather))
+  );
+  mask-image: linear-gradient(
+    var(--sweep-dir),
+    transparent calc(var(--sweep-x) + var(--sweep-jitter)),
+    #000 calc(var(--sweep-x) + var(--sweep-jitter) + var(--sweep-feather))
+  );
+}
+
+.sweep-layer--to {
+  -webkit-mask-image: linear-gradient(
+    var(--sweep-dir),
+    #000 calc(var(--sweep-x) - var(--sweep-tail)),
+    transparent calc(var(--sweep-x) - var(--sweep-band))
+  );
+  mask-image: linear-gradient(
+    var(--sweep-dir),
+    #000 calc(var(--sweep-x) - var(--sweep-tail)),
+    transparent calc(var(--sweep-x) - var(--sweep-band))
+  );
+}
+
+.sweep-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.sweep-page {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 /* ---- Display-layout demo ---- */

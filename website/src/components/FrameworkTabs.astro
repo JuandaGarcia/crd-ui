@@ -1,0 +1,22 @@
+---
+// Framework tabs for a snippet group. They drive the same page-wide choice as
+// the masthead picker (FrameworkSelect wires the clicks and fills the icons),
+// so every snippet on the page follows.
+const FRAMEWORKS = [
+  ['react', 'React'],
+  ['vanilla', 'Vanilla'],
+  ['vue', 'Vue'],
+  ['svelte', 'Svelte'],
+];
+---
+
+<div class="fw-tabs" role="group" aria-label="Framework">
+  {
+    FRAMEWORKS.map(([fw, label]) => (
+      <button class="fw-tab" data-fw={fw} type="button" aria-pressed="false">
+        <span class="fw-icon" data-icon={fw} />
+        {label}
+      </button>
+    ))
+  }
+</div>

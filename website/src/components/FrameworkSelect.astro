@@ -40,6 +40,8 @@
 </details>
 
 <script>
+  import { sweepFramework } from '../lib/ascii-sweep';
+
   // Official framework marks, provided as static SVG assets.
   const ICONS: Record<string, string> = {
     react:
@@ -62,7 +64,10 @@
   const currentIcon = select.querySelector('[data-current-icon]')!;
   const currentLabel = select.querySelector('[data-current-label]')!;
 
-  for (const el of select.querySelectorAll<HTMLElement>('.fw-icon[data-icon]')) {
+  // Snippet groups carry their own tabs (FrameworkTabs) for the same choice.
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.fw-tab[data-fw]');
+
+  for (const el of document.querySelectorAll<HTMLElement>('.fw-icon[data-icon]')) {
     el.innerHTML = ICONS[el.dataset.icon!]!;
   }
 
@@ -70,6 +75,7 @@
     root.dataset.fw = fw;
     currentIcon.innerHTML = ICONS[fw]!;
     currentLabel.textContent = LABELS[fw]!;
+    for (const tab of tabs) tab.setAttribute('aria-pressed', String(tab.dataset.fw === fw));
     try {
       localStorage.setItem('crd-ui-fw', fw);
     } catch {}
@@ -77,10 +83,12 @@
 
   apply(root.dataset.fw && root.dataset.fw in LABELS ? root.dataset.fw : 'react');
 
-  for (const btn of select.querySelectorAll<HTMLButtonElement>('.fw-option[data-fw]')) {
+  for (const btn of [...select.querySelectorAll<HTMLButtonElement>('.fw-option[data-fw]'), ...tabs]) {
     btn.addEventListener('click', () => {
+      const from = root.dataset.fw!;
       apply(btn.dataset.fw!);
       select.open = false;
+      sweepFramework(from, btn.dataset.fw!);
     });
   }
 

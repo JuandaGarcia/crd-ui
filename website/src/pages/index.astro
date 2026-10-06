@@ -3,6 +3,7 @@ import { Code } from 'astro:components';
 import 'crd-ui/styles.css';
 import '../styles/site.css';
 import FrameworkSelect from '../components/FrameworkSelect.astro';
+import FrameworkTabs from '../components/FrameworkTabs.astro';
 import TOC from '../components/TOC.astro';
 import CreatedBy from '../components/CreatedBy.astro';
 import BrandGrid from '../components/BrandGrid.astro';
@@ -136,6 +137,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <p>
             One package for every framework. The core is vanilla; adapters are subpath imports.
           </p>
+          <FrameworkTabs />
           <div class="fw-block" data-block="react">
             <Code code={usage.react} lang="tsx" themes={themes} />
           </div>
@@ -173,6 +175,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
             revealing). An optional <code>onCopy(field, value)</code> fires for your own toast.
           </p>
           <DisplayDemo client:visible />
+          <FrameworkTabs />
           <div class="fw-block" data-block="react">
             <Code code={displayExample.react} lang="tsx" themes={themes} />
           </div>
@@ -228,6 +231,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
             The built-in brand marks are deliberately generic so the package ships no trademarked
             assets — pass your own SVGs if you're licensed to use the official ones:
           </p>
+          <FrameworkTabs />
           <div class="fw-block" data-block="react">
             <Code code={logos.react} lang="tsx" themes={themes} />
           </div>
@@ -258,6 +262,7 @@ const themes = { light: 'github-light', dark: 'github-dark' };
         <section id="localization">
           <h2>Localization</h2>
           <p>Every label and placeholder on the card is configurable.</p>
+          <FrameworkTabs />
           <div class="fw-block" data-block="react">
             <Code code={localization.react} lang="tsx" themes={themes} />
           </div>
