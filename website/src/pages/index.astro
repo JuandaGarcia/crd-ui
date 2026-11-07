@@ -15,6 +15,8 @@ import {
   displayExample,
   localization,
   logos,
+  shadcnInstall,
+  shadcnUsage,
   stripeExample,
   theming,
   themingClassNames,
@@ -140,6 +142,15 @@ const themes = { light: 'github-light', dark: 'github-dark' };
           <FrameworkTabs />
           <div class="fw-block" data-block="react">
             <Code code={usage.react} lang="tsx" themes={themes} />
+            <h3 class="subhead">With shadcn/ui</h3>
+            <p>
+              Using shadcn/ui? Add it from the registry: it installs <code>crd-ui</code> and
+              creates <code>components/ui/credit-card.tsx</code> with the stylesheet already
+              imported. It's exported as <code>CreditCard</code> so it doesn't clash with
+              shadcn's own <code>Card</code>.
+            </p>
+            <Code code={shadcnInstall} lang="bash" themes={themes} />
+            <Code code={shadcnUsage} lang="tsx" themes={themes} />
           </div>
           <div class="fw-block" data-block="vanilla">
             <Code code={usage.vanilla} lang="js" themes={themes} />

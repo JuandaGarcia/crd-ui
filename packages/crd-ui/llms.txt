@@ -11,6 +11,8 @@ npm i crd-ui
 
 Subpaths: `crd-ui` (vanilla core) · `crd-ui/react` · `crd-ui/vue` · `crd-ui/svelte` · `crd-ui/styles.css` (required stylesheet) · `crd-ui/styles.layer.css` (same, wrapped in an @layer crd-ui cascade layer, for utility-class users). Framework peers are optional.
 
+shadcn/ui projects: `npx shadcn@latest add https://crd-ui.juanda.co/r/credit-card.json` installs crd-ui and adds `components/ui/credit-card.tsx`, which imports the stylesheet and re-exports the React card as `CreditCard` (`import { CreditCard } from '@/components/ui/credit-card'`).
+
 ## Quick usage
 
 React (always import the stylesheet once):

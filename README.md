@@ -20,6 +20,13 @@ npm i crd-ui
 - **`crd-ui/svelte`** — Svelte 5 component (`<Card />`).
 - **`crd-ui/styles.css`** — the stylesheet (`crd-ui/styles.layer.css` for a cascade-layered build).
 
+Using [shadcn/ui](https://ui.shadcn.com)? Add it from the registry instead — it installs
+`crd-ui` and creates `components/ui/credit-card.tsx` (the React card as `CreditCard`, stylesheet included):
+
+```bash
+npx shadcn@latest add https://crd-ui.juanda.co/r/credit-card.json
+```
+
 Starter: a checkout form with a live card preview —
 [open it in StackBlitz](https://stackblitz.com/github/JuandaGarcia/crd-ui/tree/main/starters/react-checkout?file=src%2FCheckout.tsx),
 or copy the [React](./starters/react-checkout) or [Next.js](./starters/nextjs-checkout) version.

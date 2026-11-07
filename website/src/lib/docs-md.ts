@@ -14,6 +14,8 @@ import {
   displayExample,
   localization,
   logos,
+  shadcnInstall,
+  shadcnUsage,
   stripeExample,
   theming,
   themingClassNames,
@@ -70,6 +72,20 @@ All framework peers are optional: install only the one you use.
 
 \`\`\`tsx
 ${usage.react}
+\`\`\`
+
+### With shadcn/ui
+
+crd-ui is also a shadcn/ui registry item. This installs \`crd-ui\` from npm and adds
+\`components/ui/credit-card.tsx\`, a thin wrapper that imports the stylesheet and
+re-exports the React card as \`CreditCard\` (so it doesn't clash with shadcn's \`Card\`):
+
+\`\`\`bash
+${shadcnInstall}
+\`\`\`
+
+\`\`\`tsx
+${shadcnUsage}
 \`\`\`
 
 ## Vanilla usage
@@ -317,6 +333,7 @@ CVC flip, focus ring) you wire to your own payment-form inputs. MIT licensed.
 
 - [GitHub repository](https://github.com/JuandaGarcia/crd-ui): monorepo (packages/crd-ui + website)
 - [npm package](https://www.npmjs.com/package/crd-ui): crd-ui, subpaths /react /vue /svelte /styles.css
+- [shadcn/ui registry item](${SITE}/r/credit-card.json): \`npx shadcn@latest add ${SITE}/r/credit-card.json\`
 
 ## Notes
 

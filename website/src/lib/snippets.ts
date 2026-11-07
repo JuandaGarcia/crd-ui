@@ -353,3 +353,17 @@ export const migrateTheming = `/* The SCSS variables become CSS custom propertie
   --crd-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   --crd-font: Consolas, Courier, monospace;
 }`;
+
+// shadcn/ui: the registry item (lib/registry.ts) installs crd-ui and adds
+// components/ui/credit-card.tsx, which re-exports the React card.
+export const shadcnInstall = `npx shadcn@latest add https://crd-ui.juanda.co/r/credit-card.json`;
+
+export const shadcnUsage = `import { CreditCard } from '@/components/ui/credit-card';
+
+<CreditCard
+  number={number}
+  name={name}
+  expiry={expiry}
+  cvc={cvc}
+  focused={focused}
+/>`;
